@@ -8,5 +8,6 @@ namespace IdentityServer.Model
 {
     public class CustomIdentityUser : IdentityUser
     {
+        public bool IsBanned { get; set; }
     }
 }

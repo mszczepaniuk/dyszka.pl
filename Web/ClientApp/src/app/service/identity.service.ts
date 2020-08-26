@@ -10,7 +10,7 @@ export class IdentityService {
   constructor(
     private httpClient: HttpClient
   ) {
-    this.getAccessTokenForUser("asd2ws", "wojtek123");
+    this.getAccessTokenForUser("administrator", "wojtek123");
   }
 
   private getAccessTokenForUser(username: string, password: string) {
@@ -27,10 +27,10 @@ export class IdentityService {
       {
         headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
       }).subscribe(response => {
-      const test = response;
-    }, error => {
-      const test2 = error;
-    });
+        const test = response;
+      }, error => {
+        const test2 = error;
+      });
   }
 
 }

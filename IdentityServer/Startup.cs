@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer.Data;
 using IdentityServer.Model;
+using IdentityServer.Services;
+using IdentityServer.Services.Interfaces;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +30,7 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IDbInitializer, DbInitializer>();
             services.AddDbContextPool<CustomIdentityDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
@@ -46,7 +50,8 @@ namespace IdentityServer
                 .AddInMemoryApiScopes(IdentityConfig.GetApiScopes())
                 .AddInMemoryClients(IdentityConfig.GetClients())
                 .AddDeveloperSigningCredential()
-                .AddAspNetIdentity<CustomIdentityUser>();
+                .AddAspNetIdentity<CustomIdentityUser>()
+                .AddProfileService<ProfileService>();
 
             services.AddControllers();
         }
