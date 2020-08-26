@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using IdentityServer.Data;
+using IdentityServer.Model;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace IdentityServer
+{
+    public class Startup
+    {
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContextPool<CustomIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("Default"));
+            });
+
+            services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<CustomIdentityDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddIdentityServer()
+                .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+                .AddInMemoryApiScopes(IdentityConfig.GetApiScopes())
+                .AddInMemoryClients(IdentityConfig.GetClients())
+                .AddDeveloperSigningCredential()
+                .AddAspNetIdentity<CustomIdentityUser>();
+
+            services.AddControllers();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // TYMCZASOWO DO TESTÓW
+            app.UseMiddleware<RequestDiagnosticsMiddleware>();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseRouting();
+
+            app.UseIdentityServer();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
+        }
+    }
+
+    //TYMCZASOWO
+    public class RequestDiagnosticsMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public RequestDiagnosticsMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            //try
+            //{
+            //    var reader = new StreamReader(context.Request.Body);
+            //    //reader.BaseStream.Seek(0, SeekOrigin.Begin);
+            //    var rawMessage = await reader.ReadToEndAsync();
+            //}
+            //catch (Exception e)
+            //{
+
+            //}
+
+
+            await _next(context);
+        }
+    }
+}
