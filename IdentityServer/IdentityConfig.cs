@@ -32,8 +32,12 @@ namespace IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "web.all" },
-                    AllowedCorsOrigins = { "https://localhost:5001" }
+                    AllowedScopes = { "web.all", "offline_access" },
+                    AllowedCorsOrigins = { "https://localhost:5001" },
+                    AccessTokenLifetime = TimeSpan.FromMinutes(5).Seconds,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    UpdateAccessTokenClaimsOnRefresh = true
                 }
             };
         }

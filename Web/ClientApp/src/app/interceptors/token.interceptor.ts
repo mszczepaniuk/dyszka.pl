@@ -10,14 +10,29 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private identityService: IdentityService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    //TODO: Refresh token logic.
+    if (this.identityService.isTokenAvailable()) {
+      return this.withToken(request, next);
+    }
+    return next.handle(request);
+  }
+
+  private withToken(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.identityService.isAccessTokenValid()) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.identityService.getAccessToken()}`
         }
       });
+      return next.handle(request);
     }
-    return next.handle(request);
+    return this.identityService.refreshAccessToken()
+      .pipe(mergeMap(response => {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${response || ''}`
+          }
+        });
+        return next.handle(request);
+      }));
   }
 }

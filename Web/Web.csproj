@@ -26,16 +26,18 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
+    <None Remove="ClientApp\src\app\model\user.model.ts" />
     <None Remove="ClientApp\src\app\service\identity.service.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\src\app\model\" />
+    <None Remove="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -29,6 +29,7 @@ namespace IdentityServer.Services
                 context.IssuedClaims.Add(new Claim(ClaimTypes.Role, role));
             }
             context.IssuedClaims.Add(new Claim("isBanned", user.IsBanned.ToString()));
+            context.IssuedClaims.Add(new Claim("userName", user.UserName));
         }
 
         public Task IsActiveAsync(IsActiveContext context)
