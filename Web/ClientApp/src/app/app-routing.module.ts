@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
-import { CounterComponent } from './component/counter/counter.component';
-import { FetchDataComponent } from './component/fetch-data/fetch-data.component';
+import { LoginComponent } from './component/login/login.component';
+import { RegisterComponent } from './component/register/register.component';
 
 const routes: Routes = [
   {
@@ -11,12 +11,12 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'counter',
-    component: CounterComponent
+    path: 'login',
+    component: LoginComponent
   },
   {
-    path: 'fetch-data',
-    component: FetchDataComponent
+    path: 'register',
+    component: RegisterComponent
   },
 ]
 

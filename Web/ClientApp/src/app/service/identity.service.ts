@@ -20,7 +20,7 @@ export class IdentityService {
   ) {
     this.accessToken$.subscribe(token => {
       localStorage.setItem(Config.localStorageAccessTokenKey, token);
-      if (token) {
+      if (token && token !== "null") {
         const decodedToken = decodeJwt(token);
         this.user$.next(new UserBuilder(this.user$.value).addDataFromToken(decodedToken).build());
         this.accessTokenExpirationTimestamp = Date.now() + (parseInt(decodedToken["exp"]) - parseInt(decodedToken["iat"])) * 1000;
@@ -89,5 +89,13 @@ export class IdentityService {
         this.refreshingToken = false;
         return null;
       }));
+  }
+
+  public isLoggedIn() {
+    return this.user$.value !== null;
+  }
+
+  public logout() {
+    console.log("WYLOGOWANO");
   }
 }
