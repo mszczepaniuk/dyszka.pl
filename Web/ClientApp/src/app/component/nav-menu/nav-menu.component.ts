@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IdentityService } from '../../service/identity.service';
 
 @Component({
@@ -6,17 +6,10 @@ import { IdentityService } from '../../service/identity.service';
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent implements OnInit {
+export class NavMenuComponent {
   isExpanded = false;
-  isLoggedIn = false;
 
-  constructor(public identityService: IdentityService) {
-
-  }
-
-  ngOnInit() {
-    this.isLoggedIn = this.identityService.isLoggedIn();
-  }
+  constructor(public identityService: IdentityService) { }
 
   collapse() {
     this.isExpanded = false;
@@ -24,9 +17,5 @@ export class NavMenuComponent implements OnInit {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
-  }
-
-  logout() {
-    this.identityService.logout();
   }
 }

@@ -23,7 +23,7 @@
             <a class="nav-link text-dark" [routerLink]="['/fetch-data']">Profil</a>
           </li>
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" onclick="logout()">Wyloguj si&#281;</a>
+            <a class="nav-link text-dark" (click)="this.identityService.logout()">Wyloguj si&#281;</a>
           </li>
         </ul>
       </div>

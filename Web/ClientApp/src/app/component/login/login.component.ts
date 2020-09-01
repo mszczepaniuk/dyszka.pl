@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { IdentityService } from "../../service/identity.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -8,11 +10,14 @@ import { FormGroup, FormControl } from "@angular/forms";
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl()
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   })
 
+  constructor(public identityService: IdentityService,
+    public router: Router) { }
+
   onSubmit() {
-    console.log("SUBMIT");
+    this.identityService.logIn(this.loginForm.controls["username"].value, this.loginForm.controls["password"].value);
   }
 }
