@@ -17,13 +17,13 @@
             <a class="nav-link text-dark" [routerLink]="['/counter']">Counter</a>
           </li>
           <li *ngIf="!this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/login']">Zaloguj si&#281;</a>
+            <a class="nav-link text-dark" [routerLink]="['/login']">Zaloguj się</a>
           </li>
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/fetch-data']">Profil</a>
           </li>
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="this.identityService.logout()">Wyloguj si&#281;</a>
+            <a class="nav-link text-dark" (click)="this.identityService.logout()">Wyloguj się</a>
           </li>
         </ul>
       </div>

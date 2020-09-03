@@ -54,6 +54,12 @@ namespace IdentityServer
                 .AddProfileService<ProfileService>();
 
             services.AddControllers();
+
+            services.AddCors(options => options.AddPolicy("WebPolicy", builder =>
+            {
+                builder.WithOrigins(configuration.GetSection("URI").GetValue<string>("Web"))
+                       .AllowAnyHeader();
+            }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -66,6 +72,7 @@ namespace IdentityServer
             }
 
             app.UseRouting();
+            app.UseCors("WebPolicy");
 
             app.UseIdentityServer();
 

@@ -28,7 +28,6 @@ namespace IdentityServer.Controllers
             var result = await userManager.CreateAsync(user, registerViewModel.Password);
             if (result.Succeeded)
             {
-                await userManager.AddClaimAsync(user, new Claim("CustomType", "CustomValue"));
                 return Ok();
             }
             return BadRequest(result.Errors);
