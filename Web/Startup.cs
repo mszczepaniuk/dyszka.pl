@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web
 {
@@ -21,6 +23,10 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("Default"));
+            });
             services.AddControllers();
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
