@@ -25,7 +25,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Authorize("Admin")]
+        [Authorize]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

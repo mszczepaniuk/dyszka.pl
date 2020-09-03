@@ -11,6 +11,11 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Web.Extensions;
+using Web.Services.Interfaces;
+using Web.Services;
+using ApplicationCore.Repositories;
+using Infrastructure.Repositories;
 
 namespace Web
 {
@@ -42,6 +47,10 @@ namespace Web
                 options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
                 options.AddPolicy("Moderator+", policy => policy.RequireClaim(ClaimTypes.Role, "admin", "moderator"));
             });
+
+            services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
+            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +68,7 @@ namespace Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseUserMiddleware();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

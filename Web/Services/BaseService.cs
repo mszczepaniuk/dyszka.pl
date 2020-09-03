@@ -12,7 +12,7 @@ namespace Web.Services
         where TItem : BaseEntity
         where TRepo : IBaseRepository<TItem>
     {
-        private readonly TRepo repository;
+        protected readonly TRepo repository;
 
         public BaseService(TRepo repository)
         {
@@ -47,6 +47,15 @@ namespace Web.Services
         public Task<bool> RemoveAsync(Guid id)
         {
             return repository.RemoveAsync(id);
+        }
+    }
+
+    public class BaseService<T> : BaseService<T, IBaseRepository<T>>, IBaseService<T>
+        where T : BaseEntity
+    {
+        public BaseService(IBaseRepository<T> repository) : base(repository)
+        {
+
         }
     }
 }

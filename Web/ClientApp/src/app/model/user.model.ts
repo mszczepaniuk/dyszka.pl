@@ -1,5 +1,6 @@
 export class User {
-  public id: string;
+  public identityId: string;
+  public applicationId: string;
   public userName: string;
   public isBanned: boolean;
   public roles: string[];
