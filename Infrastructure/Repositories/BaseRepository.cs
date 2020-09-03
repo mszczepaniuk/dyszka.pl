@@ -11,36 +11,36 @@ namespace Infrastructure.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext dbContext;
 
-        public BaseRepository(ApplicationDbContext context)
+        public BaseRepository(ApplicationDbContext dbContext)
         {
-            this.context = context;
+            this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(T item)
+        public virtual async Task AddAsync(T item)
         {
-            await context.Set<T>().AddAsync(item);
-            await context.SaveChangesAsync();
+            await dbContext.Set<T>().AddAsync(item);
+            await dbContext.SaveChangesAsync();
         }
 
-        public async Task AddRangeAsync(IEnumerable<T> items)
+        public virtual async Task AddRangeAsync(IEnumerable<T> items)
         {
-            await context.Set<T>().AddRangeAsync(items);
-            await context.SaveChangesAsync();
+            await dbContext.Set<T>().AddRangeAsync(items);
+            await dbContext.SaveChangesAsync();
         }
 
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
-            return context.Set<T>().AsQueryable();
+            return dbContext.Set<T>().AsQueryable();
         }
 
-        public T GetById(Guid id)
+        public virtual T GetById(Guid id)
         {
-            return context.Set<T>().FirstOrDefault(i => i.Id == id);
+            return dbContext.Set<T>().FirstOrDefault(i => i.Id == id);
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public virtual async Task<bool> RemoveAsync(Guid id)
         {
             var entity = GetById(id);
             if (entity == null)
@@ -48,16 +48,16 @@ namespace Infrastructure.Repositories
                 return false;
             }
 
-            context.Set<T>().Remove(entity);
-            await context.SaveChangesAsync();
+            dbContext.Set<T>().Remove(entity);
+            await dbContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<T> UpdateAsync(Guid id, T item)
+        public virtual async Task<T> UpdateAsync(Guid id, T item)
         {
             item.Id = id;
-            context.Set<T>().Update(item);
-            await context.SaveChangesAsync();
+            dbContext.Set<T>().Update(item);
+            await dbContext.SaveChangesAsync();
             return item;
         }
     }

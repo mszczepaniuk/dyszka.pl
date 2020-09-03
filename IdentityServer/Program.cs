@@ -19,7 +19,7 @@ namespace IdentityServer
         {
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
-            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
             await dbInitializer.MigrateAsync();
             await dbInitializer.SeedAsync();
             host.Run();

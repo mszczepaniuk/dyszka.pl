@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.Services.Interfaces
 {
-    public interface IDbInitializer
+    public interface IDatabaseInitializer
     {
         public Task SeedAsync();
         public Task MigrateAsync();

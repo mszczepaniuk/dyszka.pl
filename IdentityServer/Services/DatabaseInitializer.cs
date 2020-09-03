@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.Services
 {
-    public class DbInitializer : IDbInitializer
+    public class DatabaseInitializer : IDatabaseInitializer
     {
         private readonly CustomIdentityDbContext dbContext;
         private readonly UserManager<CustomIdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly string[] roles = { "bannedUser", "moderator", "admin" };
 
-        public DbInitializer(
+        public DatabaseInitializer(
             CustomIdentityDbContext dbContext,
             UserManager<CustomIdentityUser> userManager,
             RoleManager<IdentityRole> roleManager)

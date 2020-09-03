@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using Infrastructure.Data;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Web
@@ -23,6 +25,7 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));

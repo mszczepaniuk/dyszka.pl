@@ -30,7 +30,7 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDbInitializer, DbInitializer>();
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddDbContextPool<CustomIdentityDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
