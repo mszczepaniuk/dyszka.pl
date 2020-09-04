@@ -7,6 +7,7 @@ using IdentityServer.Data;
 using IdentityServer.Model;
 using IdentityServer.Services;
 using IdentityServer.Services.Interfaces;
+using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,8 +53,13 @@ namespace IdentityServer
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<CustomIdentityUser>()
                 .AddProfileService<ProfileService>();
-
             services.AddControllers();
+            services.AddLocalApiAuthentication();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(IdentityServerConstants.LocalApi.PolicyName,
+                    policy => policy.RequireClaim("role", "admin"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -68,6 +74,7 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseIdentityServer();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
