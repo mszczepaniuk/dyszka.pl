@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
     <None Remove="ClientApp\src\app\component\login\login.component.ts" />
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
@@ -48,6 +49,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />

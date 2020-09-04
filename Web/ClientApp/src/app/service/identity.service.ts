@@ -7,6 +7,7 @@ import * as decodeJwt from "jwt-decode";
 import { User } from "../model/user.model";
 import { UserBuilder } from "../model/builder/user.builder";
 import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
 
 @Injectable()
 export class IdentityService {
@@ -18,7 +19,8 @@ export class IdentityService {
 
   constructor(
     private httpClient: HttpClient,
-    public router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.accessToken$.subscribe(token => {
       localStorage.setItem(Config.localStorageAccessTokenKey, token);
@@ -35,7 +37,6 @@ export class IdentityService {
     });
   }
 
-  //TODO: Snack bars.
   public logIn(username: string, password: string) {
     const body = new HttpParams()
       .set("username", username)
@@ -45,19 +46,31 @@ export class IdentityService {
       .set("scope", Config.clientScopes)
       .set("grant_type", "password");
 
-    //TODO: Error handling.
     this.httpClient.post(Config.identityServerUrl + "connect/token",
       body.toString(), {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     }).subscribe(response => {
-      console.log('poprawne logowanie');
       this.accessToken$.next(response["access_token"]);
       this.refreshToken$.next(response["refresh_token"]);
       this.router.navigateByUrl('/');
+      this.snackBar.open("Zalogowano", "", { duration: 2000 });
     }, error => {
-        this.accessToken$.next('');
-        console.log('blad podczas logowania');
+      this.accessToken$.next('');
+      this.snackBar.open("Nie udało się zalogować", "", { duration: 2000 });
     });
+  }
+
+  public register(username: string, password: string, confirmPassword: string) {
+    this.httpClient.post(Config.identityServerUrl + "api/identity/register",
+      {
+        UserName: username,
+        Password: password,
+        ConfirmPassword: confirmPassword
+      }).subscribe(response => {
+        this.logIn(username, password);
+      }, () => {
+        this.snackBar.open("Doszło do błędu podczas rejestracji", "", { duration: 2000 });
+      });
   }
 
   public getAccessToken() {
@@ -106,5 +119,6 @@ export class IdentityService {
     this.user$.next(null);
     this.refreshToken$.next('');
     this.router.navigateByUrl('/');
+    this.snackBar.open("Wylogowano", "", { duration: 2000 });
   }
 }

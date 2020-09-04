@@ -1,0 +1,3 @@
+<span *ngIf="(control.dirty || control.touched || submitted) && control.errors && control.errors[error]" class="form__error" [class.form_error--nolabel]="!label">
+  <ng-content></ng-content>
+</span>

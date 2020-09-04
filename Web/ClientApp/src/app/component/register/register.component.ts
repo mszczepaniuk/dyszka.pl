@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { IdentityService } from "../../service/identity.service";
 
 @Component({
   selector: 'app-register',
@@ -7,12 +8,16 @@ import { FormGroup, FormControl } from "@angular/forms";
 })
 export class RegisterComponent {
   registerForm = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl(),
-    confirmPassword: new FormControl()
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    confirmPassword: new FormControl('', [Validators.required])
   })
 
+  constructor(private identityService: IdentityService) { }
+
   onSubmit() {
-    console.log("SUBMIT");
+    this.identityService.register(this.registerForm.controls["username"].value,
+      this.registerForm.controls["password"].value,
+      this.registerForm.controls["confirmPassword"].value);
   }
 }
