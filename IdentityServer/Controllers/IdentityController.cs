@@ -96,5 +96,12 @@ namespace IdentityServer.Controllers
             await userManager.UpdateAsync(user);
             return Ok();
         }
+
+        [HttpGet]
+        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        public IActionResult Test()
+        {
+            return Ok();
+        }
     }
 }

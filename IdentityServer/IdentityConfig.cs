@@ -50,7 +50,7 @@ namespace IdentityServer
                 },
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName, "Identity Server local endpoints")
                 {
-                    Scopes = {"local.all"}
+                    Scopes = { IdentityServerConstants.LocalApi.ScopeName }
                 }
             };
         }
