@@ -31,8 +31,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-            services.AddSingleton<HttpClient>();
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
@@ -52,7 +50,9 @@ namespace Web
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.AddSingleton<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

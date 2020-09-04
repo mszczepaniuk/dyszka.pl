@@ -24,15 +24,29 @@ namespace IdentityServer
             {
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "web",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret("secretWeb".Sha256())
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
                     AllowedCorsOrigins = { "https://localhost:5001" },
-                    AccessTokenLifetime = 60 * 25,
+                    AccessTokenLifetime = 60 * 30,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    UpdateAccessTokenClaimsOnRefresh = true
+                },
+                new Client
+                {
+                    ClientId = "mobile",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    ClientSecrets =
+                    {
+                        new Secret("secretMobile".Sha256())
+                    },
+                    AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
+                    AccessTokenLifetime = 60 * 60 * 24 * 365,
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     UpdateAccessTokenClaimsOnRefresh = true

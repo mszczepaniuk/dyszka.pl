@@ -96,5 +96,32 @@ namespace IdentityServer.Controllers
             await userManager.UpdateAsync(user);
             return Ok();
         }
+
+        [HttpPost("unban/{username}")]
+        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        public async Task<IActionResult> UnbanUser(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return BadRequest("No user with given username was found.");
+            }
+            user.IsBanned = false;
+            await userManager.UpdateAsync(user);
+            return Ok();
+        }
+
+        [HttpDelete("{username}")]
+        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        public async Task<IActionResult> RemoveUser(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return BadRequest("No user with given username was found.");
+            }
+            await userManager.DeleteAsync(user);
+            return Ok();
+        }
     }
 }

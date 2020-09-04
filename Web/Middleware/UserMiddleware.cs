@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Authorization;
 using Web.Services.Interfaces;
 
 namespace Web.Middleware
@@ -20,7 +21,7 @@ namespace Web.Middleware
 
         public async Task InvokeAsync(HttpContext context, IUserService userService)
         {
-            var contextUsername = context.User.Claims.FirstOrDefault(c => c.Type == "userName")?.Value;
+            var contextUsername = context.User.Claims.FirstOrDefault(c => c.Type == AuthConstants.UserNameClaimType)?.Value;
             if (contextUsername != null)
             {
                 var user = userService.GetByUserName(contextUsername);
@@ -28,6 +29,9 @@ namespace Web.Middleware
                 {
                     await userService.AddAsync(new ApplicationUser { UserName = contextUsername });
                 }
+
+                userService.CurrentUserToken = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ")[1];
+                userService.CurrentUser = user ?? userService.GetByUserName(contextUsername);
             }
             await _next(context);
         }
