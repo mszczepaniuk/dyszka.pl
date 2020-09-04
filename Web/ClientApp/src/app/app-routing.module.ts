@@ -4,12 +4,18 @@ import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
 import { FetchDataComponent } from './component/fetch-data/fetch-data.component';
+import { ForbiddenComponent } from './component/forbidden/forbidden.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     pathMatch: 'full'
+  },
+  {
+    path: 'forbidden',
+    pathMatch: 'full',
+    component: ForbiddenComponent
   },
   {
     path: 'login',
@@ -22,6 +28,10 @@ const routes: Routes = [
   {
     path: 'fetch-data',
     component: FetchDataComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'forbidden'
   }
 ]
 

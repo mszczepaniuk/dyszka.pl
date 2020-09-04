@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material'
 import { FormErrorComponent } from './component/form/form-error.component';
 import { FetchDataComponent } from './component/fetch-data/fetch-data.component';
+import { ForbiddenComponent } from './component/forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FetchDataComponent } from './component/fetch-data/fetch-data.component'
     LoginComponent,
     RegisterComponent,
     FormErrorComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    ForbiddenComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
