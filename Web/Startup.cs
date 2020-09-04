@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.AddSingleton<HttpClient>();
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));

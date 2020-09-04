@@ -80,7 +80,7 @@ namespace IdentityServer.Controllers
         [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
         public async Task<IActionResult> GetAllUsersInRole(string rolename)
         {
-            return Ok(await userManager.GetUsersInRoleAsync(rolename));
+            return Ok((await userManager.GetUsersInRoleAsync(rolename)).Select(u => u.UserName));
         }
 
         [HttpPost("ban/{username}")]
@@ -94,13 +94,6 @@ namespace IdentityServer.Controllers
             }
             user.IsBanned = true;
             await userManager.UpdateAsync(user);
-            return Ok();
-        }
-
-        [HttpGet]
-        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-        public IActionResult Test()
-        {
             return Ok();
         }
     }
