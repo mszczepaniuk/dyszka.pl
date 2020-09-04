@@ -121,4 +121,16 @@ export class IdentityService {
     this.router.navigateByUrl('/');
     this.snackBar.open("Wylogowano", "", { duration: 2000 });
   }
+
+  public isAdmin() {
+    return this.user$.value && this.user$.value.roles.some(r => r === "admin");
+  }
+
+  public isModerator() {
+    return this.user$.value && this.user$.value.roles.some(r => r === "moderator");
+  }
+
+  public isBanned() {
+    return this.user$.value && this.user$.value.isBanned;
+  }
 }

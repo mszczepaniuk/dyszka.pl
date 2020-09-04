@@ -11,5 +11,6 @@ namespace ApplicationCore.Models
         public string Email { get; set; }
         public string TelephoneNumber { get; set; }
         public string ProfileImage { get; set; }
+        public IList<Offer> Offers { get; set; }
     }
 }

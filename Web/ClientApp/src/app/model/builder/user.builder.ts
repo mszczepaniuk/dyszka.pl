@@ -19,6 +19,9 @@ export class UserBuilder {
   public addApplicationData(data: any): UserBuilder {
     this.user.description = data["description"];
     this.user.applicationId = data["id"];
+    this.user.telephoneNumber = data["telephoneNumber"];
+    this.user.profileImage = data["profileImage"];
+    this.user.email = data["email"];
     return this;
   }
 

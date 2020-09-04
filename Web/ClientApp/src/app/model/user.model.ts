@@ -5,4 +5,7 @@ export class User {
   public isBanned: boolean;
   public roles: string[];
   public description: string;
+  public telephoneNumber: string;
+  public email: string;
+  public profileImage: string;
 }
