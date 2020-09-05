@@ -12,6 +12,7 @@ namespace Web.Services.Interfaces
         public string CurrentUserToken { get; set; }
         public ApplicationUser CurrentUser { get; set; }
         public ApplicationUser GetByUserName(string username);
+        public Task<string> GetUserIdentityData(string username);
         public Task<IList<ApplicationUser>> GetAllInRole(string roleName);
         public Task<bool> AddToRole(string username, string roleName);
         public Task<bool> RemoveFromRole(string username, string roleName);

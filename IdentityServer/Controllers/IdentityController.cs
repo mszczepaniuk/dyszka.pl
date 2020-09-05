@@ -23,6 +23,22 @@ namespace IdentityServer.Controllers
         {
             this.userManager = userManager;
         }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserIdentityData(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user != null)
+            {
+                return Ok(new
+                {
+                    IsBanned = user.IsBanned,
+                    Roles = await userManager.GetRolesAsync(user)
+                });
+            }
+
+            return BadRequest();
+        }
         
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)

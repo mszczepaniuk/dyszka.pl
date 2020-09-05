@@ -15,7 +15,7 @@ namespace IdentityServer.Services
         private readonly CustomIdentityDbContext dbContext;
         private readonly UserManager<CustomIdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly string[] roles = { "bannedUser", "moderator", "admin" };
+        private readonly string[] roles = { "moderator", "admin" };
 
         public DatabaseInitializer(
             CustomIdentityDbContext dbContext,
@@ -46,8 +46,7 @@ namespace IdentityServer.Services
             {
                 await userManager.CreateAsync(new CustomIdentityUser { UserName = "administrator" }, "wojtek123");
                 var admin = await userManager.FindByNameAsync("administrator");
-                var test = roles.Where(r => r != "bannedUser");
-                foreach (var role in roles.Where(r => r != "bannedUser"))
+                foreach (var role in roles)
                 {
                     await userManager.AddToRoleAsync(admin, role);
                 }

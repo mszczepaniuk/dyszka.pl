@@ -29,7 +29,18 @@ namespace Web.Controllers
             {
                 return Ok(user);
             }
-            return Ok();
+            return BadRequest();
+        }
+
+        [HttpGet("identity/{username}")]
+        public async Task<IActionResult> GetIdentityData(string username)
+        {
+            var data = await userService.GetUserIdentityData(username);
+            if (data != null)
+            {
+                return Ok(data);
+            }
+            return BadRequest();
         }
 
         [HttpGet("admins/all")]

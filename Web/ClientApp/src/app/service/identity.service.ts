@@ -26,7 +26,7 @@ export class IdentityService {
       localStorage.setItem(Config.localStorageAccessTokenKey, token);
       if (token) {
         const decodedToken = decodeJwt(token);
-        this.user$.next(new UserBuilder(this.user$.value).addDataFromToken(decodedToken).build());
+        this.user$.next(new UserBuilder(this.user$.value).addIdentityData(decodedToken).build());
         const lastUpdate = parseInt(localStorage.getItem(Config.localStorageLastUpdateKey)) || Date.now();
         this.accessTokenExpirationTimestamp = lastUpdate + (parseInt(decodedToken['exp']) - parseInt(decodedToken['iat'])) * 1000;
       } else {

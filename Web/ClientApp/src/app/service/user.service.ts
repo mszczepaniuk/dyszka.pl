@@ -23,4 +23,8 @@ export class UserService {
       return result;
     }));
   }
+
+  public getUserIdentityData(username: string) {
+    return this.httpClient.get(`${this.url}identity/${username}`);
+  }
 }

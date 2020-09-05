@@ -8,11 +8,11 @@ export class UserBuilder {
     this.user = user || new User();
   }
 
-  public addDataFromToken(token: any): UserBuilder {
+  public addIdentityData(token: any): UserBuilder {
     this.user.identityId = token['sub'];
     this.user.userName = token['userName'];
     this.user.roles = token[Config.roleClaimType];
-    this.user.isBanned = token['isBanned'] === 'True';
+    this.user.isBanned = token['isBanned'].toLowerCase() === 'true';
     return this;
   }
 

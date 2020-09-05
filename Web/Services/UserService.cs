@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using IdentityModel;
 using Web.Services.Interfaces;
 
 namespace Web.Services
@@ -20,13 +21,15 @@ namespace Web.Services
         public ApplicationUser CurrentUser { get; set; }
         private readonly HttpClient client;
         private readonly string identityUrl;
+        private readonly string baseUrl;
 
         public UserService(IBaseRepository<ApplicationUser> repository,
             HttpClient client,
             IConfiguration config) : base(repository)
         {
             this.client = client;
-            identityUrl = config.GetSection("URI").GetValue<string>("IdentityServer") + "/api/identity/";
+            baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
+            identityUrl = baseUrl + "/api/identity/";
         }
 
         public ApplicationUser GetByUserName(string username)
@@ -34,10 +37,24 @@ namespace Web.Services
             return repository.GetAll().FirstOrDefault(u => u.UserName == username);
         }
 
+        public async Task<string> GetUserIdentityData(string username)
+        {
+            var response = await SendRequestWithToken(HttpMethod.Get, new Uri($"{identityUrl}{username}"));
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return await response.Content.ReadAsStringAsync();
+        }
+
         // TODO: Logi
         public async Task<IList<ApplicationUser>> GetAllInRole(string roleName)
         {
             var response = await SendRequestWithToken(HttpMethod.Get, new Uri($"{identityUrl}role/{roleName}"));
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<ApplicationUser>();
+            }
             var names = JsonSerializer.Deserialize<List<string>>(await response.Content.ReadAsStringAsync());
             var users = repository.GetAll().Where(u => names.Contains(u.UserName)).ToList();
             return users;
