@@ -3,13 +3,15 @@ import { IdentityService } from './identity.service';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { UserBuilder } from '../model/builder/user.builder';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class UserService {
   private url = '/api/users/';
 
   constructor(private identityService: IdentityService,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar) {
 
   }
 
@@ -26,5 +28,15 @@ export class UserService {
 
   public getUserIdentityData(username: string) {
     return this.httpClient.get(`${this.url}identity/${username}`);
+  }
+
+  public editCurrentUser(data) {
+    return this.httpClient.post(`${this.url}${this.identityService.user$.value.applicationId}`, data).pipe(map(result => {
+      this.snackBar.open('Poprawnie edytowano użytkownika', '', { duration: 2000 });
+      return result;
+    }), catchError(error => {
+      this.snackBar.open('Nie udało się edytować użytkownika', '', { duration: 2000 });
+      return error;
+    }));
   }
 }

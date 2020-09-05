@@ -31,6 +31,8 @@ export class IdentityService {
         this.accessTokenExpirationTimestamp = lastUpdate + (parseInt(decodedToken['exp']) - parseInt(decodedToken['iat'])) * 1000;
       } else {
         this.accessTokenExpirationTimestamp = null;
+        this.user$.next(null);
+        localStorage.setItem(Config.localStorageLastUpdateKey, '');
       }
     });
     this.accessToken$.pipe(skip(1)).subscribe(() => {
@@ -107,8 +109,12 @@ export class IdentityService {
         return response['access_token'];
       }),
       catchError(error => {
+        console.log("BLAD PODCZAS REFRESH");
+        console.log(this.refreshToken$.value);
+        console.log(this.accessToken$.value);
         this.accessToken$.next('');
         this.refreshToken$.next('');
+        this.router.navigateByUrl('/');
         this.refreshingToken = false;
         return null;
       }));

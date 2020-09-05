@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using IdentityModel;
+using Microsoft.EntityFrameworkCore;
 using Web.Services.Interfaces;
 
 namespace Web.Services
@@ -34,7 +35,7 @@ namespace Web.Services
 
         public ApplicationUser GetByUserName(string username)
         {
-            return repository.GetAll().FirstOrDefault(u => u.UserName == username);
+            return repository.GetAll().AsNoTracking().FirstOrDefault(u => u.UserName == username);
         }
 
         public async Task<string> GetUserIdentityData(string username)
@@ -103,6 +104,12 @@ namespace Web.Services
             }
 
             return true;
+        }
+
+        public override Task<ApplicationUser> UpdateAsync(Guid id, ApplicationUser item)
+        {
+            item.UserName = GetAll().AsNoTracking().Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefault();
+            return base.UpdateAsync(id, item);
         }
 
         private async Task<HttpResponseMessage> SendRequestWithToken(HttpMethod method, Uri uri)

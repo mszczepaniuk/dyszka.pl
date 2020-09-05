@@ -16,6 +16,7 @@ using Web.Extensions;
 using Web.Services.Interfaces;
 using Web.Services;
 using ApplicationCore.Repositories;
+using AutoMapper;
 using Infrastructure.Repositories;
 
 namespace Web
@@ -47,6 +48,7 @@ namespace Web
                 options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
                 options.AddPolicy("Moderator+", policy => policy.RequireClaim(ClaimTypes.Role, "admin", "moderator"));
             });
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));

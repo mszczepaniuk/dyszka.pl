@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ApplicationCore.BindingModels;
+using ApplicationCore.Models;
+using ApplicationCore.ViewModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.Authorization;
 using Web.Services.Interfaces;
 
@@ -15,10 +21,13 @@ namespace Web.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService,
+            IMapper mapper)
         {
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         [HttpGet("{username}")]
@@ -27,7 +36,7 @@ namespace Web.Controllers
             var user = userService.GetByUserName(username);
             if (user != null)
             {
-                return Ok(user);
+                return Ok(mapper.Map<ApplicationUserVm>(user));
             }
             return BadRequest();
         }
@@ -43,16 +52,29 @@ namespace Web.Controllers
             return BadRequest();
         }
 
+        [HttpPost("{id}")]
+        public async Task<IActionResult> EditUser(Guid id, ApplicationUserBm userBm)
+        {
+            try
+            {
+                return Ok(await userService.UpdateAsync(id, mapper.Map<ApplicationUser>(userBm)));
+            }
+            catch (DbUpdateException e)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("admins/all")]
         public async Task<IActionResult> GetAllAdmins()
         {
-            return Ok(await userService.GetAllInRole(AuthConstants.AdminRoleName));
+            return Ok(mapper.Map<List<ApplicationUserVm>>(await userService.GetAllInRole(AuthConstants.AdminRoleName)));
         }
 
         [HttpGet("moderators/all")]
         public async Task<IActionResult> GetAllModerators()
         {
-            return Ok(await userService.GetAllInRole(AuthConstants.ModeratorRoleName));
+            return Ok(mapper.Map<List<ApplicationUserVm>>(await userService.GetAllInRole(AuthConstants.ModeratorRoleName)));
         }
 
         [HttpPut("add-admin/{username}")]
