@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { IdentityService } from "../../service/identity.service";
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { IdentityService } from '../../service/identity.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +18,6 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
-    this.identityService.logIn(this.loginForm.controls["username"].value, this.loginForm.controls["password"].value);
+    this.identityService.logIn(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value);
   }
 }

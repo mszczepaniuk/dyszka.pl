@@ -13,8 +13,11 @@ import { RegisterComponent } from './component/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material'
 import { FormErrorComponent } from './component/form/form-error.component';
-import { FetchDataComponent } from './component/fetch-data/fetch-data.component';
 import { ForbiddenComponent } from './component/forbidden/forbidden.component';
+import { ProfileComponent } from './component/profile/profile.component';
+import { AuthGuard } from './authorization/auth-guard';
+import { UserService } from './service/user.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -24,8 +27,8 @@ import { ForbiddenComponent } from './component/forbidden/forbidden.component';
     LoginComponent,
     RegisterComponent,
     FormErrorComponent,
-    FetchDataComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,15 +37,18 @@ import { ForbiddenComponent } from './component/forbidden/forbidden.component';
     AppRoutingModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FontAwesomeModule
   ],
   providers: [
     IdentityService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

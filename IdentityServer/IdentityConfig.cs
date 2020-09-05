@@ -32,7 +32,7 @@ namespace IdentityServer
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
                     AllowedCorsOrigins = { "https://localhost:5001" },
-                    AccessTokenLifetime = 60 * 30,
+                    AccessTokenLifetime = 60 * 5,
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     UpdateAccessTokenClaimsOnRefresh = true
@@ -46,7 +46,7 @@ namespace IdentityServer
                         new Secret("secretMobile".Sha256())
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
-                    AccessTokenLifetime = 60 * 60 * 24 * 365,
+                    AccessTokenLifetime = 60 * 5,
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     UpdateAccessTokenClaimsOnRefresh = true

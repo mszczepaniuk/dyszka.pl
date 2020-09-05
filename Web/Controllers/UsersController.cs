@@ -8,6 +8,7 @@ using Web.Services.Interfaces;
 
 namespace Web.Controllers
 {
+    //TODO: Authorization
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
@@ -20,13 +21,24 @@ namespace Web.Controllers
             this.userService = userService;
         }
 
-        [HttpGet("admins")]
+        [HttpGet("{username}")]
+        public IActionResult GetByUserName(string username)
+        {
+            var user = userService.GetByUserName(username);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            return Ok();
+        }
+
+        [HttpGet("admins/all")]
         public async Task<IActionResult> GetAllAdmins()
         {
             return Ok(await userService.GetAllInRole(AuthConstants.AdminRoleName));
         }
 
-        [HttpGet("moderators")]
+        [HttpGet("moderators/all")]
         public async Task<IActionResult> GetAllModerators()
         {
             return Ok(await userService.GetAllInRole(AuthConstants.ModeratorRoleName));

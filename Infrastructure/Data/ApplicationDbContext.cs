@@ -20,7 +20,7 @@ namespace Infrastructure.Data
 
         public ApplicationUser CurrentUser { get; set; }
         public DbSet<Offer> Offers { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

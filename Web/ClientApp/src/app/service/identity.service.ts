@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Config } from "../config";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, of } from "rxjs";
-import { map, catchError } from "rxjs/operators";
-import * as decodeJwt from "jwt-decode";
-import { User } from "../model/user.model";
-import { UserBuilder } from "../model/builder/user.builder";
-import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { Injectable } from '@angular/core';
+import { Config } from '../config';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, of } from 'rxjs';
+import { map, catchError, skip } from 'rxjs/operators';
+import * as decodeJwt from 'jwt-decode';
+import { User } from '../model/user.model';
+import { UserBuilder } from '../model/builder/user.builder';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class IdentityService {
@@ -27,10 +27,14 @@ export class IdentityService {
       if (token) {
         const decodedToken = decodeJwt(token);
         this.user$.next(new UserBuilder(this.user$.value).addDataFromToken(decodedToken).build());
-        this.accessTokenExpirationTimestamp = Date.now() + (parseInt(decodedToken["exp"]) - parseInt(decodedToken["iat"])) * 1000;
+        const lastUpdate = parseInt(localStorage.getItem(Config.localStorageLastUpdateKey)) || Date.now();
+        this.accessTokenExpirationTimestamp = lastUpdate + (parseInt(decodedToken['exp']) - parseInt(decodedToken['iat'])) * 1000;
       } else {
         this.accessTokenExpirationTimestamp = null;
       }
+    });
+    this.accessToken$.pipe(skip(1)).subscribe(() => {
+      localStorage.setItem(Config.localStorageLastUpdateKey, Date.now().toString());
     });
     this.refreshToken$.subscribe(token => {
       localStorage.setItem(Config.localStorageRefreshTokenKey, token);
@@ -39,29 +43,29 @@ export class IdentityService {
 
   public logIn(username: string, password: string) {
     const body = new HttpParams()
-      .set("username", username)
-      .set("password", password)
-      .set("client_id", Config.clientId)
-      .set("client_secret", Config.clientSecret)
-      .set("scope", Config.clientScopes)
-      .set("grant_type", "password");
+      .set('username', username)
+      .set('password', password)
+      .set('client_id', Config.clientId)
+      .set('client_secret', Config.clientSecret)
+      .set('scope', Config.clientScopes)
+      .set('grant_type', 'password');
 
-    this.httpClient.post(Config.identityServerUrl + "connect/token",
+    this.httpClient.post(Config.identityServerUrl + 'connect/token',
       body.toString(), {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     }).subscribe(response => {
-      this.accessToken$.next(response["access_token"]);
-      this.refreshToken$.next(response["refresh_token"]);
+      this.accessToken$.next(response['access_token']);
+      this.refreshToken$.next(response['refresh_token']);
       this.router.navigateByUrl('/');
-      this.snackBar.open("Zalogowano", "", { duration: 2000 });
+      this.snackBar.open('Zalogowano', '', { duration: 2000 });
     }, error => {
       this.accessToken$.next('');
-      this.snackBar.open("Nie udało się zalogować", "", { duration: 2000 });
+      this.snackBar.open('Nie udało się zalogować', '', { duration: 2000 });
     });
   }
 
   public register(username: string, password: string, confirmPassword: string) {
-    this.httpClient.post(Config.identityServerUrl + "api/identity/register",
+    this.httpClient.post(Config.identityServerUrl + 'api/identity/register',
       {
         UserName: username,
         Password: password,
@@ -69,7 +73,7 @@ export class IdentityService {
       }).subscribe(response => {
         this.logIn(username, password);
       }, () => {
-        this.snackBar.open("Doszło do błędu podczas rejestracji", "", { duration: 2000 });
+        this.snackBar.open('Doszło do błędu podczas rejestracji', '', { duration: 2000 });
       });
   }
 
@@ -88,19 +92,19 @@ export class IdentityService {
   public refreshAccessToken() {
     this.refreshingToken = true;
     const body = new HttpParams()
-      .set("client_id", Config.clientId)
-      .set("client_secret", Config.clientSecret)
-      .set("grant_type", "refresh_token")
-      .set("refresh_token", this.refreshToken$.value)
-    return this.httpClient.post(Config.identityServerUrl + "connect/token",
+      .set('client_id', Config.clientId)
+      .set('client_secret', Config.clientSecret)
+      .set('grant_type', 'refresh_token')
+      .set('refresh_token', this.refreshToken$.value)
+    return this.httpClient.post(Config.identityServerUrl + 'connect/token',
       body.toString(), {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     }).pipe(
       map(response => {
-        this.accessToken$.next(response["access_token"]);
-        this.refreshToken$.next(response["refresh_token"]);
+        this.accessToken$.next(response['access_token']);
+        this.refreshToken$.next(response['refresh_token']);
         this.refreshingToken = false;
-        return response["access_token"];
+        return response['access_token'];
       }),
       catchError(error => {
         this.accessToken$.next('');
@@ -119,15 +123,11 @@ export class IdentityService {
     this.user$.next(null);
     this.refreshToken$.next('');
     this.router.navigateByUrl('/');
-    this.snackBar.open("Wylogowano", "", { duration: 2000 });
+    this.snackBar.open('Wylogowano', '', { duration: 2000 });
   }
 
-  public isAdmin() {
-    return this.user$.value && this.user$.value.roles.some(r => r === "admin");
-  }
-
-  public isModerator() {
-    return this.user$.value && this.user$.value.roles.some(r => r === "moderator");
+  public isInRole(role: string) {
+    return this.user$.value && this.user$.value.roles.some(r => r === role);
   }
 
   public isBanned() {
