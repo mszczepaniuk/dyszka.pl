@@ -125,15 +125,10 @@ namespace Web.Controllers
                 : StatusCode((int)HttpStatusCode.BadRequest);
         }
 
-        [HttpDelete("{username}")]
-        public async Task<IActionResult> RemoveUser(string username)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveUser(Guid id)
         {
-            var user = userService.GetByUserName(username);
-            if (user == null)
-            {
-                return StatusCode((int)HttpStatusCode.BadRequest);
-            }
-            return await userService.RemoveAsync(user.Id)
+            return await userService.RemoveAsync(id)
                 ? StatusCode((int)HttpStatusCode.OK)
                 : StatusCode((int)HttpStatusCode.BadRequest);
         }

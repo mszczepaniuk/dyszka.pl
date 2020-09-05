@@ -35,6 +35,7 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAuthorizationHandler, NotBannedAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, ProfileOwnerOrAdminAuthorizationHandler>();
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddDbContextPool<CustomIdentityDbContext>(options =>
             {
@@ -68,6 +69,13 @@ namespace IdentityServer
                         policy.RequireAuthenticatedUser();
                         policy.RequireClaim(ClaimTypes.Role, "admin");
                         policy.Requirements.Add(new NotBannedRequirement());
+                    });
+                options.AddPolicy("ProfileOwnerOrAdmin",
+                    policy =>
+                    {
+                        policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
+                        policy.RequireAuthenticatedUser();
+                        policy.Requirements.Add(new ProfileOwnerOrAdminRequirement());
                     });
             });
             services.AddCors(options => options.AddPolicy("WebPolicy", builder =>

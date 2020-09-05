@@ -87,7 +87,7 @@ namespace Web.Services
 
         public override async Task<bool> RemoveAsync(Guid id)
         {
-            var appUser = repository.GetById(id);
+            var appUser = repository.GetAll().AsNoTracking().FirstOrDefault(u => u.Id == id);
             if (appUser == null)
             {
                 return false;

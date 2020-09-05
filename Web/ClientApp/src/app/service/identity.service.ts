@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Config } from '../config';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map, catchError, skip } from 'rxjs/operators';
 import * as decodeJwt from 'jwt-decode';
 import { User } from '../model/user.model';

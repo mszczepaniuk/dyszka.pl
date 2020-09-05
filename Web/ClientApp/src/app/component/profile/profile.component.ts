@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { faOutdent, faEnvelope, faEdit, faSave, faUndo, faUserMinus, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Config } from '../../config';
 import { MatSnackBar } from '@angular/material';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +26,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   faUserMinus = faUserMinus;
   faBan = faBan;
 
-  public user: User;
+  public user$ = new BehaviorSubject<User>(null);
   public form: FormGroup;
 
   private username: string;
@@ -45,25 +46,27 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.form = this.createForm();
     this.form.disable();
+    this.safeSub(this.user$.subscribe(user => {
+      if (user) {
+        this.form.patchValue(user);
+      }
+    }));
     this.safeSub(
       this.route.paramMap.subscribe(params => {
         this.username = params.get('username') || this.identityService.user$.value.userName;
         this.safeSub(
-          this.userService.getUserByUserName(this.username).subscribe(user => {
+          this.userService.getUserByUserName(this.username).subscribe(appUser => {
             if (!params.has('username')) {
               this.safeSub(this.identityService.user$.subscribe(user => {
-                this.user = user;
-                this.form.patchValue(this.user);
+                this.user$.next(user);
                 this.loading = false;
               }));
             } else {
-              if (!user) {
+              if (!appUser) {
                 this.router.navigateByUrl("/forbidden");
               }
-              this.user = new UserBuilder().addApplicationData(user).build();
-              this.form.patchValue(this.user);
-              this.safeSub(this.userService.getUserIdentityData(this.username).subscribe(user => {
-                this.user = new UserBuilder(this.user).addIdentityData(user).build();
+              this.safeSub(this.userService.getUserIdentityData(this.username).subscribe(identityUser => {
+                this.user$.next(new UserBuilder().addApplicationData(appUser).addIdentityData(identityUser).build());
                 this.loading = false;
               }));
             }
@@ -78,7 +81,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   }
 
   public undoClick() {
-    this.form.patchValue(this.user);
+    this.form.patchValue(this.user$.value);
     this.form.disable();
   }
 
@@ -86,20 +89,33 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     if (this.canUpdate && this.form.valid && this.identityService.isLoggedIn()) {
       this.loading = true;
       this.userService.editCurrentUser(this.getDataFromForm()).subscribe(user => {
-        this.user = new UserBuilder(this.user).addApplicationData(user).build();
+        this.user$.next(new UserBuilder(this.user$.value).addApplicationData(user).build());
         this.form.disable();
-        this.form.patchValue(this.user);
         this.loading = false;
       });
     }
   }
 
   public banUser() {
+    this.userService.banUser(this.username)
+      .subscribe(() => {
+        const user = this.user$.value;
+        user.isBanned = true;
+        this.user$.next(user);
+      });
+  }
 
+  public unbanUser() {
+    this.userService.unbanUser(this.username)
+      .subscribe(() => {
+        const user = this.user$.value;
+        user.isBanned = false;
+        this.user$.next(user);
+      });
   }
 
   public deleteUser() {
-
+    this.userService.removeUser(this.user$.value.applicationId).subscribe();
   }
 
   public isProfileOwner() {
@@ -107,11 +123,15 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   }
 
   public isBanned() {
-    return this.user && this.user.isBanned;
+    return this.user$.value && this.user$.value.isBanned;
   }
 
   public isInRole(rolename: string) {
-    return this.user && this.user.roles.some(r => r === rolename);
+    return this.user$.value && this.user$.value.roles.some(r => r === rolename);
+  }
+
+  public useDefaultImage() {
+    return !(this.user$.value && this.user$.value.profileImage);
   }
 
   public processFile(image) {
@@ -146,7 +166,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
       userName: this.form.controls.userName.value,
       telephoneNumber: this.form.controls.telephoneNumber.value,
       email: this.form.controls.email.value,
-      profileImage: this.selectedImage
+      profileImage: this.selectedImage || this.user$.value.profileImage
     }
   }
 }

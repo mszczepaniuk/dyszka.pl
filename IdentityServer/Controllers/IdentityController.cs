@@ -128,7 +128,7 @@ namespace IdentityServer.Controllers
         }
 
         [HttpDelete("{username}")]
-        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        [Authorize("ProfileOwnerOrAdmin")]
         public async Task<IActionResult> RemoveUser(string username)
         {
             var user = await userManager.FindByNameAsync(username);

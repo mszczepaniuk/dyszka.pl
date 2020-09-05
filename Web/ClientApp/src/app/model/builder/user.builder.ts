@@ -11,8 +11,8 @@ export class UserBuilder {
   public addIdentityData(token: any): UserBuilder {
     this.user.identityId = token['sub'];
     this.user.userName = token['userName'];
-    this.user.roles = token[Config.roleClaimType];
-    this.user.isBanned = token['isBanned'].toLowerCase() === 'true';
+    this.user.roles = token[Config.roleClaimType] || [];
+    this.user.isBanned = token['isBanned'].toString().toLowerCase() === 'true';
     return this;
   }
 
