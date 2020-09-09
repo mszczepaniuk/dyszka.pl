@@ -31,11 +31,7 @@ namespace IdentityServer
                         new Secret("secretWeb".Sha256())
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
-                    AllowedCorsOrigins = 
-                    { 
-                        "https://localhost:5001" ,
-                        "https://localhost:5002" ,
-                    },
+                    AllowedCorsOrigins = { "https://localhost:5001" },
                     AccessTokenLifetime = 60 * 5,
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
@@ -51,7 +47,7 @@ namespace IdentityServer
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
                     AccessTokenLifetime = 60 * 5,
-                    AllowedCorsOrigins = { "https://localhost:5001" },
+                    AllowedCorsOrigins = { "https://localhost:5002" },
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     UpdateAccessTokenClaimsOnRefresh = true
