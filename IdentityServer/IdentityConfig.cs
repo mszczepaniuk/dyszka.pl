@@ -31,8 +31,6 @@ namespace IdentityServer
                         new Secret("secretWeb".Sha256())
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
-                    AllowedCorsOrigins = { "https://localhost:5001" },
-                    AllowedScopes = { "web.all", "offline_access" },
                     AllowedCorsOrigins = 
                     { 
                         "https://localhost:5001" ,
