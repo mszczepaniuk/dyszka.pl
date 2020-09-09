@@ -57,7 +57,9 @@ namespace IdentityServer
 
             services.AddCors(options => options.AddPolicy("WebPolicy", builder =>
             {
-                builder.WithOrigins(configuration.GetSection("URI").GetValue<string>("Web"))
+                builder.WithOrigins(
+                    configuration.GetSection("URI").GetValue<string>("Web"),
+                    configuration.GetSection("URI").GetValue<string>("Mobile"))
                        .AllowAnyHeader();
             }));
         }
