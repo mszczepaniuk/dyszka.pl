@@ -47,6 +47,7 @@ namespace IdentityServer
                     },
                     AllowedScopes = { "web.all", "offline_access", IdentityServerConstants.LocalApi.ScopeName },
                     AccessTokenLifetime = 60 * 5,
+                    AllowedCorsOrigins = { "https://localhost:5001" },
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     UpdateAccessTokenClaimsOnRefresh = true
