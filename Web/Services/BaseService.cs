@@ -39,12 +39,12 @@ namespace Web.Services
             return repository.AddRangeAsync(items);
         }
 
-        public Task<TItem> UpdateAsync(Guid id, TItem item)
+        public virtual Task<TItem> UpdateAsync(Guid id, TItem item)
         {
             return repository.UpdateAsync(id, item);
         }
 
-        public Task<bool> RemoveAsync(Guid id)
+        public virtual Task<bool> RemoveAsync(Guid id)
         {
             return repository.RemoveAsync(id);
         }

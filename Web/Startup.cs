@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ using Web.Extensions;
 using Web.Services.Interfaces;
 using Web.Services;
 using ApplicationCore.Repositories;
+using AutoMapper;
 using Infrastructure.Repositories;
 
 namespace Web
@@ -30,7 +32,6 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
@@ -47,10 +48,13 @@ namespace Web
                 options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
                 options.AddPolicy("Moderator+", policy => policy.RequireClaim(ClaimTypes.Role, "admin", "moderator"));
             });
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.AddSingleton<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -13,12 +13,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,12 +38,18 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\authorization\auth-guard.ts" />
+    <None Remove="ClientApp\src\app\component\BaseComponent.ts" />
+    <None Remove="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
     <None Remove="ClientApp\src\app\component\login\login.component.ts" />
+    <None Remove="ClientApp\src\app\component\profile\profile.component.ts" />
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
+    <None Remove="ClientApp\src\app\service\file.service.ts" />
     <None Remove="ClientApp\src\app\service\identity.service.ts" />
+    <None Remove="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,12 +59,22 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\authorization\auth-guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\BaseComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\profile\profile.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\file.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\user.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\assets\img\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

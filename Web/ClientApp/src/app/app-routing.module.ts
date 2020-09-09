@@ -3,13 +3,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
-import { FetchDataComponent } from './component/fetch-data/fetch-data.component';
+import { ForbiddenComponent } from './component/forbidden/forbidden.component';
+import { ProfileComponent } from './component/profile/profile.component';
+import { AuthGuard } from './authorization/auth-guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     pathMatch: 'full'
+  },
+  {
+    path: 'forbidden',
+    pathMatch: 'full',
+    component: ForbiddenComponent
   },
   {
     path: 'login',
@@ -20,8 +27,23 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'fetch-data',
-    component: FetchDataComponent
+    path: 'profile',
+    children: [
+      {
+        path: ':username',
+        component: ProfileComponent
+      },
+      {
+        path: '',
+        canActivate: [AuthGuard],
+        pathMatch: 'full',
+        component: ProfileComponent
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: 'forbidden'
   }
 ]
 
