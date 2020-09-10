@@ -10,6 +10,7 @@ namespace Web.Services.Interfaces
     public interface IBaseService<T, TRepo>
     {
         IQueryable<T> GetAll();
+        PagedResult<T> GetPaged(int page);
         T GetById(Guid id);
         Task AddAsync(T item);
         Task AddRangeAsync(IEnumerable<T> items);
