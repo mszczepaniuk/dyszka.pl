@@ -13,6 +13,7 @@ namespace Web.Services
         where TRepo : IBaseRepository<TItem>
     {
         protected readonly TRepo repository;
+        protected readonly int resultsPerPage = 10;
 
         public BaseService(TRepo repository)
         {
@@ -22,6 +23,19 @@ namespace Web.Services
         public virtual IQueryable<TItem> GetAll()
         {
             return repository.GetAll();
+        }
+
+        public virtual PagedResult<TItem> GetPaged(int page)
+        {
+            return new PagedResult<TItem>
+            {
+                Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList(),
+                CurrentPage = page,
+                ResultsPerPage = resultsPerPage,
+                PagesCount = repository.GetAll().Count() == 0 ?
+                0 :
+                ((repository.GetAll().Count() - 1) / resultsPerPage) + 1
+            };
         }
 
         public virtual TItem GetById(Guid id)
