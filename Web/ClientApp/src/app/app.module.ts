@@ -18,6 +18,8 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { AuthGuard } from './authorization/auth-guard';
 import { UserService } from './service/user.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AdministrationService } from './service/administration.service';
+import { AdministrationComponent } from './component/administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     RegisterComponent,
     FormErrorComponent,
     ForbiddenComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -43,6 +46,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   providers: [
     IdentityService,
     UserService,
+    AdministrationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

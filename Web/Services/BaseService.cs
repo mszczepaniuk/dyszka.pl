@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories;
+using AutoMapper;
 using Web.Services.Interfaces;
 
 namespace Web.Services
@@ -13,7 +14,6 @@ namespace Web.Services
         where TRepo : IBaseRepository<TItem>
     {
         protected readonly TRepo repository;
-        protected readonly int resultsPerPage = 10;
 
         public BaseService(TRepo repository)
         {
@@ -23,19 +23,6 @@ namespace Web.Services
         public virtual IQueryable<TItem> GetAll()
         {
             return repository.GetAll();
-        }
-
-        public virtual PagedResult<TItem> GetPaged(int page)
-        {
-            return new PagedResult<TItem>
-            {
-                Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList(),
-                CurrentPage = page,
-                ResultsPerPage = resultsPerPage,
-                PagesCount = repository.GetAll().Any() ?
-                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
-                    0
-            };
         }
 
         public virtual TItem GetById(Guid id)
@@ -68,6 +55,54 @@ namespace Web.Services
         where T : BaseEntity
     {
         public BaseService(IBaseRepository<T> repository) : base(repository)
+        {
+
+        }
+    }
+
+    public class ExtendedBaseService<TItem, TRepo> : BaseService<TItem, TRepo>, IExtendedBaseService<TItem, TRepo>
+        where TItem : BaseEntity
+        where TRepo : IBaseRepository<TItem>
+    {
+        private readonly IMapper mapper;
+        protected readonly int resultsPerPage = 10;
+
+        public ExtendedBaseService(TRepo repository, IMapper mapper) : base(repository)
+        {
+            this.mapper = mapper;
+        }
+
+        public virtual PagedResult<TItem> GetPaged(int page)
+        {
+            return new PagedResult<TItem>
+            {
+                Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList(),
+                CurrentPage = page,
+                ResultsPerPage = resultsPerPage,
+                PagesCount = repository.GetAll().Any() ?
+                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
+                    0
+            };
+        }
+
+        public virtual PagedResult<TVm> GetPagedAndMapTo<TVm>(int page)
+        {
+            return new PagedResult<TVm>
+            {
+                Items = mapper.Map<List<TVm>>(repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList()),
+                CurrentPage = page,
+                ResultsPerPage = resultsPerPage,
+                PagesCount = repository.GetAll().Any() ?
+                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
+                    0
+            };
+        }
+    }
+
+    public class ExtendedBaseService<T> : ExtendedBaseService<T, IBaseRepository<T>>, IExtendedBaseService<T>
+        where T : BaseEntity
+    {
+        public ExtendedBaseService(IBaseRepository<T> repository, IMapper mapper) : base(repository, mapper)
         {
 
         }

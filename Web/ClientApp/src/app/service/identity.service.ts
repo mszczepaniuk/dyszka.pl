@@ -58,7 +58,7 @@ export class IdentityService {
     }).subscribe(response => {
       this.accessToken$.next(response['access_token']);
       this.refreshToken$.next(response['refresh_token']);
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl(`/profile/${username}`);
       this.snackBar.open('Zalogowano', '', { duration: 2000 });
     }, error => {
       this.accessToken$.next('');

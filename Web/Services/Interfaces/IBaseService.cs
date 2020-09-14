@@ -10,7 +10,6 @@ namespace Web.Services.Interfaces
     public interface IBaseService<T, TRepo>
     {
         IQueryable<T> GetAll();
-        PagedResult<T> GetPaged(int page);
         T GetById(Guid id);
         Task AddAsync(T item);
         Task AddRangeAsync(IEnumerable<T> items);
@@ -22,5 +21,17 @@ namespace Web.Services.Interfaces
         where T : BaseEntity
     {
 
+    }
+
+    public interface IExtendedBaseService<T, TRepo> : IBaseService<T, TRepo>
+    {
+        PagedResult<T> GetPaged(int page);
+        public PagedResult<TVm> GetPagedAndMapTo<TVm>(int page);
+    }
+
+    public interface IExtendedBaseService<T> : IExtendedBaseService<T, IBaseRepository<T>>
+        where T : BaseEntity
+    {
+        
     }
 }

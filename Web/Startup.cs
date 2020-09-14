@@ -51,6 +51,7 @@ namespace Web
             services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
+            services.AddTransient(typeof(IExtendedBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddTransient<IAuditLogService, AuditLogService>();
