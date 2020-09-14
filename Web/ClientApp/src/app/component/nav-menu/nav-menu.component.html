@@ -20,13 +20,10 @@
             <a class="nav-link text-dark" [routerLink]="['/profile']">Profil</a>
           </li>
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/messages']">Wiadomości</a>
-          </li>
-          <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/orders']">Zamówienia</a>
           </li>
           <li *ngIf="this.identityService.isInRole('admin') || this.identityService.isInRole('moderator')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/orders']">Panel</a>
+            <a class="nav-link text-dark" [routerLink]="['/administration']">Panel</a>
           </li>
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" (click)="this.identityService.logout()">Wyloguj się</a>

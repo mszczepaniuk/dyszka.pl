@@ -53,10 +53,10 @@
       <a *ngIf="isProfileOwner() && form.enabled" class="btn btn-primary" (click)="formSubmit()">
         <fa-icon [icon]="faSave" class="white-icon"></fa-icon>
       </a>
-      <a *ngIf="!isProfileOwner() && isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && isInRole('admin')))" class="btn btn-primary" (click)="unbanUser()">
+      <a *ngIf="!isProfileOwner() && isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-primary" (click)="unbanUser()">
         <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
       </a>
-      <a *ngIf="!isProfileOwner() && !isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && isInRole('admin')))" class="btn btn-danger" (click)="banUser()">
+      <a *ngIf="!isProfileOwner() && !isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-danger" (click)="banUser()">
         <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
       </a>
       <a *ngIf="isProfileOwner() || (identityService.isInRole('admin') && isBanned())" class="btn btn-danger" (click)="deleteUser()">

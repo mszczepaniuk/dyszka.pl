@@ -10,7 +10,7 @@ export class UserBuilder {
 
   public addIdentityData(token: any): UserBuilder {
     this.user.identityId = token['sub'];
-    this.user.userName = token['userName'];
+    this.user.userName = this.user.userName || token['userName'];
     this.user.roles = token[Config.roleClaimType] || [];
     this.user.isBanned = token['isBanned'].toString().toLowerCase() === 'true';
     return this;
@@ -19,6 +19,7 @@ export class UserBuilder {
   public addApplicationData(data: any): UserBuilder {
     this.user.description = data['description'];
     this.user.applicationId = data['id'];
+    this.user.userName = this.user.userName || data['userName'];
     this.user.telephoneNumber = data['telephoneNumber'];
     this.user.profileImage = data['profileImage'];
     this.user.email = data['email'];
