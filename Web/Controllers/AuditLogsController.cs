@@ -3,13 +3,14 @@ using ApplicationCore.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Authorization;
 using Web.Services.Interfaces;
 
 namespace Web.Controllers
 {
     [ApiController]
     [Route("api/audit-logs")]
-    [Authorize("Admin")]
+    [Authorize(AuthConstants.OnlyAdminPolicy)]
     public class AuditLogsController : ControllerBase
     {
         private readonly IAuditLogService auditLogService;

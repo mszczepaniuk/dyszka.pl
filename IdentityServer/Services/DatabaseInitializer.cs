@@ -56,10 +56,7 @@ namespace IdentityServer.Services
             {
                 await userManager.CreateAsync(new CustomIdentityUser { UserName = "moderator" }, "wojtek123");
                 var admin = await userManager.FindByNameAsync("moderator");
-                foreach (var role in roles.Where(role => role != "administrator"))
-                {
-                    await userManager.AddToRoleAsync(admin, role);
-                }
+                await userManager.AddToRoleAsync(admin, "moderator");
             }
         }
     }

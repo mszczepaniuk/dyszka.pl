@@ -12,6 +12,9 @@ export class UserBuilder {
     this.user.identityId = token['sub'];
     this.user.userName = this.user.userName || token['userName'];
     this.user.roles = token[Config.roleClaimType] || [];
+    if (!Array.isArray(this.user.roles)) {
+      this.user.roles = [this.user.roles as any];
+    }
     this.user.isBanned = token['isBanned'].toString().toLowerCase() === 'true';
     return this;
   }
