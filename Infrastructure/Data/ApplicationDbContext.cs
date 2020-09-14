@@ -21,6 +21,7 @@ namespace Infrastructure.Data
         public ApplicationUser CurrentUser { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

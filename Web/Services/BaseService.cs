@@ -32,9 +32,9 @@ namespace Web.Services
                 Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList(),
                 CurrentPage = page,
                 ResultsPerPage = resultsPerPage,
-                PagesCount = repository.GetAll().Count() == 0 ?
-                0 :
-                ((repository.GetAll().Count() - 1) / resultsPerPage) + 1
+                PagesCount = repository.GetAll().Any() ?
+                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
+                    0
             };
         }
 

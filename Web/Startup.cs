@@ -52,8 +52,11 @@ namespace Web
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IUserService, UserService>();
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            services.AddTransient<IAuditLogService, AuditLogService>();
+
+            services.AddScoped<IUserService, UserService>();
+
             services.AddSingleton<HttpClient>();
         }
 
