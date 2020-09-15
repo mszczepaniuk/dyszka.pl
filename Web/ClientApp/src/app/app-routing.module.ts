@@ -29,7 +29,9 @@ const routes: Routes = [
   },
   {
     path: 'administration',
-    component: AdministrationComponent
+    component: AdministrationComponent,
+    canActivate: [AuthGuard],
+    data: { role: 'admin' }
   },
   {
     path: 'profile',
