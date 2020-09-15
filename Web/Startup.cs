@@ -18,6 +18,10 @@ using Web.Services;
 using ApplicationCore.Repositories;
 using AutoMapper;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Web.Authorization;
+using Web.Authorization.Requirements;
 
 namespace Web
 {
@@ -45,20 +49,26 @@ namespace Web
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
-                options.AddPolicy("Moderator+", policy => policy.RequireClaim(ClaimTypes.Role, "admin", "moderator"));
+                options.AddPolicy(AuthConstants.OnlyAdminPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.AdminRoleName));
+                options.AddPolicy(AuthConstants.ModeratorOrAdminPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.AdminRoleName, AuthConstants.ModeratorRoleName));
+                options.AddPolicy(AuthConstants.OnlyModeratorPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.ModeratorRoleName));
+                options.AddPolicy(AuthConstants.ProfileOwnerPolicy, policy => policy.AddRequirements(new ProfileOwnerRequirement()));
+                options.AddPolicy(AuthConstants.UserRemovalPolicy, policy => policy.AddRequirements(new UserRemovalRequirement()));
             });
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<HttpClient>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthorizationHandler, ProfileOwnerAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, UserRemovalAuthorizationHandler>();
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IExtendedBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddTransient<IAuditLogService, AuditLogService>();
-
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddSingleton<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

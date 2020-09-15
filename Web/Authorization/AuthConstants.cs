@@ -7,10 +7,16 @@ namespace Web.Authorization
 {
     public static class AuthConstants
     {
-        public static string AdminRoleName = "admin";
-        public static string ModeratorRoleName = "moderator";
+        public const string AdminRoleName = "admin";
+        public const string ModeratorRoleName = "moderator";
 
-        public static string RoleClaimType = "role";
-        public static string UserNameClaimType = "userName";
+        public const string UserNameClaimType = "userName";
+
+        public const string OnlyAdminPolicy = "OnlyAdmin";
+        public const string OnlyModeratorPolicy = "OnlyModerator";
+        public const string ModeratorOrAdminPolicy = "ModeratorOrAdmin";
+        public const string UserRemovalPolicy = "UserRemoval";
+        public const string ProfileOwnerPolicy = "ProfileOwner";
+        public const string EntityOwnerPolicy = "EntityOwner";
     }
 }
