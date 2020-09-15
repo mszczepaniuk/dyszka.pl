@@ -52,6 +52,7 @@ namespace Web
                 options.AddPolicy(AuthConstants.OnlyAdminPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.AdminRoleName));
                 options.AddPolicy(AuthConstants.ModeratorOrAdminPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.AdminRoleName, AuthConstants.ModeratorRoleName));
                 options.AddPolicy(AuthConstants.OnlyModeratorPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.ModeratorRoleName));
+                options.AddPolicy(AuthConstants.NotBannedPolicy, policy => policy.RequireClaim(AuthConstants.IsBannedClaimType, "False"));
                 options.AddPolicy(AuthConstants.ProfileOwnerPolicy, policy => policy.AddRequirements(new ProfileOwnerRequirement()));
                 options.AddPolicy(AuthConstants.UserRemovalPolicy, policy => policy.AddRequirements(new UserRemovalRequirement()));
             });
@@ -69,6 +70,7 @@ namespace Web
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddTransient<IAuditLogService, AuditLogService>();
+            services.AddTransient<IOfferService, OfferService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

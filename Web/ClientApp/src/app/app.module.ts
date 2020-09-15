@@ -20,6 +20,9 @@ import { UserService } from './service/user.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdministrationService } from './service/administration.service';
 import { AdministrationComponent } from './component/administration/administration.component';
+import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
+import { OfferFormComponent } from './component/offer/form/offer-form.component';
+import { OfferService } from './service/offer.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { AdministrationComponent } from './component/administration/administrati
     FormErrorComponent,
     ForbiddenComponent,
     ProfileComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    OfferDetailsComponent,
+    OfferFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -47,6 +52,7 @@ import { AdministrationComponent } from './component/administration/administrati
     IdentityService,
     UserService,
     AdministrationService,
+    OfferService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
