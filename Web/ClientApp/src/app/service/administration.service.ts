@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { User } from '../model/user.model';
 import { BehaviorSubject } from 'rxjs';
+import { Config } from '../config';
 
 @Injectable()
 export class AdministrationService {
@@ -51,5 +52,11 @@ export class AdministrationService {
       users.push(new UserBuilder().addApplicationData(user).build());
     });
     return users;
+  }
+
+  public setUserToAdmin(user: string) {
+    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).subscribe(result => {
+      console.log(result);
+    });
   }
 }
