@@ -30,10 +30,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Offer>()
                 .Property(o => o.Tags)
                 .HasConversion(p => string.Join(',', p),
-                    p => p.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                .Metadata.SetValueComparer(new ValueComparer<IList<string>>((c1, c2) => c1.SequenceEqual(c2),
-                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => (IList<string>)c.ToHashSet()));
+                    p => p.Split(',', StringSplitOptions.RemoveEmptyEntries));
             modelBuilder.Entity<Offer>()
                 .HasOne(o => o.CreatedBy)
                 .WithMany(u => u.Offers)
