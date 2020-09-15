@@ -5,7 +5,7 @@ import { IdentityService } from '../../service/identity.service';
 import { UserService } from '../../service/user.service';
 import { User } from '../../model/user.model';
 import { UserBuilder } from '../../model/builder/user.builder';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faOutdent, faEnvelope, faEdit, faSave, faUndo, faUserMinus, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Config } from '../../config';
 import { MatSnackBar } from '@angular/material';
@@ -33,6 +33,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   private selectedImage = '';
   private canUpdate = true;
   private loading = true;
+  private submitted = false;
+  private errors: string[];
 
   constructor(private route: ActivatedRoute,
     public identityService: IdentityService,
@@ -77,15 +79,18 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   }
 
   public editClick() {
+    this.submitted = false;
     this.form.enable();
   }
 
   public undoClick() {
+    this.submitted = false;
     this.form.patchValue(this.user$.value);
     this.form.disable();
   }
 
   public formSubmit() {
+    this.submitted = true;
     if (this.canUpdate && this.form.valid && this.identityService.isLoggedIn()) {
       this.loading = true;
       this.userService.editCurrentUser(this.getDataFromForm()).subscribe(user => {
@@ -93,6 +98,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this.form.disable();
         this.loading = false;
       });
+    } else if (!this.form.valid) {
+      this.setErrors();
     }
   }
 
@@ -153,11 +160,21 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   private createForm() {
     return this.formBuilder.group({
-      description: [''],
+      description: ['', [Validators.maxLength(500)]],
       userName: [''],
       telephoneNumber: [''],
-      email: ['']
+      email: ['', [Validators.email]]
     });
+  }
+
+  private setErrors() {
+    this.errors = [];
+    if (this.form.controls.description.errors && this.form.controls.description.errors.maxlength) {
+      this.errors.push('Maksymlana długość opisu to 500 znaków');
+    }
+    if (this.form.controls.email.errors.email) {
+      this.errors.push('E-mail jest podany w złym formacie');
+    }
   }
 
   private getDataFromForm() {

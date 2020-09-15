@@ -23,6 +23,7 @@ import { AdministrationComponent } from './component/administration/administrati
 import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
 import { OfferFormComponent } from './component/offer/form/offer-form.component';
 import { OfferService } from './service/offer.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { OfferService } from './service/offer.service';
     ReactiveFormsModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatTooltipModule
   ],
   providers: [
     IdentityService,
