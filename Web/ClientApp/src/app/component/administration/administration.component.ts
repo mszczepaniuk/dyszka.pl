@@ -81,10 +81,12 @@ export class AdministrationComponent extends BaseComponent {
 
   deleteAdmin(admin) {
     console.log(admin.userName);
+    this.administrationService.deleteAdminRole(admin.userName);
   }
 
   addAdminRole() {
     this.administrationService.setUserToAdmin(this.addingAdminForm.controls['adminName'].value);
+    console.log(this.addingAdminForm.controls['adminName'].value)
   }
 
 }

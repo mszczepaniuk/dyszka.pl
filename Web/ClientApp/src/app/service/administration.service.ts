@@ -55,8 +55,11 @@ export class AdministrationService {
   }
 
   public setUserToAdmin(user: string) {
-    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).subscribe(result => {
-      console.log(result);
-    });
+    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []);
   }
+  
+  public deleteAdminRole(user: string) {
+    this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []);
+  }
+ 
 }
