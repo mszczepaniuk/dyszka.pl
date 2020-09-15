@@ -13,7 +13,7 @@ export class LoginComponent {
     password: new FormControl('', Validators.required)
   });
   private submitted = false;
-  private errors: string[] = [];
+  private errors: string[];
 
   constructor(public identityService: IdentityService) { }
 
@@ -27,6 +27,7 @@ export class LoginComponent {
   }
 
   private setErrors() {
+    this.errors = [];
     if (this.loginForm.controls.username.errors.required) {
       this.errors.push('Nazwa użytkownika nie może być pusta');
     }
