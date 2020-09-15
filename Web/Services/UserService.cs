@@ -52,7 +52,6 @@ namespace Web.Services
             return await response.Content.ReadAsStringAsync();
         }
 
-        // TODO: Logi
         public async Task<IList<ApplicationUser>> GetAllInRole(string roleName)
         {
             var response = await SendRequestWithToken(HttpMethod.Get, new Uri($"{identityUrl}role/{roleName}"));
@@ -67,30 +66,45 @@ namespace Web.Services
 
         public async Task<bool> AddToRole(string username, string roleName)
         {
-            await auditLogService.AddAuditLogAsync($"Dodano do roli: {roleName}", GetByUserName(username).Id);
-            return (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}claim/{username}/{roleName}")))
-                .IsSuccessStatusCode;
+            var result = (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}claim/{username}/{roleName}"))).IsSuccessStatusCode;
+            if (result)
+            {
+                await auditLogService.AddAuditLogAsync($"Dodano do roli: {roleName}", GetByUserName(username).Id);
+            }
+            return result;
         }
 
         public async Task<bool> RemoveFromRole(string username, string roleName)
         {
-            await auditLogService.AddAuditLogAsync($"Usunięto z roli: {roleName}", GetByUserName(username).Id);
-            return (await SendRequestWithToken(HttpMethod.Delete, new Uri($"{identityUrl}claim/{username}/{roleName}")))
+            var result = (await SendRequestWithToken(HttpMethod.Delete, new Uri($"{identityUrl}claim/{username}/{roleName}")))
                 .IsSuccessStatusCode;
+            if (result)
+            {
+                await auditLogService.AddAuditLogAsync($"Usunięto z roli: {roleName}", GetByUserName(username).Id);
+            }
+            return result;
         }
 
         public async Task<bool> BanUser(string username)
         {
-            await auditLogService.AddAuditLogAsync("Zbanowano użytkownika", GetByUserName(username).Id);
-            return (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}ban/{username}")))
+            var result = (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}ban/{username}")))
                 .IsSuccessStatusCode;
+            if (result)
+            {
+                await auditLogService.AddAuditLogAsync("Zbanowano użytkownika", GetByUserName(username).Id);
+            }
+            return result;
         }
 
         public async Task<bool> UnbanUser(string username)
         {
-            await auditLogService.AddAuditLogAsync("Odbanowano użytkownika", GetByUserName(username).Id);
-            return (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}unban/{username}")))
+            var result = (await SendRequestWithToken(HttpMethod.Post, new Uri($"{identityUrl}unban/{username}")))
                 .IsSuccessStatusCode;
+            if (result)
+            {
+                await auditLogService.AddAuditLogAsync("Odbanowano użytkownika", GetByUserName(username).Id);
+            }
+            return result;
         }
 
         public override async Task<bool> RemoveAsync(Guid id)

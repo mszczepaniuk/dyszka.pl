@@ -77,6 +77,13 @@ namespace IdentityServer
                         policy.RequireAuthenticatedUser();
                         policy.Requirements.Add(new ProfileOwnerOrAdminRequirement());
                     });
+                options.AddPolicy("Moderator+",
+                    policy =>
+                    {
+                        policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim(ClaimTypes.Role, "moderator", "admin");
+                    });
             });
             services.AddCors(options => options.AddPolicy("WebPolicy", builder =>
             {

@@ -53,6 +53,7 @@ namespace Web
                 options.AddPolicy(AuthConstants.ModeratorOrAdminPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.AdminRoleName, AuthConstants.ModeratorRoleName));
                 options.AddPolicy(AuthConstants.OnlyModeratorPolicy, policy => policy.RequireClaim(ClaimTypes.Role, AuthConstants.ModeratorRoleName));
                 options.AddPolicy(AuthConstants.ProfileOwnerPolicy, policy => policy.AddRequirements(new ProfileOwnerRequirement()));
+                options.AddPolicy(AuthConstants.UserRemovalPolicy, policy => policy.AddRequirements(new UserRemovalRequirement()));
             });
             services.AddAutoMapper(typeof(Startup));
 
@@ -61,6 +62,7 @@ namespace Web
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationHandler, ProfileOwnerAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, UserRemovalAuthorizationHandler>();
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IExtendedBaseService<,>), typeof(BaseService<,>));

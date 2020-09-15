@@ -100,7 +100,7 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("ban/{username}")]
-        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        [Authorize("Moderator+")]
         public async Task<IActionResult> BanUser(string username)
         {
             var user = await userManager.FindByNameAsync(username);
@@ -114,7 +114,7 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("unban/{username}")]
-        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+        [Authorize("Moderator+")]
         public async Task<IActionResult> UnbanUser(string username)
         {
             var user = await userManager.FindByNameAsync(username);

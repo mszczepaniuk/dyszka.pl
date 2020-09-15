@@ -133,8 +133,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        // TODO: Implement
-        //[Authorize(AuthConstants.UserRemovalPolicy)]
+        [Authorize(AuthConstants.UserRemovalPolicy)]
         public async Task<IActionResult> RemoveUser(Guid id)
         {
             return await userService.RemoveAsync(id)
