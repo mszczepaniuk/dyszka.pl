@@ -7,6 +7,8 @@ import { ForbiddenComponent } from './component/forbidden/forbidden.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { AuthGuard } from './authorization/auth-guard';
 import { AdministrationComponent } from './component/administration/administration.component';
+import { OfferFormComponent } from './component/offer/form/offer-form.component';
+import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
 
 const routes: Routes = [
   {
@@ -29,7 +31,23 @@ const routes: Routes = [
   },
   {
     path: 'administration',
-    component: AdministrationComponent
+    component: AdministrationComponent,
+    canActivate: [AuthGuard],
+    data: { role: 'admin' }
+  },
+  {
+    path: 'offer',
+    children: [
+      {
+        path: 'form',
+        component: OfferFormComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: ':id',
+        component: OfferDetailsComponent
+      }
+    ],
   },
   {
     path: 'profile',

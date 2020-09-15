@@ -44,13 +44,17 @@
     <None Remove="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
     <None Remove="ClientApp\src\app\component\login\login.component.ts" />
+    <None Remove="ClientApp\src\app\component\offer\details\offer-details.component.ts" />
+    <None Remove="ClientApp\src\app\component\offer\form\offer-form.component.ts" />
     <None Remove="ClientApp\src\app\component\profile\profile.component.ts" />
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
+    <None Remove="ClientApp\src\app\model\offer.model.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
     <None Remove="ClientApp\src\app\service\administration.service.ts" />
     <None Remove="ClientApp\src\app\service\file.service.ts" />
     <None Remove="ClientApp\src\app\service\identity.service.ts" />
+    <None Remove="ClientApp\src\app\service\offer.service.ts" />
     <None Remove="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 
@@ -67,12 +71,16 @@
     <TypeScriptCompile Include="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\offer\details\offer-details.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\offer\form\offer-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\profile\profile.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\administration.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\offer.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 

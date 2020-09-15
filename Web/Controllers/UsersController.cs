@@ -14,10 +14,8 @@ using Web.Services.Interfaces;
 
 namespace Web.Controllers
 {
-    //TODO: Authorization
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
@@ -53,6 +51,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("{id}")]
+        [Authorize(AuthConstants.ProfileOwnerPolicy)]
         public async Task<IActionResult> EditUser(Guid id, ApplicationUserBm userBm)
         {
             try
@@ -66,18 +65,21 @@ namespace Web.Controllers
         }
 
         [HttpGet("admins/all")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> GetAllAdmins()
         {
             return Ok(mapper.Map<List<ApplicationUserVm>>(await userService.GetAllInRole(AuthConstants.AdminRoleName)));
         }
 
         [HttpGet("moderators/all")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> GetAllModerators()
         {
             return Ok(mapper.Map<List<ApplicationUserVm>>(await userService.GetAllInRole(AuthConstants.ModeratorRoleName)));
         }
 
         [HttpPut("add-admin/{username}")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> AddToAdmins(string username)
         {
             return await userService.AddToRole(username, AuthConstants.AdminRoleName)
@@ -86,6 +88,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("add-moderator/{username}")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> AddToModerators(string username)
         {
             return await userService.AddToRole(username, AuthConstants.ModeratorRoleName)
@@ -94,6 +97,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("remove-admin/{username}")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> RemoveFromAdmins(string username)
         {
             return await userService.RemoveFromRole(username, AuthConstants.AdminRoleName)
@@ -102,6 +106,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("remove-moderator/{username}")]
+        [Authorize(AuthConstants.OnlyAdminPolicy)]
         public async Task<IActionResult> RemoveFromToModerators(string username)
         {
             return await userService.RemoveFromRole(username, AuthConstants.ModeratorRoleName)
@@ -110,6 +115,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("ban/{username}")]
+        [Authorize(AuthConstants.ModeratorOrAdminPolicy)]
         public async Task<IActionResult> BanUser(string username)
         {
             return await userService.BanUser(username)
@@ -118,6 +124,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("unban/{username}")]
+        [Authorize(AuthConstants.ModeratorOrAdminPolicy)]
         public async Task<IActionResult> UnbanUser(string username)
         {
             return await userService.UnbanUser(username)
@@ -126,6 +133,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthConstants.UserRemovalPolicy)]
         public async Task<IActionResult> RemoveUser(Guid id)
         {
             return await userService.RemoveAsync(id)
