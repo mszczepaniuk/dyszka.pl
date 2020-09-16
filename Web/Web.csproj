@@ -41,6 +41,7 @@
     <None Remove="ClientApp\src\app\authorization\auth-guard.ts" />
     <None Remove="ClientApp\src\app\component\administration\administration.component.ts" />
     <None Remove="ClientApp\src\app\component\BaseComponent.ts" />
+    <None Remove="ClientApp\src\app\component\dialog\dialog.component.ts" />
     <None Remove="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
     <None Remove="ClientApp\src\app\component\login\login.component.ts" />
@@ -48,6 +49,7 @@
     <None Remove="ClientApp\src\app\component\offer\form\offer-form.component.ts" />
     <None Remove="ClientApp\src\app\component\profile\profile.component.ts" />
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
+    <None Remove="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
     <None Remove="ClientApp\src\app\model\offer.model.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
@@ -68,6 +70,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\authorization\auth-guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\administration\administration.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\BaseComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\dialog\dialog.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\login\login.component.ts" />
@@ -75,6 +78,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\component\offer\form\offer-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\profile\profile.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
@@ -86,6 +90,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\assets\img\" />
+    <Folder Include="ClientApp\src\assets\scss\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
