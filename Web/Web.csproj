@@ -52,6 +52,7 @@
     <None Remove="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
     <None Remove="ClientApp\src\app\model\offer.model.ts" />
+    <None Remove="ClientApp\src\app\model\paged-result.model.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
     <None Remove="ClientApp\src\app\service\administration.service.ts" />
     <None Remove="ClientApp\src\app\service\file.service.ts" />
@@ -81,6 +82,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\paged-result.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\administration.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />

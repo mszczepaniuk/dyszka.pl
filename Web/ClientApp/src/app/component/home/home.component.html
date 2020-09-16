@@ -1,3 +1,35 @@
-<div class="col-md-4">
-  <a *ngIf="this.identityService.isLoggedIn() && !this.identityService.isBanned()" class="btn btn-primary" [routerLink]="['/offer/form']">Dodaj ofertę</a>
+<div class="row">
+  <div class="col-md-2">
+    <a *ngIf="this.identityService.isLoggedIn() && !this.identityService.isBanned()" class="btn btn-primary" [routerLink]="['/offer/form']">Dodaj ofertę</a>
+  </div>
+  <div class="col-md-8 text-center">
+    <h2 *ngIf="loading">
+      Ładowanie...
+    </h2>
+    <div *ngIf="!loading" class="container">
+      <a *ngFor="let offer of offers$.value" [routerLink]="['/offer', offer.id]">
+        <div class="card bg-dark text-white">
+          <img class="card-img" [src]="offer.image" alt="Card image">
+          <div class="card-img-overlay">
+            <h5 class="card-title"> {{ offer.title }}</h5>
+            <p class="card-text">{{ offer.shortDescription }}</p>
+          </div>
+        </div>
+      </a>
+      <div class="row">
+        <div class="col-6 text-left previous">
+          <a *ngIf="currentPage > 1" class="btn btn-primary">
+            <fa-icon [icon]="faBackward" class="white-icon" (click)="getPage(currentPage - 1)"></fa-icon>
+          </a>
+        </div>
+        <div class="col-6 text-right next">
+          <a *ngIf="currentPage < pagesCount" class="btn btn-primary">
+            <fa-icon [icon]="faForward" class="white-icon" (click)="getPage(currentPage + 1)"></fa-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+

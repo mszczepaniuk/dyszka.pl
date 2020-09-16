@@ -11,8 +11,8 @@ namespace Web.Services.Interfaces
     {
         IQueryable<T> GetAll();
         T GetById(Guid id);
-        Task AddAsync(T item);
-        Task AddRangeAsync(IEnumerable<T> items);
+        Task<Guid> AddAsync(T item);
+        Task<IEnumerable<Guid>> AddRangeAsync(IEnumerable<T> items);
         Task<T> UpdateAsync(Guid id, T item);
         Task<bool> RemoveAsync(Guid id);
     }

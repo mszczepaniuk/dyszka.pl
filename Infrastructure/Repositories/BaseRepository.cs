@@ -18,16 +18,18 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public virtual async Task AddAsync(T item)
+        public virtual async Task<Guid> AddAsync(T item)
         {
             await dbContext.Set<T>().AddAsync(item);
             await dbContext.SaveChangesAsync();
+            return item.Id;
         }
 
-        public virtual async Task AddRangeAsync(IEnumerable<T> items)
+        public virtual async Task<IEnumerable<Guid>> AddRangeAsync(IEnumerable<T> items)
         {
             await dbContext.Set<T>().AddRangeAsync(items);
             await dbContext.SaveChangesAsync();
+            return items.Select(item => item.Id);
         }
 
         public virtual IQueryable<T> GetAll()
