@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ApplicationCore.BindingModels;
@@ -8,6 +9,7 @@ using ApplicationCore.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.Authorization;
 using Web.Services.Interfaces;
 
@@ -19,12 +21,15 @@ namespace Web.Controllers
     {
         private readonly IOfferService offerService;
         private readonly IMapper mapper;
+        private readonly IAuthorizationService authorizationService;
 
         public OffersController(IOfferService offerService,
-            IMapper mapper)
+            IMapper mapper,
+            IAuthorizationService authorizationService)
         {
             this.offerService = offerService;
             this.mapper = mapper;
+            this.authorizationService = authorizationService;
         }
 
         [HttpGet("{id}")]
@@ -33,7 +38,7 @@ namespace Web.Controllers
             return Ok(mapper.Map<OfferVm>(offerService.GetById(id)));
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IActionResult GetPagedAndFiltered([FromQuery]int? page, [FromQuery]string[] tags, [FromQuery]string username)
         {
             if (!page.HasValue)
@@ -48,6 +53,34 @@ namespace Web.Controllers
         public async Task<IActionResult> AddOffer(OfferBm offer)
         {
             return Ok(await offerService.AddAsync(mapper.Map<Offer>(offer)));
+        }
+
+        [HttpPut("{id}/hide")]
+        [Authorize]
+        public async Task<IActionResult> HideOffer(Guid id)
+        {
+            if (!(await authorizationService.AuthorizeAsync(HttpContext.User, offerService.GetAll()
+                    .Where(offer => offer.Id == id).AsNoTracking().Include(offer => offer.CreatedBy).FirstOrDefault(),
+                AuthConstants.IsOwnerPolicy)).Succeeded)
+            {
+                return StatusCode((int)HttpStatusCode.Forbidden);
+            }
+            await offerService.HideOffer(id);
+            return Ok();
+        }
+
+        [HttpPut("{id}/show")]
+        [Authorize]
+        public async Task<IActionResult> ShowOffer(Guid id)
+        {
+            if (!(await authorizationService.AuthorizeAsync(HttpContext.User, offerService.GetAll()
+                    .Where(offer => offer.Id == id).AsNoTracking().Include(offer => offer.CreatedBy).FirstOrDefault(),
+                AuthConstants.IsOwnerPolicy)).Succeeded)
+            {
+                return StatusCode((int)HttpStatusCode.Forbidden);
+            }
+            await offerService.ShowOffer(id);
+            return Ok();
         }
     }
 }

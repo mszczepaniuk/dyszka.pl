@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-2">
-    <a *ngIf="this.identityService.isLoggedIn() && !this.identityService.isBanned()" class="btn btn-primary" [routerLink]="['/offer/form']">Dodaj ofertę</a>
+    <a *ngIf="this.identityService.isLoggedIn() && !this.identityService.isBanned()" class="btn btn-primary add-button" [routerLink]="['/offer/form']">Dodaj ofertę</a>
   </div>
   <div class="col-md-8 text-center">
     <h2 *ngIf="loading">

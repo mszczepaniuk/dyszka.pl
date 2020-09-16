@@ -90,7 +90,7 @@ namespace Infrastructure.Data
                 }
                 if (entity is IOwnable e2)
                 {
-                    base.Entry(e2).Property(x => x.CreatedBy).IsModified = false;
+                    base.Entry(e2).Reference(x => x.CreatedBy).IsModified = false;
                 }
                 if (entity is IUpdatedBy e3)
                 {
