@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../../BaseComponent';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { OfferService } from '../../../service/offer.service';
 import { DialogComponent } from '../../dialog/dialog.component';

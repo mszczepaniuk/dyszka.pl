@@ -30,12 +30,12 @@ namespace Web.Services
             return repository.GetById(id);
         }
 
-        public virtual Task AddAsync(TItem item)
+        public virtual Task<Guid> AddAsync(TItem item)
         {
             return repository.AddAsync(item);
         }
 
-        public virtual Task AddRangeAsync(IEnumerable<TItem> items)
+        public virtual Task<IEnumerable<Guid>> AddRangeAsync(IEnumerable<TItem> items)
         {
             return repository.AddRangeAsync(items);
         }

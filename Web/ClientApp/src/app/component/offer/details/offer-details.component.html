@@ -1,0 +1,31 @@
+<div *ngIf="loading">
+  <h3>Ładowanie...</h3>
+</div>
+<div *ngIf="!loading" class="container">
+  <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-8" style="text-align: center">
+        <img id="image" class="offer-img" [src]="offer.image" />
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="title">Tytuł</label>
+          <input id="title" class="form-control" type="text" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="tags">Tagi</label>
+          <input id="tags" class="form-control" type="text" formControlName="tags">
+        </div>
+        <div class="form-group">
+          <label for="price">Cena</label>
+          <input id="price" type="number" min="1" step="any" class="form-control" formControlName="price">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Opis</label>
+      <textarea id="description" rows="6" class="form-control" type="text" formControlName="description"></textarea>
+    </div>
+  </form>
+</div>

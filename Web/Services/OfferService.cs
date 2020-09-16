@@ -18,6 +18,12 @@ namespace Web.Services
             
         }
 
+        public override Offer GetById(Guid id)
+        {
+            return repository.GetAll().Where(offer => offer.Id == id).Include(offer => offer.CreatedBy)
+                .FirstOrDefault();
+        }
+
         public PagedResult<OfferVm> GetPagedAndFiltered(int page, IEnumerable<string> tags, string username)
         {
             var query = repository.GetAll().Include(offer => offer.CreatedBy).AsQueryable();

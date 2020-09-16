@@ -1,6 +1,6 @@
 <div class="container">
   <div *ngIf="loading">
-    <h3>Ładowanie</h3>
+    <h3>Ładowanie...</h3>
   </div>
   <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
   <form *ngIf="!loading" [formGroup]="form">
