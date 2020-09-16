@@ -8,8 +8,10 @@ import { UserBuilder } from '../../model/builder/user.builder';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faOutdent, faEnvelope, faEdit, faSave, faUndo, faUserMinus, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Config } from '../../config';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { DialogComponent } from '../dialog/dialog.component';
+import { DialogResult } from '../../enum/dialog-result.enum';
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +43,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog) {
     super();
   }
 
@@ -81,48 +84,85 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   public editClick() {
     this.submitted = false;
     this.form.enable();
+    this.form.controls.username.disable();
   }
 
   public undoClick() {
     this.submitted = false;
     this.form.patchValue(this.user$.value);
-    this.form.disable();
   }
 
   public formSubmit() {
-    this.submitted = true;
-    if (this.canUpdate && this.form.valid && this.identityService.isLoggedIn()) {
-      this.loading = true;
-      this.userService.editCurrentUser(this.getDataFromForm()).subscribe(user => {
-        this.user$.next(new UserBuilder(this.user$.value).addApplicationData(user).build());
-        this.form.disable();
-        this.loading = false;
-      });
-    } else if (!this.form.valid) {
-      this.setErrors();
-    }
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        message: 'Czy na pewno dokonać edycji?',
+      }
+    }).afterClosed().subscribe((result: DialogResult) => {
+      if (result === DialogResult.Yes) {
+        this.submitted = true;
+        if (this.canUpdate && this.form.valid && this.identityService.isLoggedIn()) {
+          this.loading = true;
+          this.userService.editCurrentUser(this.getDataFromForm()).subscribe(user => {
+            this.user$.next(new UserBuilder(this.user$.value).addApplicationData(user).build());
+            this.form.disable();
+            this.loading = false;
+          });
+        } else if (!this.form.valid) {
+          this.setErrors();
+        }
+      }
+    });
   }
 
   public banUser() {
-    this.userService.banUser(this.username)
-      .subscribe(() => {
-        const user = this.user$.value;
-        user.isBanned = true;
-        this.user$.next(user);
-      });
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        message: 'Czy na pewno chcesz zbanować tego użytkownika?',
+      }
+    }).afterClosed().subscribe((result: DialogResult) => {
+      if (result === DialogResult.Yes) {
+        this.userService.banUser(this.username)
+          .subscribe(() => {
+            const user = this.user$.value;
+            user.isBanned = true;
+            this.user$.next(user);
+          });
+      }
+    });
   }
 
   public unbanUser() {
-    this.userService.unbanUser(this.username)
-      .subscribe(() => {
-        const user = this.user$.value;
-        user.isBanned = false;
-        this.user$.next(user);
-      });
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        message: 'Czy na pewno chcesz odbanować tego użytkownika?',
+      }
+    }).afterClosed().subscribe((result: DialogResult) => {
+      if (result === DialogResult.Yes) {
+        this.userService.unbanUser(this.username)
+          .subscribe(() => {
+            const user = this.user$.value;
+            user.isBanned = false;
+            this.user$.next(user);
+          });
+      }
+    });
   }
 
   public deleteUser() {
-    this.userService.removeUser(this.user$.value.applicationId).subscribe();
+    this.dialog.open(DialogComponent, {
+      width: '450px',
+      data: {
+        message: 'Czy na pewno chcesz usunąć konto?',
+      }
+    }).afterClosed().subscribe((result: DialogResult) => {
+      if (result === DialogResult.Yes) {
+        this.userService.removeUser(this.user$.value.applicationId).subscribe();
+      }
+    });
+    
   }
 
   public isProfileOwner() {
@@ -161,7 +201,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   private createForm() {
     return this.formBuilder.group({
       description: ['', [Validators.maxLength(500)]],
-      userName: [''],
+      userName: [{value:'', disabled: true}],
       telephoneNumber: [''],
       email: ['', [Validators.email]]
     });
@@ -181,7 +221,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     return {
       description: this.form.controls.description.value,
       userName: this.form.controls.userName.value,
-      telephoneNumber: this.form.controls.telephoneNumber.value,
+      telephoneNumber: this.form.controls.telephoneNumber.value.toString(),
       email: this.form.controls.email.value,
       profileImage: this.selectedImage || this.user$.value.profileImage
     }

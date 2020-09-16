@@ -24,6 +24,8 @@ import { OfferDetailsComponent } from './component/offer/details/offer-details.c
 import { OfferFormComponent } from './component/offer/form/offer-form.component';
 import { OfferService } from './service/offer.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './component/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ProfileComponent,
     AdministrationComponent,
     OfferDetailsComponent,
-    OfferFormComponent
+    OfferFormComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -48,7 +51,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   providers: [
     IdentityService,
@@ -62,6 +66,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     },
     AuthGuard
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    DialogComponent
+  ],
 })
 export class AppModule { }
