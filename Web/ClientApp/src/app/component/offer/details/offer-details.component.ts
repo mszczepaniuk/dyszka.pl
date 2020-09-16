@@ -37,6 +37,7 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
 
   private createForm() {
     return this.formBuilder.group({
+      authorUserName: [''],
       title: [''],
       price: [''],
       tags: [''],

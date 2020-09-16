@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IdentityService } from '../../service/identity.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Helpers } from '../../common/helpers';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class NavMenuComponent implements OnInit {
   faSearch = faSearch;
+  faHome = faHome;
   form: FormGroup;
   isExpanded = false;
 

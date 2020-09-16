@@ -23,16 +23,19 @@ namespace Web.Services
         public ApplicationUser CurrentUser { get; set; }
         private readonly HttpClient client;
         private readonly IAuditLogService auditLogService;
+        private readonly IBaseRepository<Offer> offerRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
         public UserService(IBaseRepository<ApplicationUser> repository,
             HttpClient client,
             IConfiguration config,
-            IAuditLogService auditLogService) : base(repository)
+            IAuditLogService auditLogService,
+            IBaseRepository<Offer> offerRepository) : base(repository)
         {
             this.client = client;
             this.auditLogService = auditLogService;
+            this.offerRepository = offerRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -91,6 +94,16 @@ namespace Web.Services
                 .IsSuccessStatusCode;
             if (result)
             {
+                var offers = GetAll()
+                    .Where(u => u.UserName == username)
+                    .Include(u => u.Offers)
+                    .SelectMany(u => u.Offers)
+                    .ToList();
+                foreach (var offer in offers)
+                {
+                    offer.IsBlocked = true;
+                    await offerRepository.UpdateAsync(offer.Id, offer);
+                }
                 await auditLogService.AddAuditLogAsync("Zbanowano użytkownika", GetByUserName(username).Id);
             }
             return result;
@@ -102,6 +115,16 @@ namespace Web.Services
                 .IsSuccessStatusCode;
             if (result)
             {
+                var offers = GetAll()
+                    .Where(u => u.UserName == username)
+                    .Include(u => u.Offers)
+                    .SelectMany(u => u.Offers)
+                    .ToList();
+                foreach (var offer in offers)
+                {
+                    offer.IsBlocked = false;
+                    await offerRepository.UpdateAsync(offer.Id, offer);
+                }
                 await auditLogService.AddAuditLogAsync("Odbanowano użytkownika", GetByUserName(username).Id);
             }
             return result;

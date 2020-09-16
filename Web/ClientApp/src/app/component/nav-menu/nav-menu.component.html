@@ -3,6 +3,14 @@
     <div class="container">
       <form [formGroup]="form">
         <div class="input-group">
+          <div class="input-group-apend">
+            <a class="btn btn-primary home-buton" mat-raised-buttonjes
+               #tooltip="matTooltip"
+               matTooltip="Strona główna"
+               [routerLink]="['/']">
+              <fa-icon [icon]="faHome" class="white-icon"></fa-icon>
+            </a>
+          </div>
           <input id="query" class="form-control" type="text" formControlName="query">
           <div class="input-group-apend">
             <a class="btn btn-primary" type="submit" mat-raised-buttonjes

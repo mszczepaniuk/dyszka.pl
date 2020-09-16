@@ -30,15 +30,15 @@ namespace Web.Services
 
         public PagedResult<OfferVm> GetPagedAndFiltered(int page, IEnumerable<string> tags, string username)
         {
-            var query = repository.GetAll().Include(offer => offer.CreatedBy).AsQueryable();
-
+            var query = repository.GetAll().OrderByDescending(offer => offer.CreatedDate).Include(offer => offer.CreatedBy).AsQueryable();
+            
+            if (username == null || userService.CurrentUser == null || username != userService.CurrentUser.UserName)
+            {
+                query = query.Where(offer => !offer.IsBlocked && !offer.IsHidden);
+            }
             if (username != null)
             {
                 query = query.Where(offer => offer.CreatedBy.UserName == username);
-                if (userService.CurrentUser != null && username != userService.CurrentUser.UserName)
-                {
-                    query = query.Where(offer => !offer.IsBlocked | !offer.IsHidden);
-                }
             }
             if (tags != null && tags.Any())
             {

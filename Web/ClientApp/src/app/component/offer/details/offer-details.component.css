@@ -2,3 +2,7 @@
   max-width: 100%;
   top: 50%;
 }
+
+.username-link:hover {
+  cursor: pointer;
+}

@@ -10,6 +10,12 @@
       </div>
       <div class="col-md-4">
         <div class="form-group">
+          <label for="authorUserName">Twórca</label>
+          <a [routerLink]="['/profile', offer.authorUserName]">
+            <input id="authorUserName" class="form-control username-link" type="text" formControlName="authorUserName">
+          </a>
+        </div>
+        <div class="form-group">
           <label for="title">Tytuł</label>
           <input id="title" class="form-control" type="text" formControlName="title">
         </div>
