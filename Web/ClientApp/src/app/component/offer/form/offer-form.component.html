@@ -1,4 +1,5 @@
 <div class="container">
+  <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-8" style="text-align: center">

@@ -162,7 +162,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this.userService.removeUser(this.user$.value.applicationId).subscribe();
       }
     });
-    
   }
 
   public isProfileOwner() {
