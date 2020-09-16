@@ -65,7 +65,7 @@ namespace Web.Services
         where TRepo : IBaseRepository<TItem>
     {
         protected readonly IMapper mapper;
-        protected virtual int ResultsPerPage => 10;
+        protected virtual int ResultsPerPage => 3;
 
         public ExtendedBaseService(TRepo repository, IMapper mapper) : base(repository)
         {

@@ -2,9 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { AdministrationService } from '../../service/administration.service';
 import { BaseComponent } from '../BaseComponent';
 import { FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-
-
-
+import { MatDialog, MatDialogTitle } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
+import { DialogResult } from '../../enum/dialog-result.enum';
+import { BehaviorSubject } from 'rxjs';
+import { AuditLog } from '../../model/audit-log.model';
+import { PagedResult } from '../../model/paged-result.model';
 
 @Component({
   selector: 'app-forbidden',
@@ -21,59 +24,43 @@ export class AdministrationComponent extends BaseComponent {
     modName: new FormControl('', [Validators.required])
   })
 
+  public logsArray$ = new BehaviorSubject<AuditLog[]>([]);
   adminsArray = [];
   modsArray = [];
   adminsShowBool: boolean;
   modsShowBool: boolean;
   logsShowBool: boolean;
   adminName: string;
+  currentLogsPage: number;
+  maxLogPage: number;
+ 
   //addingAdminForm = new FormGroup;
 
   constructor(
     private administrationService: AdministrationService,
-    private formsModule: FormsModule) {
+    private formsModule: FormsModule,
+    private dialog: MatDialog) {
     super();
     //// TESTOWE LOGI
     this.safeSub(
       this.administrationService.admins$.subscribe(admins => {
-        console.log(admins);
+        this.adminsArray = admins;
       }),
       this.administrationService.moderators$.subscribe(mods => {
-        console.log(mods);
+        this.modsArray = mods;
       }),
-      this.administrationService.getAuditLogs(1).subscribe(logs => console.log(logs)),
-      this.administrationService.getAuditLogs(2).subscribe(logs => console.log(logs)),
-      this.administrationService.getAuditLogs(3).subscribe(logs => console.log(logs)),
-      this.administrationService.getAuditLogs(4).subscribe(logs => console.log(logs)),
-
     );
-
-    this.getAdmins();
+    this.getLogsPage(1);
     this.adminsShowBool = true;
   }
 
-  getAdmins() {
-    this.administrationService.admins$.subscribe(admins => {
-      this.adminsArray = admins;
-    });
-  }
-
-
-  getMods() {
-    this.administrationService.moderators$.subscribe(mods => {
-      this.modsArray = mods;
-    });
-  }
-
   showAdmins() {
-    this.getAdmins();
     this.modsShowBool = false;
     this.logsShowBool = false;
     this.adminsShowBool = true;
   }
 
   showMods() {
-    this.getMods();
     this.logsShowBool = false;
     this.adminsShowBool = false;
     this.modsShowBool = true;
@@ -86,24 +73,73 @@ export class AdministrationComponent extends BaseComponent {
   }
 
   deleteAdmin(admin) {
-    console.log(admin.userName);
-    this.administrationService.deleteAdminRole(admin.userName);
-    setTimeout(() => this.administrationService.refreshAdmins(), 50);
+    this.dialog.open(DialogComponent, {
+      width: "450px",
+      data: {
+        message: "Czy na pewno usunąć rolę temu użytkownikowi?",
+        dialogTitle: "Usuwanie roli administratora"
+      }
+    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+      if (dialogResult === DialogResult.Yes) {
+        this.administrationService.deleteAdminRole(admin.userName);
+      }
+    })
   }
 
   addAdminRole() {
-    this.administrationService.setUserToAdmin(this.addingAdminForm.controls['adminName'].value);
-    setTimeout(() => this.administrationService.refreshAdmins(), 50);
+    this.dialog.open(DialogComponent, {
+      width: "450px",
+      data: {
+        message: "Czy na pewno nadać rolę temu użytkownikowi?",
+        dialogTitle: "Dodanie roli administratora"
+      }
+    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+      if (dialogResult === DialogResult.Yes) {
+        this.administrationService.setUserToAdmin(this.addingAdminForm.controls['adminName'].value);
+      } 
+    })
   }
 
   deleteMod(mod) {
-    this.administrationService.deleteModRole(mod.userName);
-    setTimeout(() => this.administrationService.refreshModerators(), 50);
+    this.dialog.open(DialogComponent, {
+      width: "450px",
+      data: {
+        message: "Czy na pewno usunąć rolę temu użytkownikowi?",
+        dialogTitle: "Usuwanie roli moderatora"
+      }
+    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+      if (dialogResult === DialogResult.Yes) {
+        this.administrationService.deleteModRole(mod.userName);
+      }
+    })
   }
 
   addModRole() {
-    this.administrationService.setUserToMod(this.addingModForm.controls['modName'].value);
-    setTimeout(() => this.administrationService.refreshModerators(), 50);
+    this.dialog.open(DialogComponent, {
+      width: "450xpx",
+      data: {
+        message: "Czy na pewno nadać rolę temu użytkownikowi",
+        dialogTitle: "Dodanie roli moderatora"
+      }
+    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+      if (dialogResult === DialogResult.Yes) {
+        this.administrationService.setUserToMod(this.addingModForm.controls['modName'].value);
+      }
+    })
+  }
+
+  getLogsPage(page: number) {
+    this.administrationService.getAuditLogs(page).subscribe((logs: PagedResult<AuditLog>) => {
+      let logsTempArray = [];
+      logs.items.forEach(log => {
+        logsTempArray.push(new AuditLog(log));
+      });
+      this.logsArray$.next(logsTempArray);
+      console.log(logsTempArray);
+      console.log(this.logsArray$.value);
+      this.currentLogsPage = logs.currentPage;
+      this.maxLogPage = logs.pagesCount
+    })
   }
 
 }

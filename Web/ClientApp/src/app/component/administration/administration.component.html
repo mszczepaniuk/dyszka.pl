@@ -48,12 +48,25 @@
         </li>
       </ul>
       <ul class="list-group" *ngIf="logsShowBool">
-        <li class="list-group-item" *ngFor="let admin of adminsArray">
-          {{admin.userName}}
-          <button type="button" (click)="deleteAdmin(admin)" class="btn-delete btn-danger btn-md">Usuń</button>
+        <li class="list-group-item" *ngFor="let log of logsArray$.value">
+          <div id="logBlock">
+            <div id="log">{{log.message}}</div>
+            <div id="logDate">{{log.createdDate}}</div>
+          </div>
         </li>
-        <li class="list-group-item">LOGS</li>
       </ul>
+      <div class="row">
+        <div class="col-md-6 btnNext">
+          <div *ngIf="logsShowBool && currentLogsPage > 1">
+            <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage - 1)"> poprzednia strona</button>
+          </div>
+        </div>
+        <div class="col-md-6 btnPrevious">
+          <div *ngIf="logsShowBool && currentLogsPage < maxLogPage">
+            <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage + 1)"> następna strona</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

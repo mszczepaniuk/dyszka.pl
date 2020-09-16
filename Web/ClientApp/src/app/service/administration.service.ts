@@ -56,6 +56,10 @@ export class AdministrationService {
 
   public setUserToAdmin(user: string) {
     this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).toPromise().then(result => {
+      this.refreshAdmins();
+      this.snackBar.open(`Dodano rolę administratora dla ${user}`, 'Undo', {
+        duration: 3000
+      });
     },
         error => {
         },
@@ -64,6 +68,10 @@ export class AdministrationService {
   
   public deleteAdminRole(user: string) {
     this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []).subscribe(result => {
+      this.refreshAdmins();
+      this.snackBar.open(`Usunięto rolę administratora dla ${user}`, 'Undo', {
+        duration: 3000
+      });
     },
       error => {
       },
@@ -72,6 +80,10 @@ export class AdministrationService {
 
   public setUserToMod(user: string) {
     this.httpClient.put(`${this.usersUrl}add-moderator/${user}`, []).subscribe(result => {
+      this.refreshModerators();
+      this.snackBar.open(`Dodano rolę moderatora dla ${user}`, 'Undo', {
+        duration: 3000
+      });
     },
       error => {
       },
@@ -79,6 +91,10 @@ export class AdministrationService {
   } 
   public deleteModRole(user: string) {
     this.httpClient.put(`${this.usersUrl}remove-moderator/${user}`, []).subscribe(result => {
+      this.refreshModerators();
+      this.snackBar.open(`Usunięto rolę moderatora dla ${user}`, 'Undo', {
+        duration: 3000
+      });
     },
       error => {
       },

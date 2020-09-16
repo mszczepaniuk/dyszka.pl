@@ -23,3 +23,20 @@ input {
     border: 1px solid #808080;
     border-radius: 4px;
 }
+
+#logBlock {
+    display: inline-block;
+    width: 100%;
+}
+
+#log{
+    float: left;
+}
+
+#logDate{
+    float: right;
+}
+
+.btnNext{
+    text-align: right;
+}
