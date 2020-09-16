@@ -13,9 +13,13 @@ namespace Web.Services
 {
     public class OfferService : ExtendedBaseService<Offer>, IOfferService
     {
-        public OfferService(IBaseRepository<Offer> repository, IMapper mapper) : base(repository, mapper)
+        private readonly IUserService userService;
+
+        public OfferService(IBaseRepository<Offer> repository,
+            IMapper mapper,
+            IUserService userService) : base(repository, mapper)
         {
-            
+            this.userService = userService;
         }
 
         public override Offer GetById(Guid id)
@@ -27,21 +31,26 @@ namespace Web.Services
         public PagedResult<OfferVm> GetPagedAndFiltered(int page, IEnumerable<string> tags, string username)
         {
             var query = repository.GetAll().Include(offer => offer.CreatedBy).AsQueryable();
-            if (tags != null && tags.Any())
-            {
-                query = query.Where(offer => offer.Tags.Any(tag => tags.Contains(tag)));
-            }
+
             if (username != null)
             {
                 query = query.Where(offer => offer.CreatedBy.UserName == username);
+                if (userService.CurrentUser != null && username != userService.CurrentUser.UserName)
+                {
+                    query = query.Where(offer => !offer.IsBlocked | !offer.IsHidden);
+                }
+            }
+            if (tags != null && tags.Any())
+            {
+                query = query.ToList().Where(offer => offer.Tags.Intersect(tags).Any()).AsQueryable();
             }
             return new PagedResult<OfferVm>
             {
-                Items = mapper.Map<List<OfferVm>>(query.Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList()),
+                Items = mapper.Map<List<OfferVm>>(query.Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList()),
                 CurrentPage = page,
-                ResultsPerPage = resultsPerPage,
+                ResultsPerPage = ResultsPerPage,
                 PagesCount = query.Any() ?
-                    (query.Count() - 1) / resultsPerPage + 1 :
+                    (query.Count() - 1) / ResultsPerPage + 1 :
                     0
             };
         }

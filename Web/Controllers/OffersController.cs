@@ -33,10 +33,14 @@ namespace Web.Controllers
             return Ok(mapper.Map<OfferVm>(offerService.GetById(id)));
         }
 
-        [HttpGet("/page/{page}")]
-        public IActionResult GetPagedAndFiltered(int page, IEnumerable<string> tags, string username)
+        [HttpGet()]
+        public IActionResult GetPagedAndFiltered([FromQuery]int? page, [FromQuery]string[] tags, [FromQuery]string username)
         {
-            return Ok(offerService.GetPagedAndFiltered(page, tags, username));
+            if (!page.HasValue)
+            {
+                return BadRequest();
+            }
+            return Ok(offerService.GetPagedAndFiltered(page.Value, tags, username));
         }
 
         [HttpPost]

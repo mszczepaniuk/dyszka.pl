@@ -40,7 +40,9 @@
     <div *ngIf="!identityService.isBanned()" class="col-12">
       <a class="btn btn-primary" mat-raised-button
          #tooltip="matTooltip"
-         matTooltip="Pokaż oferty">
+         matTooltip="Pokaż oferty"
+         [routerLink]="['/']"
+         [queryParams]="{ username: username}">
         <fa-icon [icon]="faOutdent" class="white-icon"></fa-icon>
       </a>
       <a *ngIf="identityService.isLoggedIn() && !isProfileOwner()" class="btn btn-primary" mat-raised-button
@@ -48,7 +50,7 @@
          matTooltip="Napisz wiadomość">
         <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
       </a>
-      <a *ngIf="isProfileOwner() && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-button
+      <a *ngIf="isProfileOwner() && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-buttonjes
          #tooltip="matTooltip"
          matTooltip="Edytuj profil">
         <fa-icon [icon]="faEdit" class="white-icon"></fa-icon>

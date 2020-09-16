@@ -17,6 +17,17 @@ export class OfferService {
     return this.httpClient.get(`${this.offerUrl}${id}`);
   }
 
+  public getPaged(page: number, username?: string, tags?: string[]) {
+    let url = `${this.offerUrl}?page=${page}`;
+    if (username) {
+      url = url.concat(`&username=${username}`);
+    }
+    if (tags) {
+      tags.forEach(tag => url = url.concat(`&tags=${tag}`));
+    }
+    return this.httpClient.get(url);
+  }
+
   public addOffer(offer) {
     this.httpClient.post(this.offerUrl, offer).subscribe(
       result => {
