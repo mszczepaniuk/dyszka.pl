@@ -1,9 +1,9 @@
 <h1> MODUŁ ADMINISTRACYJNY BETA</h1>
 <div class="container">
   <div class="row">
-    <div class="col-md-4 align-self-center">
+    <div class="col-md-4">
       <div class="allign-items-center">
-        <button type="button" (click)="showAdmins()" class="btn btn-primary btn-lg btn-block">Administratorzy</button>
+        <button type="button" #admins (click)="showAdmins()" class="btn btn-primary btn-lg btn-block">Administratorzy</button>
         <button type="button" (click)="showMods()" class="btn btn-primary btn-lg btn-block">Moderatorzy</button>
         <button type="button" (click)="showLogs()" class="btn btn-primary btn-lg btn-block">Logi</button>
       </div>
@@ -17,24 +17,35 @@
               <label for="adminName">Administratorzy</label>
               <input id="adminName" formControlName="adminName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
             </div>
-              <button type="submit" [disabled]="!addingAdminForm.valid" class="btn-add btn-success btn-md">Dodaj</button>
+            <button type="submit" [disabled]="!addingAdminForm.valid" class="btn-add btn-success btn-md">Dodaj</button>
           </form>
 
         </li>
         <li class="list-group-item" *ngFor="let admin of adminsArray">
           <div>
-            {{admin.userName}}
+            <a href="https://localhost:5001/profile/{{admin.userName}}">{{admin.userName}}</a>
             <button type="button" (click)="deleteAdmin(admin)" class="btn-delete btn-danger btn-md">Usuń</button>
           </div>
         </li>
-        <li class="list-group-item">ADMINS</li>
       </ul>
+
       <ul class="list-group" *ngIf="modsShowBool">
-        <li class="list-group-item" *ngFor="let mod of modsArray">
-          {{mod.userName}}
-          <button type="button" (click)="deleteAdmin(admin)" class="btn-delete btn-danger btn-md">Usuń</button>
+        <li class="list-group-item">
+
+          <form [formGroup]="addingModForm" (ngSubmit)="addModRole()">
+            <div class="form-group">
+              <label for="modName">Moderatorzy</label>
+              <input id="modName" formControlName="modName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
+            </div>
+            <button type="submit" [disabled]="!addingModForm.valid" class="btn-add btn-success btn-md">Dodaj</button>
+          </form>
+
         </li>
-        <li class="list-group-item">MODS</li>
+
+        <li class="list-group-item" *ngFor="let mod of modsArray">
+          <a href="https://localhost:5001/profile/{{mod.userName}}">{{mod.userName}}</a>
+          <button type="button" (click)="deleteMod(mod)" class="btn-delete btn-danger btn-md">Usuń</button>
+        </li>
       </ul>
       <ul class="list-group" *ngIf="logsShowBool">
         <li class="list-group-item" *ngFor="let admin of adminsArray">

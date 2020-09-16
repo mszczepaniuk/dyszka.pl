@@ -55,11 +55,33 @@ export class AdministrationService {
   }
 
   public setUserToAdmin(user: string) {
-    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []);
+    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).toPromise().then(result => {
+    },
+        error => {
+        },
+    );
   }
   
   public deleteAdminRole(user: string) {
-    this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []);
+    this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []).subscribe(result => {
+    },
+      error => {
+      },
+    );
   }
- 
+
+  public setUserToMod(user: string) {
+    this.httpClient.put(`${this.usersUrl}add-moderator/${user}`, []).subscribe(result => {
+    },
+      error => {
+      },
+    );
+  } 
+  public deleteModRole(user: string) {
+    this.httpClient.put(`${this.usersUrl}remove-moderator/${user}`, []).subscribe(result => {
+    },
+      error => {
+      },
+    );
+  }
 }

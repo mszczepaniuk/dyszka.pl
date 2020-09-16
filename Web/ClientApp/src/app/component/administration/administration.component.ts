@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AdministrationService } from '../../service/administration.service';
 import { BaseComponent } from '../BaseComponent';
 import { FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+
 
 
 
@@ -16,6 +17,10 @@ export class AdministrationComponent extends BaseComponent {
     adminName: new FormControl('', [Validators.required])
   })
 
+  addingModForm = new FormGroup({
+    modName: new FormControl('', [Validators.required])
+  })
+
   adminsArray = [];
   modsArray = [];
   adminsShowBool: boolean;
@@ -28,7 +33,7 @@ export class AdministrationComponent extends BaseComponent {
     private administrationService: AdministrationService,
     private formsModule: FormsModule) {
     super();
-    // TESTOWE LOGI
+    //// TESTOWE LOGI
     this.safeSub(
       this.administrationService.admins$.subscribe(admins => {
         console.log(admins);
@@ -52,6 +57,7 @@ export class AdministrationComponent extends BaseComponent {
       this.adminsArray = admins;
     });
   }
+
 
   getMods() {
     this.administrationService.moderators$.subscribe(mods => {
@@ -82,11 +88,22 @@ export class AdministrationComponent extends BaseComponent {
   deleteAdmin(admin) {
     console.log(admin.userName);
     this.administrationService.deleteAdminRole(admin.userName);
+    setTimeout(() => this.administrationService.refreshAdmins(), 50);
   }
 
   addAdminRole() {
     this.administrationService.setUserToAdmin(this.addingAdminForm.controls['adminName'].value);
-    console.log(this.addingAdminForm.controls['adminName'].value)
+    setTimeout(() => this.administrationService.refreshAdmins(), 50);
+  }
+
+  deleteMod(mod) {
+    this.administrationService.deleteModRole(mod.userName);
+    setTimeout(() => this.administrationService.refreshModerators(), 50);
+  }
+
+  addModRole() {
+    this.administrationService.setUserToMod(this.addingModForm.controls['modName'].value);
+    setTimeout(() => this.administrationService.refreshModerators(), 50);
   }
 
 }
