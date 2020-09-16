@@ -67,12 +67,12 @@
       </a>
       <a *ngIf="!isProfileOwner() && isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-primary" (click)="unbanUser()" mat-raised-button
          #tooltip="matTooltip"
-         matTooltip="Zbanuj użytkownika">
+         matTooltip="Odbanuj użytkownika">
         <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
       </a>
       <a *ngIf="!isProfileOwner() && !isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-danger" (click)="banUser()" mat-raised-button
          #tooltip="matTooltip"
-         matTooltip="Odbanuj użytkownika">
+         matTooltip="Zbanuj użytkownika">
         <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
       </a>
       <a *ngIf="isProfileOwner() || (identityService.isInRole('admin') && isBanned())" class="btn btn-danger" (click)="deleteUser()" mat-raised-button

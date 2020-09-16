@@ -12,6 +12,7 @@ namespace Web.Authorization
 
         public const string UserNameClaimType = "userName";
         public const string IsBannedClaimType = "isBanned";
+        public const string UserIdClaimType = "sub";
 
         public const string OnlyAdminPolicy = "OnlyAdmin";
         public const string OnlyModeratorPolicy = "OnlyModerator";
@@ -19,6 +20,6 @@ namespace Web.Authorization
         public const string UserRemovalPolicy = "UserRemoval";
         public const string ProfileOwnerPolicy = "ProfileOwner";
         public const string NotBannedPolicy = "NotBanned";
-        public const string EntityOwnerPolicy = "EntityOwner";
+        public const string IsOwnerPolicy = "IsOwner";
     }
 }

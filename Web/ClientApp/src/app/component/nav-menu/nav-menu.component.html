@@ -1,14 +1,34 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">dyszka.pl</a>
+      <form [formGroup]="form">
+        <div class="input-group">
+          <div class="input-group-apend">
+            <a class="btn btn-primary home-buton" mat-raised-buttonjes
+               #tooltip="matTooltip"
+               matTooltip="Strona główna"
+               [routerLink]="['/']">
+              <fa-icon [icon]="faHome" class="white-icon"></fa-icon>
+            </a>
+          </div>
+          <input id="query" class="form-control" type="text" formControlName="query">
+          <div class="input-group-apend">
+            <a class="btn btn-primary" type="submit" mat-raised-buttonjes
+               #tooltip="matTooltip"
+               matTooltip="Wyszukaj po tagach"
+               (click)="onSubmit()">
+              <fa-icon [icon]="faSearch" class="white-icon"></fa-icon>
+            </a>
+          </div>
+        </div>
+      </form>
       <button class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()">
+              type="button"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded"
+              (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">

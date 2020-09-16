@@ -5,6 +5,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { OfferService } from '../../../service/offer.service';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { DialogResult } from '../../../enum/dialog-result.enum';
+import { Helpers } from '../../../common/helpers';
 
 @Component({
   selector: 'app-offer-form',
@@ -52,7 +53,7 @@ export class OfferFormComponent extends BaseComponent implements OnInit {
       image: ['', [Validators.required]],
       title: ['', [Validators.required, Validators.maxLength(30)]],
       price: ['', [Validators.required, Validators.min(10)]],
-      tags: ['', [Validators.required, Validators.pattern(/^([a-z]|[A-Z]){2,20}$|(^((([a-z]|[A-Z]){2,20}),){1,4})([a-z]|[A-Z]){2,20}$/)]],
+      tags: ['', [Validators.required, Validators.pattern(Helpers.tagsPattern)]],
       shortDescription: ['', [Validators.required, Validators.maxLength(160)]],
       description: ['', [Validators.required, Validators.maxLength(1000)]]
     });

@@ -20,4 +20,9 @@ html {
 
 a:hover {
   cursor: pointer;
+  text-decoration: none;
+}
+
+.home-buton {
+  margin-right: 10px;
 }

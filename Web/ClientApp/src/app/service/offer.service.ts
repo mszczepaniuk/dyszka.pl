@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class OfferService {
@@ -37,5 +38,23 @@ export class OfferService {
       () => {
         this.snackBar.open('Doszło do błędu przy tworzeniu oferty');
       });
+  }
+
+  public showOffer(id: string) {
+    return this.httpClient.put(`${this.offerUrl}${id}/show`, {}).pipe(map(() => {
+      this.snackBar.open('Oferta widoczna');
+    }), catchError((error) => {
+      this.snackBar.open('Błąd podczas pokazywania oferty');
+      return error;
+    }));
+  }
+
+  public hideOffer(id: string) {
+    return this.httpClient.put(`${this.offerUrl}${id}/hide`, {}).pipe(map(() => {
+      this.snackBar.open('Schowano ofertę');
+    }), catchError((error) => {
+      this.snackBar.open('Błąd podczas chowania oferty');
+      return error;
+    }));
   }
 }
