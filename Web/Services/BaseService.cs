@@ -30,12 +30,12 @@ namespace Web.Services
             return repository.GetById(id);
         }
 
-        public virtual Task AddAsync(TItem item)
+        public virtual Task<Guid> AddAsync(TItem item)
         {
             return repository.AddAsync(item);
         }
 
-        public virtual Task AddRangeAsync(IEnumerable<TItem> items)
+        public virtual Task<IEnumerable<Guid>> AddRangeAsync(IEnumerable<TItem> items)
         {
             return repository.AddRangeAsync(items);
         }
@@ -65,7 +65,7 @@ namespace Web.Services
         where TRepo : IBaseRepository<TItem>
     {
         protected readonly IMapper mapper;
-        protected readonly int resultsPerPage = 10;
+        protected virtual int ResultsPerPage => 10;
 
         public ExtendedBaseService(TRepo repository, IMapper mapper) : base(repository)
         {
@@ -76,11 +76,11 @@ namespace Web.Services
         {
             return new PagedResult<TItem>
             {
-                Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList(),
+                Items = repository.GetAll().Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList(),
                 CurrentPage = page,
-                ResultsPerPage = resultsPerPage,
+                ResultsPerPage = ResultsPerPage,
                 PagesCount = repository.GetAll().Any() ?
-                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
+                    (repository.GetAll().Count() - 1) / ResultsPerPage + 1 :
                     0
             };
         }
@@ -89,11 +89,11 @@ namespace Web.Services
         {
             return new PagedResult<TVm>
             {
-                Items = mapper.Map<List<TVm>>(repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList()),
+                Items = mapper.Map<List<TVm>>(repository.GetAll().Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList()),
                 CurrentPage = page,
-                ResultsPerPage = resultsPerPage,
+                ResultsPerPage = ResultsPerPage,
                 PagesCount = repository.GetAll().Any() ?
-                    (repository.GetAll().Count() - 1) / resultsPerPage + 1 :
+                    (repository.GetAll().Count() - 1) / ResultsPerPage + 1 :
                     0
             };
         }

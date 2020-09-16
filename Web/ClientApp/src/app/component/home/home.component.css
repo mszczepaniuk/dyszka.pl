@@ -1,0 +1,24 @@
+.card {
+  margin-bottom: 30px;
+}
+
+.card-title {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.card-text {
+  background: rgba(0, 0, 0, 0.6);
+  bottom: 0;
+}
+
+.previous {
+  text-align: left;
+}
+
+.next {
+  text-align: right;
+}
+
+.white-icon {
+  color: white;
+}

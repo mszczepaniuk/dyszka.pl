@@ -1,3 +1,5 @@
-<span *ngIf="(control.dirty || control.touched || submitted) && control.errors && control.errors[error]" class="form__error" [class.form_error--nolabel]="!label">
-  <ng-content></ng-content>
-</span>
+<div *ngIf="submitted">
+  <span *ngFor="let error of errors" class="form__error" style="color: red">
+    {{ error }} <br />
+  </span>
+</div>

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using ApplicationCore.BindingModels;
 using ApplicationCore.Models;
+using ApplicationCore.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,18 +27,27 @@ namespace Web.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{page}")]
-        public IActionResult GetPagedAndFiltered(int page, IEnumerable<string> tags, string username)
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
         {
-            return Ok(offerService.GetPagedAndFiltered(page, tags, username));
+            return Ok(mapper.Map<OfferVm>(offerService.GetById(id)));
+        }
+
+        [HttpGet()]
+        public IActionResult GetPagedAndFiltered([FromQuery]int? page, [FromQuery]string[] tags, [FromQuery]string username)
+        {
+            if (!page.HasValue)
+            {
+                return BadRequest();
+            }
+            return Ok(offerService.GetPagedAndFiltered(page.Value, tags, username));
         }
 
         [HttpPost]
         [Authorize(AuthConstants.NotBannedPolicy)]
         public async Task<IActionResult> AddOffer(OfferBm offer)
         {
-            await offerService.AddAsync(mapper.Map<Offer>(offer));
-            return StatusCode((int)HttpStatusCode.Created);
+            return Ok(await offerService.AddAsync(mapper.Map<Offer>(offer)));
         }
     }
 }
