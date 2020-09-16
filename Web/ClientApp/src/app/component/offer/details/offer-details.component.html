@@ -34,4 +34,16 @@
       <textarea id="description" rows="6" class="form-control" type="text" formControlName="description"></textarea>
     </div>
   </form>
+  <div class="row">
+    <a *ngIf="isOwner() && !identityService.isBanned() && !offer.isHidden" class="btn btn-danger first-icon" (click)="hideOffer()" mat-raised-button
+       #tooltip="matTooltip"
+       matTooltip="Schowaj oferte">
+      <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+    </a>
+    <a *ngIf="isOwner() && !identityService.isBanned() && offer.isHidden" class="btn btn-primary first-icon" (click)="showOffer()" mat-raised-button
+       #tooltip="matTooltip"
+       matTooltip="Pokaz oferte">
+      <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+    </a>
+  </div>
 </div>

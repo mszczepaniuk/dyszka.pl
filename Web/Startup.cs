@@ -55,6 +55,7 @@ namespace Web
                 options.AddPolicy(AuthConstants.NotBannedPolicy, policy => policy.RequireClaim(AuthConstants.IsBannedClaimType, "False"));
                 options.AddPolicy(AuthConstants.ProfileOwnerPolicy, policy => policy.AddRequirements(new ProfileOwnerRequirement()));
                 options.AddPolicy(AuthConstants.UserRemovalPolicy, policy => policy.AddRequirements(new UserRemovalRequirement()));
+                options.AddPolicy(AuthConstants.IsOwnerPolicy, policy => policy.AddRequirements(new IsOwnerRequirement()));
             });
             services.AddAutoMapper(typeof(Startup));
 
@@ -64,6 +65,7 @@ namespace Web
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationHandler, ProfileOwnerAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, UserRemovalAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IExtendedBaseService<,>), typeof(BaseService<,>));

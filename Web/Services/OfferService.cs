@@ -55,24 +55,6 @@ namespace Web.Services
             };
         }
 
-        public async Task BlockUserOffers(string username)
-        {
-            foreach (var offer in repository.GetAll().Where(offer => offer.CreatedBy.UserName == username))
-            {
-                offer.IsBlocked = true;
-                await repository.UpdateAsync(offer.Id, offer);
-            }
-        }
-
-        public async Task UnBlockUserOffers(string username)
-        {
-            foreach (var offer in repository.GetAll().Where(offer => offer.CreatedBy.UserName == username))
-            {
-                offer.IsBlocked = false;
-                await repository.UpdateAsync(offer.Id, offer);
-            }
-        }
-
         public async Task HideOffer(Guid id)
         {
             var offer = repository.GetById(id);
