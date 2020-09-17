@@ -27,7 +27,7 @@ namespace Web.Services
         {
             return new PagedResult<AuditLog>
             {
-                Items = repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).Include(a => a.CreatedBy).ToList(),
+                Items = repository.GetAll().OrderByDescending(auditLog => auditLog.CreatedDate).Skip((page - 1) * resultsPerPage).Take(resultsPerPage).Include(a => a.CreatedBy).ToList(),
                 CurrentPage = page,
                 ResultsPerPage = resultsPerPage,
                 PagesCount = repository.GetAll().Any() ?
@@ -40,7 +40,7 @@ namespace Web.Services
         {
             return new PagedResult<TVm>
             {
-                Items = mapper.Map<List<TVm>>(repository.GetAll().Skip((page - 1) * resultsPerPage).Take(resultsPerPage).ToList()),
+                Items = mapper.Map<List<TVm>>(repository.GetAll().OrderByDescending(auditLog => auditLog.CreatedDate).Skip((page - 1) * resultsPerPage).Take(resultsPerPage).Include(a => a.CreatedBy).ToList()),
                 CurrentPage = page,
                 ResultsPerPage = resultsPerPage,
                 PagesCount = repository.GetAll().Any() ?

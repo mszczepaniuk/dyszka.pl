@@ -55,48 +55,50 @@ export class AdministrationService {
   }
 
   public setUserToAdmin(user: string) {
-    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).toPromise().then(result => {
-      this.refreshAdmins();
-      this.snackBar.open(`Dodano rolę administratora dla ${user}`, 'Undo', {
-        duration: 3000
-      });
-    },
-        error => {
-        },
+    this.httpClient.put(`${this.usersUrl}add-admin/${user}`, []).toPromise().then(
+      () => {
+        this.refreshAdmins();
+        this.snackBar.open(`Dodano rolę administratora dla ${user}`, '', { duration: 3000 });
+      },
+      () => {
+        this.snackBar.open('Doszło do błędu przy dodawaniu roli', '', { duration: 3000 });
+      }
     );
   }
-  
+
   public deleteAdminRole(user: string) {
-    this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []).subscribe(result => {
-      this.refreshAdmins();
-      this.snackBar.open(`Usunięto rolę administratora dla ${user}`, 'Undo', {
-        duration: 3000
-      });
-    },
-      error => {
+    this.httpClient.put(`${this.usersUrl}remove-admin/${user}`, []).subscribe(
+      () => {
+        this.refreshAdmins();
+        this.snackBar.open(`Usunięto rolę administratora dla ${user}`, '', { duration: 3000 });
       },
+      () => {
+        this.snackBar.open('Doszło do błędu przy usuwaniu roli', '', { duration: 3000 });
+      }
     );
   }
 
   public setUserToMod(user: string) {
-    this.httpClient.put(`${this.usersUrl}add-moderator/${user}`, []).subscribe(result => {
-      this.refreshModerators();
-      this.snackBar.open(`Dodano rolę moderatora dla ${user}`, 'Undo', {
-        duration: 3000
-      });
-    },
-      error => {
+    this.httpClient.put(`${this.usersUrl}add-moderator/${user}`, []).subscribe(
+      () => {
+        this.refreshModerators();
+        this.snackBar.open(`Dodano rolę moderatora dla ${user}`, '', { duration: 3000 });
+      },
+      () => {
+        this.snackBar.open('Doszło do błędu przy dodawaniu roli', '', { duration: 3000 });
       },
     );
-  } 
+  }
   public deleteModRole(user: string) {
-    this.httpClient.put(`${this.usersUrl}remove-moderator/${user}`, []).subscribe(result => {
-      this.refreshModerators();
-      this.snackBar.open(`Usunięto rolę moderatora dla ${user}`, 'Undo', {
-        duration: 3000
-      });
-    },
-      error => {
+    this.httpClient.put(`${this.usersUrl}remove-moderator/${user}`, []).subscribe(
+      () => {
+        this.refreshModerators();
+        this.snackBar.open(`Usunięto rolę moderatora dla ${user}`, 'Undo', {
+          duration: 3000
+        });
+      },
+      () => {
+        this.snackBar.open('Doszło do błędu przy usuwaniu roli', '', { duration: 3000 });
       },
     );
   }

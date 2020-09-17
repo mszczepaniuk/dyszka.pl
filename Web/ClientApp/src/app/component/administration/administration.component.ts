@@ -18,11 +18,11 @@ export class AdministrationComponent extends BaseComponent {
 
   addingAdminForm = new FormGroup({
     adminName: new FormControl('', [Validators.required])
-  })
+  });
 
   addingModForm = new FormGroup({
     modName: new FormControl('', [Validators.required])
-  })
+  });
 
   public logsArray$ = new BehaviorSubject<AuditLog[]>([]);
   adminsArray = [];
@@ -33,22 +33,20 @@ export class AdministrationComponent extends BaseComponent {
   adminName: string;
   currentLogsPage: number;
   maxLogPage: number;
- 
-  //addingAdminForm = new FormGroup;
+
 
   constructor(
     private administrationService: AdministrationService,
     private formsModule: FormsModule,
     private dialog: MatDialog) {
     super();
-    //// TESTOWE LOGI
     this.safeSub(
       this.administrationService.admins$.subscribe(admins => {
         this.adminsArray = admins;
       }),
       this.administrationService.moderators$.subscribe(mods => {
         this.modsArray = mods;
-      }),
+      })
     );
     this.getLogsPage(1);
     this.adminsShowBool = true;
@@ -73,59 +71,63 @@ export class AdministrationComponent extends BaseComponent {
   }
 
   deleteAdmin(admin) {
-    this.dialog.open(DialogComponent, {
-      width: "450px",
-      data: {
-        message: "Czy na pewno usunąć rolę temu użytkownikowi?",
-        dialogTitle: "Usuwanie roli administratora"
-      }
-    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+    this.dialog.open(DialogComponent,
+      {
+        width: "450px",
+        data: {
+          message: "Czy na pewno usunąć rolę temu użytkownikowi?",
+          dialogTitle: "Usuwanie roli administratora"
+        }
+      }).afterClosed().subscribe((dialogResult: DialogResult) => {
       if (dialogResult === DialogResult.Yes) {
         this.administrationService.deleteAdminRole(admin.userName);
       }
-    })
+    });
   }
 
   addAdminRole() {
-    this.dialog.open(DialogComponent, {
-      width: "450px",
-      data: {
-        message: "Czy na pewno nadać rolę temu użytkownikowi?",
-        dialogTitle: "Dodanie roli administratora"
-      }
-    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+    this.dialog.open(DialogComponent,
+      {
+        width: "450px",
+        data: {
+          message: "Czy na pewno nadać rolę temu użytkownikowi?",
+          dialogTitle: "Dodanie roli administratora"
+        }
+      }).afterClosed().subscribe((dialogResult: DialogResult) => {
       if (dialogResult === DialogResult.Yes) {
         this.administrationService.setUserToAdmin(this.addingAdminForm.controls['adminName'].value);
-      } 
-    })
+      }
+    });
   }
 
   deleteMod(mod) {
-    this.dialog.open(DialogComponent, {
-      width: "450px",
-      data: {
-        message: "Czy na pewno usunąć rolę temu użytkownikowi?",
-        dialogTitle: "Usuwanie roli moderatora"
-      }
-    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+    this.dialog.open(DialogComponent,
+      {
+        width: "450px",
+        data: {
+          message: "Czy na pewno usunąć rolę temu użytkownikowi?",
+          dialogTitle: "Usuwanie roli moderatora"
+        }
+      }).afterClosed().subscribe((dialogResult: DialogResult) => {
       if (dialogResult === DialogResult.Yes) {
         this.administrationService.deleteModRole(mod.userName);
       }
-    })
+    });
   }
 
   addModRole() {
-    this.dialog.open(DialogComponent, {
-      width: "450xpx",
-      data: {
-        message: "Czy na pewno nadać rolę temu użytkownikowi",
-        dialogTitle: "Dodanie roli moderatora"
-      }
-    }).afterClosed().subscribe((dialogResult: DialogResult) => {
+    this.dialog.open(DialogComponent,
+      {
+        width: "450xpx",
+        data: {
+          message: "Czy na pewno nadać rolę temu użytkownikowi",
+          dialogTitle: "Dodanie roli moderatora"
+        }
+      }).afterClosed().subscribe((dialogResult: DialogResult) => {
       if (dialogResult === DialogResult.Yes) {
         this.administrationService.setUserToMod(this.addingModForm.controls['modName'].value);
       }
-    })
+    });
   }
 
   getLogsPage(page: number) {
@@ -135,11 +137,9 @@ export class AdministrationComponent extends BaseComponent {
         logsTempArray.push(new AuditLog(log));
       });
       this.logsArray$.next(logsTempArray);
-      console.log(logsTempArray);
-      console.log(this.logsArray$.value);
       this.currentLogsPage = logs.currentPage;
-      this.maxLogPage = logs.pagesCount
-    })
+      this.maxLogPage = logs.pagesCount;
+    });
   }
 
 }
