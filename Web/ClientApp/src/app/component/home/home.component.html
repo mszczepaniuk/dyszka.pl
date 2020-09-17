@@ -7,7 +7,7 @@
       Ładowanie...
     </h2>
     <div *ngIf="!loading" class="container">
-      <a *ngFor="let offer of offers$.value" [routerLink]="['/offer', offer.id]">
+      <a *ngFor="let offer of offers" [routerLink]="['/offer', offer.id]">
         <div class="card bg-dark text-white">
           <img class="card-img" [src]="offer.image" alt="Card image">
           <div class="card-img-overlay">

@@ -73,6 +73,7 @@ namespace Web
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddTransient<IAuditLogService, AuditLogService>();
             services.AddTransient<IOfferService, OfferService>();
+            services.AddTransient<ICommentService, CommentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

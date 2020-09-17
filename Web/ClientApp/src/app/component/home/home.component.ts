@@ -23,7 +23,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   private currentTags: string[];
   private loading: boolean;
   private pagesCount: number;
-
+  private offers: Offer[] = [];
 
   constructor(private identityService: IdentityService,
     private offerService: OfferService,
@@ -34,6 +34,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.offers$ = new BehaviorSubject<Offer[]>([]);
     this.safeSub(
+      this.offers$.subscribe(offers => this.offers = offers),
       this.activatedroute.queryParams.subscribe(params => {
         this.currentUsername = params['username'];
         this.currentTags = params['tags'];
@@ -42,7 +43,6 @@ export class HomeComponent extends BaseComponent implements OnInit {
         }
         this.safeSub(this.getPage(this.currentPage));
       }));
-    this.offers$.subscribe(offers => console.log(offers));
   }
 
   private getPage(page: number) {

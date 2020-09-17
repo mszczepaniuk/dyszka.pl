@@ -42,6 +42,7 @@
     <None Remove="ClientApp\src\app\common\helpers.ts" />
     <None Remove="ClientApp\src\app\component\administration\administration.component.ts" />
     <None Remove="ClientApp\src\app\component\BaseComponent.ts" />
+    <None Remove="ClientApp\src\app\component\comment\comment.component.ts" />
     <None Remove="ClientApp\src\app\component\dialog\dialog.component.ts" />
     <None Remove="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
@@ -52,10 +53,12 @@
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
     <None Remove="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
+    <None Remove="ClientApp\src\app\model\comment.model.ts" />
     <None Remove="ClientApp\src\app\model\offer.model.ts" />
     <None Remove="ClientApp\src\app\model\paged-result.model.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
     <None Remove="ClientApp\src\app\service\administration.service.ts" />
+    <None Remove="ClientApp\src\app\service\comment.service.ts" />
     <None Remove="ClientApp\src\app\service\file.service.ts" />
     <None Remove="ClientApp\src\app\service\identity.service.ts" />
     <None Remove="ClientApp\src\app\service\offer.service.ts" />
@@ -73,6 +76,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\common\helpers.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\administration\administration.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\BaseComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\comment\comment.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\dialog\dialog.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
@@ -83,10 +87,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\dialog-result.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\comment.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\paged-result.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\administration.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\comment.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\offer.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\user.service.ts" />

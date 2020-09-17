@@ -26,6 +26,8 @@ import { OfferService } from './service/offer.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './component/dialog/dialog.component';
+import { CommentComponent } from './component/comment/comment.component';
+import { CommentService } from './service/comment.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { DialogComponent } from './component/dialog/dialog.component';
     AdministrationComponent,
     OfferDetailsComponent,
     OfferFormComponent,
-    DialogComponent
+    DialogComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -59,6 +62,7 @@ import { DialogComponent } from './component/dialog/dialog.component';
     UserService,
     AdministrationService,
     OfferService,
+    CommentService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

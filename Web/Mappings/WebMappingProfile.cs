@@ -2,6 +2,7 @@
 using ApplicationCore.Models;
 using ApplicationCore.ViewModels;
 using AutoMapper;
+using Web.Mappings.Resolvers;
 
 namespace Web.Mappings
 {
@@ -17,6 +18,11 @@ namespace Web.Mappings
 
             CreateMap<OfferBm, Offer>();
             CreateMap<Offer, OfferVm>()
+                .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
+
+            CreateMap<CommentBm, Comment>()
+                .ForMember(dest => dest.Offer, opt => opt.MapFrom<CommentResolver>());
+            CreateMap<Comment, CommentVm>()
                 .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
         }
     }

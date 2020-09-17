@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories;
 using ApplicationCore.ViewModels;
@@ -20,6 +21,11 @@ namespace Web.Services
             IUserService userService) : base(repository, mapper)
         {
             this.userService = userService;
+        }
+
+        public override IQueryable<Offer> GetAll()
+        {
+            return base.GetAll().Include(offer => offer.CreatedBy);
         }
 
         public override Offer GetById(Guid id)
@@ -58,6 +64,10 @@ namespace Web.Services
         public async Task HideOffer(Guid id)
         {
             var offer = repository.GetById(id);
+            if (offer == null)
+            {
+                throw new ElementNotFoundException("Offer not found");
+            }
             offer.IsHidden = true;
             await repository.UpdateAsync(offer.Id, offer);
         }
@@ -65,6 +75,10 @@ namespace Web.Services
         public async Task ShowOffer(Guid id)
         {
             var offer = repository.GetById(id);
+            if (offer == null)
+            {
+                throw new ElementNotFoundException("Offer not found");
+            }
             offer.IsHidden = false;
             await repository.UpdateAsync(offer.Id, offer);
         }

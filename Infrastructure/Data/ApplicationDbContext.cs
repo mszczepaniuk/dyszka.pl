@@ -22,6 +22,7 @@ namespace Infrastructure.Data
         public DbSet<Offer> Offers { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
