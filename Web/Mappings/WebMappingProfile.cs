@@ -23,7 +23,6 @@ namespace Web.Mappings
             CreateMap<CommentBm, Comment>()
                 .ForMember(dest => dest.Offer, opt => opt.MapFrom<CommentResolver>());
             CreateMap<Comment, CommentVm>()
-                .ForMember(dest => dest.AuthorProfileImage, opt => opt.MapFrom(src => src.CreatedBy.ProfileImage))
                 .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
         }
     }

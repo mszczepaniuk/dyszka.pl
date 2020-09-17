@@ -1,0 +1,77 @@
+<div class="comments-container">
+  <h2 *ngIf="loading">
+    Ładowanie komentarzy...
+  </h2>
+  <div *ngIf="!loading">
+    <div class="row">
+      <div class="col-md-4">
+        <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+        <form *ngIf="offerId && this.identityService.isLoggedIn() && !this.identityService.isBanned()" [formGroup]="form">
+          <div class="form-group">
+            <textarea id="text" rows="5" class="form-control" type="text" formControlName="text"></textarea>
+          </div>
+          <div class="row">
+            <div class="col-6 text-left previous">
+              <a class="btn btn-primary" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Dodaj komentarz" (click)="addComment()">
+                <fa-icon [icon]="faPlus" class="white-icon"></fa-icon>
+              </a>
+            </div>
+            <div class="col-6 text-right next">
+              <input id="isPositive" class="form-check-input custom-checkbox" type="checkbox" formControlName="isPositive"
+                     mat-raised-button
+                     #tooltip="matTooltip"
+                     matTooltip="Pozytywny komentarz"/>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-8">
+        <div *ngFor="let comment of comments" class="card comment-card">
+          <div class="card-header title-text" [class.positive-comment]="comment.isPositive" [class.negative-comment]="!comment.isPositive">
+            {{ comment.authorUserName }}
+          </div>
+          <div class="card-body">
+            <p>{{ comment.text }}</p>
+            <blockquote class="blockquote mb-0">
+              <div class="row">
+                <div class="col-6 text-left previous">
+                  <footer class="blockquote-footer">Dodano: {{ comment.createdDate | date: 'dd.MM.yyyy hh:mm' }}</footer>
+                </div>
+                <div class="col-6 text-right next">
+                  <a *ngIf="!comment.isPositive && identityService.isLoggedIn() && !identityService.isBanned() && identityService.user$.value.userName === comment.authorUserName"
+                     class="btn btn-primary comment-icon" mat-raised-button
+                     #tooltip="matTooltip"
+                     matTooltip="Zmien na pozytywny"
+                     (click)="setToPositive(comment.id)">
+                    <fa-icon [icon]="faCheck" class="white-icon"></fa-icon>
+                  </a>
+                  <a *ngIf="identityService.isLoggedIn() && !identityService.isBanned() && (identityService.user$.value.userName === comment.authorUserName || identityService.isInRole('moderator') || identityService.isInRole('admin'))"
+                     class="btn btn-danger comment-icon" mat-raised-button
+                     #tooltip="matTooltip"
+                     matTooltip="Usuń komentarz"
+                     (click)="deleteComment(comment.id)">
+                    <fa-icon [icon]="faTrashAlt" class="white-icon"></fa-icon>
+                  </a>
+                </div>
+              </div>
+            </blockquote>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-left previous">
+            <a *ngIf="currentPage > 1" class="btn btn-primary">
+              <fa-icon [icon]="faBackward" class="white-icon" (click)="getPage(currentPage - 1)"></fa-icon>
+            </a>
+          </div>
+          <div class="col-6 text-right next">
+            <a *ngIf="currentPage < pagesCount" class="btn btn-primary">
+              <fa-icon [icon]="faForward" class="white-icon" (click)="getPage(currentPage + 1)"></fa-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,7 +36,7 @@ export class OfferService {
         this.router.navigateByUrl(`/offer/${result}`);
       },
       () => {
-        this.snackBar.open('Doszło do błędu przy tworzeniu oferty');
+        this.snackBar.open('Doszło do błędu przy tworzeniu oferty', '', { duration: 2000 });
       });
   }
 
@@ -44,7 +44,7 @@ export class OfferService {
     return this.httpClient.put(`${this.offerUrl}${id}/show`, {}).pipe(map(() => {
       this.snackBar.open('Oferta widoczna');
     }), catchError((error) => {
-      this.snackBar.open('Błąd podczas pokazywania oferty');
+      this.snackBar.open('Błąd podczas pokazywania oferty', '', { duration: 2000 });
       return error;
     }));
   }
@@ -53,7 +53,7 @@ export class OfferService {
     return this.httpClient.put(`${this.offerUrl}${id}/hide`, {}).pipe(map(() => {
       this.snackBar.open('Schowano ofertę');
     }), catchError((error) => {
-      this.snackBar.open('Błąd podczas chowania oferty');
+      this.snackBar.open('Błąd podczas chowania oferty', '', { duration: 2000 });
       return error;
     }));
   }

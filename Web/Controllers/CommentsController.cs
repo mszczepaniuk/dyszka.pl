@@ -36,11 +36,9 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult GetPaged([FromQuery]int? page, [FromQuery]string profileUsername, [FromQuery]Guid? offerId)
         {
-            if (!page.HasValue)
-            {
-                return Ok(mapper.Map<List<CommentVm>>(commentService.GetAll()));
-            }
-            return Ok(commentService.GetPagedAndFiltered(page.Value, profileUsername, offerId.Value));
+            return !page.HasValue ? 
+                Ok(mapper.Map<List<CommentVm>>(commentService.GetAll())) :
+                Ok(commentService.GetPagedAndFiltered(page.Value, profileUsername, offerId));
         }
 
         [HttpPost]
@@ -64,7 +62,7 @@ namespace Web.Controllers
 
         [HttpPut("{id}/toPositive")]
         [Authorize(AuthConstants.NotBannedPolicy)]
-        public async Task<IActionResult> SetToPostive(Guid id)
+        public async Task<IActionResult> SetToPositive(Guid id)
         {
             try
             {

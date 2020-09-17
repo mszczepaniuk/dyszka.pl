@@ -11,6 +11,5 @@ namespace ApplicationCore.ViewModels
         public bool IsPositive { get; set; }
         public DateTime CreatedDate { get; set; }
         public string AuthorUserName { get; set; }
-        public string AuthorProfileImage { get; set; }
     }
 }

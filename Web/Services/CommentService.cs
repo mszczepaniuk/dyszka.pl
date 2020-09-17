@@ -40,9 +40,9 @@ namespace Web.Services
             {
                 query = query.Where(comment => comment.Offer.CreatedBy.UserName == profileUserName);
             }
-            if (offerId != null)
+            if (offerId.HasValue)
             {
-                query = query.Where(comment => comment.Offer.Id == offerId);
+                query = query.Where(comment => comment.Offer.Id == offerId.Value);
             }
             return new PagedResult<CommentVm>
             {

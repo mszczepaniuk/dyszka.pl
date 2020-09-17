@@ -1,0 +1,38 @@
+.comments-container {
+  margin-top: 20px;
+}
+
+.positive-comment {
+  background-color: green;
+}
+
+.negative-comment {
+  background-color: red;
+}
+
+.previous {
+  text-align: left;
+}
+
+.next {
+  text-align: right;
+}
+
+.comment-icon {
+  margin-left: 5px;
+}
+
+.title-text {
+  color: white;
+}
+
+.custom-checkbox {
+  width: 38px;
+  height: 38px;
+  right: 14px;
+  margin-top: 0;
+}
+
+.comment-card {
+  margin-bottom: 20px;
+}
