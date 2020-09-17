@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ApplicationCore.BindingModels;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Models;
 using ApplicationCore.ViewModels;
 using AutoMapper;
@@ -43,7 +44,7 @@ namespace Web.Controllers
         {
             if (!page.HasValue)
             {
-                return BadRequest();
+                return Ok(mapper.Map<List<OfferVm>>(offerService.GetAll()));
             }
             return Ok(offerService.GetPagedAndFiltered(page.Value, tags, username));
         }
@@ -65,8 +66,15 @@ namespace Web.Controllers
             {
                 return StatusCode((int)HttpStatusCode.Forbidden);
             }
-            await offerService.HideOffer(id);
-            return Ok();
+            try
+            {
+                await offerService.HideOffer(id);
+                return Ok();
+            }
+            catch (ElementNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPut("{id}/show")]
@@ -79,8 +87,15 @@ namespace Web.Controllers
             {
                 return StatusCode((int)HttpStatusCode.Forbidden);
             }
-            await offerService.ShowOffer(id);
-            return Ok();
+            try
+            {
+                await offerService.ShowOffer(id);
+                return Ok();
+            }
+            catch (ElementNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
     }
 }
