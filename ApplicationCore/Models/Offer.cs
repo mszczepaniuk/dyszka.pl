@@ -15,5 +15,6 @@ namespace ApplicationCore.Models
         public decimal Price { get; set; }
         public bool IsBlocked { get; set; }
         public bool IsHidden { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }

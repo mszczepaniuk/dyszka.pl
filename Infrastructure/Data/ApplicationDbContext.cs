@@ -45,6 +45,11 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Offer>()
                 .Property(o => o.Title)
                 .IsRequired();
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Offer)
+                .WithMany(u => u.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))

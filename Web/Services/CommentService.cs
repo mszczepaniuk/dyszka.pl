@@ -14,11 +14,17 @@ namespace Web.Services
 {
     public class CommentService : ExtendedBaseService<Comment>, ICommentService
     {
+        private readonly IUserService userService;
+        private readonly IAuditLogService auditLogService;
         protected override int ResultsPerPage => 20;
 
-        public CommentService(IBaseRepository<Comment> repository, IMapper mapper) : base(repository, mapper)
+        public CommentService(IBaseRepository<Comment> repository,
+            IMapper mapper,
+            IUserService userService,
+            IAuditLogService auditLogService) : base(repository, mapper)
         {
-
+            this.userService = userService;
+            this.auditLogService = auditLogService;
         }
 
         public override IQueryable<Comment> GetAll()
@@ -65,6 +71,15 @@ namespace Web.Services
 
             comment.IsPositive = true;
             await repository.UpdateAsync(id, comment);
+        }
+
+        public override Task<bool> RemoveAsync(Guid id)
+        {
+            if (GetByIdAsNoTracking(id).CreatedBy.UserName != userService.CurrentUser.UserName)
+            {
+                auditLogService.AddAuditLogAsync("Usunięto komentarz", id);
+            }
+            return base.RemoveAsync(id);
         }
     }
 }

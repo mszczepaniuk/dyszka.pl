@@ -24,6 +24,7 @@ namespace Web.Services
         private readonly HttpClient client;
         private readonly IAuditLogService auditLogService;
         private readonly IBaseRepository<Offer> offerRepository;
+        private readonly IBaseRepository<Comment> commentRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
@@ -31,11 +32,13 @@ namespace Web.Services
             HttpClient client,
             IConfiguration config,
             IAuditLogService auditLogService,
-            IBaseRepository<Offer> offerRepository) : base(repository)
+            IBaseRepository<Offer> offerRepository,
+            IBaseRepository<Comment> commentRepository) : base(repository)
         {
             this.client = client;
             this.auditLogService = auditLogService;
             this.offerRepository = offerRepository;
+            this.commentRepository = commentRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -142,12 +145,17 @@ namespace Web.Services
             {
                 return false;
             }
-            var result = await repository.RemoveAsync(id);
-            if (!result)
+
+            foreach (var comment in commentRepository.GetAll().Where(c => c.CreatedBy.Id == id).ToList())
             {
-                //TODO: Background service deleting unused user data.
+                await commentRepository.RemoveAsync(comment.Id);
             }
 
+            if (appUser.UserName != CurrentUser.UserName)
+            {
+                await auditLogService.AddAuditLogAsync("Usunięto konto użytkownika", appUser.Id);
+            }
+            await repository.RemoveAsync(id);
             return true;
         }
 
