@@ -1,1 +1,81 @@
-<h1> MODUŁ ADMINISTRACYJNY BETA</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="allign-items-center">
+        <button type="button" #admins (click)="showAdmins()" class="btn btn-primary btn-lg btn-block">Administratorzy</button>
+        <button type="button" (click)="showMods()" class="btn btn-primary btn-lg btn-block">Moderatorzy</button>
+        <button type="button" (click)="showLogs()" class="btn btn-primary btn-lg btn-block">Logi</button>
+      </div>
+    </div>
+    <div class="col-md-9 align-self-center">
+      <ul class="list-group" *ngIf="adminsShowBool">
+        <li class="list-group-item">
+
+          <form [formGroup]="addingAdminForm" (ngSubmit)="addAdminRole()">
+            <div class="form-group">
+              <label for="adminName">Administratorzy</label>
+              <input id="adminName" formControlName="adminName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
+            </div>
+            <button type="submit" [disabled]="!addingAdminForm.valid" class="btn-add btn-success btn-md">Dodaj</button>
+          </form>
+
+        </li>
+        <li class="list-group-item" *ngFor="let admin of adminsArray">
+          <div>
+            <a href="https://localhost:5001/profile/{{admin.userName}}">{{admin.userName}}</a>
+            <button type="button" (click)="deleteAdmin(admin)" class="btn-delete btn-danger btn-md">Usuń</button>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="list-group" *ngIf="modsShowBool">
+        <li class="list-group-item">
+
+          <form [formGroup]="addingModForm" (ngSubmit)="addModRole()">
+            <div class="form-group">
+              <label for="modName">Moderatorzy</label>
+              <input id="modName" formControlName="modName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
+            </div>
+            <button type="submit" [disabled]="!addingModForm.valid" class="btn-add btn-success btn-md">Dodaj</button>
+          </form>
+
+        </li>
+
+        <li class="list-group-item" *ngFor="let mod of modsArray">
+          <a href="https://localhost:5001/profile/{{mod.userName}}">{{mod.userName}}</a>
+          <button type="button" (click)="deleteMod(mod)" class="btn-delete btn-danger btn-md">Usuń</button>
+        </li>
+      </ul>
+      <table class="table" *ngIf="logsShowBool">
+        <thead>
+        <tr>
+          <th scope="col">Wykonujący</th>
+          <th scope="col">Akcja</th>
+          <th scope="col">Id elementu</th>
+          <th scope="col">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logsArray$.value">
+            <td>{{ log.authorUsername }}</td>
+            <td>{{ log.message }}</td>
+            <td>{{ log.affectedEntityId }}</td>
+            <td>{{ log.createdDate | date: 'dd.MM.yyyy hh:mm'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-md-6 btnNext">
+          <div *ngIf="logsShowBool && currentLogsPage > 1">
+            <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage - 1)"> Poprzednia strona</button>
+          </div>
+        </div>
+        <div class="col-md-6 btnPrevious">
+          <div *ngIf="logsShowBool && currentLogsPage < maxLogPage">
+            <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage + 1)"> Następna strona</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+.btn-delete {
+  float: right;
+  border-radius: 5px;
+  width: 80px;
+}
+
+.btn-add {
+  float: right;
+  border-radius: 5px;
+  width: 80px;
+}
+
+.container {
+    border: 1px solid;
+    border-color: grey;
+    padding: 12px;
+    border-radius: 25px;
+    margin-top: 50px;
+}
+
+input {
+    width: 75%;
+    border: 1px solid #808080;
+    border-radius: 4px;
+}
+
+#logBlock {
+    display: inline-block;
+    width: 100%;
+}
+
+#log{
+    float: left;
+}
+
+#logDate{
+    float: right;
+}
+
+.btnNext{
+    text-align: right;
+}

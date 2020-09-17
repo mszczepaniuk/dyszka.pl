@@ -52,6 +52,7 @@
     <None Remove="ClientApp\src\app\component\profile\profile.component.ts" />
     <None Remove="ClientApp\src\app\component\register\register.component.ts" />
     <None Remove="ClientApp\src\app\enum\dialog-result.enum.ts" />
+    <None Remove="ClientApp\src\app\model\audit-log.model.ts" />
     <None Remove="ClientApp\src\app\model\builder\user.builder.ts" />
     <None Remove="ClientApp\src\app\model\comment.model.ts" />
     <None Remove="ClientApp\src\app\model\offer.model.ts" />
@@ -86,6 +87,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\component\profile\profile.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\dialog-result.enum.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\audit-log.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\comment.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
