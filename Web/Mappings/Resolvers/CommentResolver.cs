@@ -26,7 +26,7 @@ namespace Web.Mappings.Resolvers
             {
                 throw new ElementNotFoundException("Comment not found");
             }
-            return offerService.GetById(source.OfferId);
+            return offer;
         }
     }
 }

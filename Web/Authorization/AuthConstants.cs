@@ -21,5 +21,6 @@ namespace Web.Authorization
         public const string ProfileOwnerPolicy = "ProfileOwner";
         public const string NotBannedPolicy = "NotBanned";
         public const string IsOwnerPolicy = "IsOwner";
+        public const string GetMessagesPolicy = "GetMessages";
     }
 }

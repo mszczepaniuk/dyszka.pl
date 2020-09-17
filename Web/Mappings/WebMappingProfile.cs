@@ -24,6 +24,12 @@ namespace Web.Mappings
                 .ForMember(dest => dest.Offer, opt => opt.MapFrom<CommentResolver>());
             CreateMap<Comment, CommentVm>()
                 .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
+
+            CreateMap<MessageBm, Message>()
+                .ForMember(dest => dest.Receiver, opt => opt.MapFrom<MessageResolver>());
+            CreateMap<Message, MessageVm>()
+                .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName))
+                .ForMember(dest => dest.ReceiverUserName, opt => opt.MapFrom(src => src.Receiver.UserName));
         }
     }
 }
