@@ -23,7 +23,7 @@ export class IdentityService {
     private snackBar: MatSnackBar
   ) {
     this.user$.subscribe(user => {
-      if (user.isBanned) {
+      if (user && user.isBanned) {
         this.snackBar.open('ZALOGOWANY UŻYTKOWNIK JEST ZBANOWANY');
       }
     })
