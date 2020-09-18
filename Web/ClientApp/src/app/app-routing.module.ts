@@ -10,6 +10,7 @@ import { AdministrationComponent } from './component/administration/administrati
 import { OfferFormComponent } from './component/offer/form/offer-form.component';
 import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
 import { MessageComponent } from './component/message/message.component';
+import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
 
 const routes: Routes = [
   {
@@ -37,9 +38,20 @@ const routes: Routes = [
     data: { role: 'admin' }
   },
   {
-    path: 'messages/:username',
-    component: MessageComponent,
-    canActivate: [AuthGuard]
+    path: 'messages',
+    children: [
+      {
+        path: ':username',
+        component: MessageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        component: MessageInboxComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
   },
   {
     path: 'offer',

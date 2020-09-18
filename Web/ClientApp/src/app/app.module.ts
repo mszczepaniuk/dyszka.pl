@@ -30,6 +30,7 @@ import { CommentComponent } from './component/comment/comment.component';
 import { CommentService } from './service/comment.service';
 import { MessageComponent } from './component/message/message.component';
 import { MessageService } from './service/message.service';
+import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { MessageService } from './service/message.service';
     OfferFormComponent,
     DialogComponent,
     CommentComponent,
-    MessageComponent
+    MessageComponent,
+    MessageInboxComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

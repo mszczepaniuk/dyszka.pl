@@ -47,6 +47,7 @@
     <None Remove="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <None Remove="ClientApp\src\app\component\form\form-error.component.ts" />
     <None Remove="ClientApp\src\app\component\login\login.component.ts" />
+    <None Remove="ClientApp\src\app\component\message\inbox\message-inbox.component.ts" />
     <None Remove="ClientApp\src\app\component\message\message.component.ts" />
     <None Remove="ClientApp\src\app\component\offer\details\offer-details.component.ts" />
     <None Remove="ClientApp\src\app\component\offer\form\offer-form.component.ts" />
@@ -85,6 +86,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\component\forbidden\forbidden.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\form\form-error.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\component\message\inbox\message-inbox.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\message\message.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\offer\details\offer-details.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\component\offer\form\offer-form.component.ts" />

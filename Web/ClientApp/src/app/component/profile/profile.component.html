@@ -48,7 +48,8 @@
         </a>
         <a *ngIf="identityService.isLoggedIn() && !isProfileOwner()" class="btn btn-primary" mat-raised-button
            #tooltip="matTooltip"
-           matTooltip="Napisz wiadomość">
+           matTooltip="Napisz wiadomość"
+           [routerLink]="['/messages/', username]">
           <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
         </a>
         <a *ngIf="isProfileOwner() && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-buttonjes

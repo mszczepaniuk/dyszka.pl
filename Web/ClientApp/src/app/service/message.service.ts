@@ -26,4 +26,8 @@ export class MessageService {
         return error;
       }));
   }
+
+  public getInbox(page: number) {
+    return this.httpClient.get(`${this.messagesUrl}${page}/${this.identityService.user$.value.userName}`);
+  }
 }

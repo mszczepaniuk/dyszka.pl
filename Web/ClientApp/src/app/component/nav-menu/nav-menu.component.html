@@ -39,7 +39,10 @@
           <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/profile']">Profil</a>
           </li>
-          <li *ngIf="this.identityService.isLoggedIn()" class="nav-item" [routerLinkActive]="['link-active']">
+          <li *ngIf="this.identityService.isLoggedIn() && !identityService.isBanned()" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/messages']">Wiadomości</a>
+          </li>
+          <li *ngIf="this.identityService.isLoggedIn() && !identityService.isBanned()" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/orders']">Zamówienia</a>
           </li>
           <li *ngIf="this.identityService.isInRole('admin')" class="nav-item" [routerLinkActive]="['link-active']">
