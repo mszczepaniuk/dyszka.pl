@@ -5,6 +5,9 @@ import { Message } from '../../model/message.model';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PagedResult } from '../../model/paged-result.model';
+import { IdentityService } from '../../service/identity.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-message',
@@ -19,21 +22,38 @@ export class MessageComponent extends BaseComponent implements OnInit {
   private pagesCount: number;
   private messages: Message[] = [];
   private receiverUsername: string;
+  private form: FormGroup;
 
   constructor(private messageService: MessageService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private identityService: IdentityService,
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar) {
     super();
   }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      text: ['', [Validators.required]]
+    });
+    this.messages$ = new BehaviorSubject<Message[]>([]);
     this.safeSub(
       this.messages$.subscribe(messages => this.messages = messages),
       this.route.paramMap.subscribe(params => {
-        this.receiverUsername = params['username'];
+        this.receiverUsername = params.get('username');
         this.safeSub(
           this.getPage(this.currentPage)
         );
       }));
+  }
+
+  private onSubmit() {
+    if (this.form.valid) {
+      this.messageService.addMessage({ text: this.form.controls.text.value, receiverUserName: this.receiverUsername })
+        .subscribe(() => this.getPage(1));
+    } else {
+      this.snackBar.open('Wiadomość nie może być pusta');
+    }
   }
 
   private getPage(page: number) {
@@ -41,9 +61,9 @@ export class MessageComponent extends BaseComponent implements OnInit {
     return this.messageService.getMessages(page, this.receiverUsername)
       .subscribe((result: PagedResult<Message>) => {
         let offers = [];
-        result.items.forEach(offer => {
-          offers.push(new Message(offer));
-        });
+        for (let i = result.items.length - 1; i >= 0; i--) {
+          offers.push(new Message(result.items[i]));
+        }
         this.messages$.next(offers);
         this.currentPage = result.currentPage;
         this.pagesCount = result.pagesCount;
