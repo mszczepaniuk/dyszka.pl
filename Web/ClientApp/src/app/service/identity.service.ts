@@ -22,6 +22,11 @@ export class IdentityService {
     private router: Router,
     private snackBar: MatSnackBar
   ) {
+    this.user$.subscribe(user => {
+      if (user.isBanned) {
+        this.snackBar.open('ZALOGOWANY UŻYTKOWNIK JEST ZBANOWANY');
+      }
+    })
     this.accessToken$.subscribe(token => {
       localStorage.setItem(Config.localStorageAccessTokenKey, token);
       if (token) {

@@ -3,6 +3,7 @@
     <h3>Ładowanie...</h3>
   </div>
   <div *ngIf="!loading">
+    <h2 *ngIf="isBanned()" style="color:red">TEN UŻYTKOWNIK JEST ZBANOWANY</h2>
     <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
     <form [formGroup]="form">
       <div class="row">
@@ -16,8 +17,8 @@
                      (change)="processFile(imageInput)">
             </label>
           </div>
-          <img *ngIf="useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="defaultImage" />
-          <img *ngIf="!useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="user$.value.profileImage" />
+          <img *ngIf="useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="defaultImage"/>
+          <img *ngIf="!useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="user$.value.profileImage"/>
         </div>
         <div class="col-md-8">
           <div class="form-group">
