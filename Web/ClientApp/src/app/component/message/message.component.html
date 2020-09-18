@@ -1,0 +1,46 @@
+<div class="container">
+  <h2 *ngIf="loading">Ładowanie...</h2>
+  <div *ngIf="!loading">
+    <h2>Wiadomości z użytkownikiem: {{ this.receiverUsername }}</h2>
+    <div class="row">
+      <div class="col-6 text-left previous">
+        <a *ngIf="currentPage > 1" class="btn btn-primary">
+          <fa-icon [icon]="faBackward" class="white-icon" (click)="getPage(currentPage - 1)"></fa-icon>
+        </a>
+      </div>
+      <div class="col-6 text-right next">
+        <a *ngIf="currentPage < pagesCount" class="btn btn-primary">
+          <fa-icon [icon]="faForward" class="white-icon" (click)="getPage(currentPage + 1)"></fa-icon>
+        </a>
+      </div>
+    </div>
+    <div class="row" *ngFor="let message of messages">
+      <div class="col-6 text-left previous">
+        <div class="card" *ngIf="message.authorUserName !== identityService.user$.value.userName">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>{{ message.text }}</p>
+              <footer class="blockquote-footer">{{ message.createdDate | date: 'dd.MM.yyyy hh:mm' }}</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 text-right next">
+        <div class="card" *ngIf="message.authorUserName === identityService.user$.value.userName">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>{{ message.text }}</p>
+              <footer class="blockquote-footer">{{ message.createdDate | date: 'dd.MM.yyyy hh:mm' }}</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <textarea id="text" rows="5" class="form-control" type="text" formControlName="text"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Wyślij</button>
+    </form>
+  </div>
+</div>

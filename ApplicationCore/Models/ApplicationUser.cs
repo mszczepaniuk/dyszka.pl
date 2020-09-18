@@ -12,5 +12,8 @@ namespace ApplicationCore.Models
         public string TelephoneNumber { get; set; }
         public string ProfileImage { get; set; }
         public IList<Offer> Offers { get; set; }
+        public IList<Message> ReceivedMessages { get; set; }
+        public IList<Message> SendMessages { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }

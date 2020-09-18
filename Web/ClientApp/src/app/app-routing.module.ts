@@ -9,6 +9,8 @@ import { AuthGuard } from './authorization/auth-guard';
 import { AdministrationComponent } from './component/administration/administration.component';
 import { OfferFormComponent } from './component/offer/form/offer-form.component';
 import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
+import { MessageComponent } from './component/message/message.component';
+import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
 
 const routes: Routes = [
   {
@@ -34,6 +36,22 @@ const routes: Routes = [
     component: AdministrationComponent,
     canActivate: [AuthGuard],
     data: { role: 'admin' }
+  },
+  {
+    path: 'messages',
+    children: [
+      {
+        path: ':username',
+        component: MessageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        component: MessageInboxComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
   },
   {
     path: 'offer',
@@ -68,7 +86,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'forbidden'
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

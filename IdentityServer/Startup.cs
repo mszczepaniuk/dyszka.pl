@@ -96,8 +96,6 @@ namespace IdentityServer
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // TYMCZASOWO DO TESTÓW
-            app.UseMiddleware<RequestDiagnosticsMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -112,33 +110,6 @@ namespace IdentityServer
             {
                 endpoints.MapDefaultControllerRoute();
             });
-        }
-    }
-
-    //TYMCZASOWO
-    public class RequestDiagnosticsMiddleware
-    {
-        private readonly RequestDelegate _next;
-
-        public RequestDiagnosticsMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
-        public async Task InvokeAsync(HttpContext context)
-        {
-            //try
-            //{
-            //    var reader = new StreamReader(context.Request.Body);
-            //    //reader.BaseStream.Seek(0, SeekOrigin.Begin);
-            //    var rawMessage = await reader.ReadToEndAsync();
-            //}
-            //catch (Exception e)
-            //{
-
-            //}
-
-            await _next(context);
         }
     }
 }

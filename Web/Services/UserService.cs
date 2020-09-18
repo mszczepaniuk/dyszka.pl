@@ -25,6 +25,7 @@ namespace Web.Services
         private readonly IAuditLogService auditLogService;
         private readonly IBaseRepository<Offer> offerRepository;
         private readonly IBaseRepository<Comment> commentRepository;
+        private readonly IBaseRepository<Message> messageRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
@@ -33,12 +34,14 @@ namespace Web.Services
             IConfiguration config,
             IAuditLogService auditLogService,
             IBaseRepository<Offer> offerRepository,
-            IBaseRepository<Comment> commentRepository) : base(repository)
+            IBaseRepository<Comment> commentRepository,
+            IBaseRepository<Message> messageRepository) : base(repository)
         {
             this.client = client;
             this.auditLogService = auditLogService;
             this.offerRepository = offerRepository;
             this.commentRepository = commentRepository;
+            this.messageRepository = messageRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -146,10 +149,7 @@ namespace Web.Services
                 return false;
             }
 
-            foreach (var comment in commentRepository.GetAll().Where(c => c.CreatedBy.Id == id).ToList())
-            {
-                await commentRepository.RemoveAsync(comment.Id);
-            }
+            await ResolveRemovalDependencies(id);
 
             if (appUser.UserName != CurrentUser.UserName)
             {
@@ -172,6 +172,27 @@ namespace Web.Services
             var response = await client.SendAsync(request);
             request.Dispose();
             return response;
+        }
+
+        private async Task ResolveRemovalDependencies(Guid id)
+        {
+            foreach (var comment in commentRepository.GetAll().Where(c => c.CreatedBy.Id == id).ToList())
+            {
+                await commentRepository.RemoveAsync(comment.Id);
+            }
+
+            foreach (var message in messageRepository.GetAll().Where(m => m.CreatedBy.Id == id || m.Receiver.Id == id).ToList())
+            {
+                await messageRepository.RemoveAsync(message.Id);
+            }
+
+            foreach (var offer in offerRepository.GetAll().Where(o => o.CreatedBy.Id == id).ToList())
+            {
+                offer.IsHidden = true;
+                offer.CreatedBy = null;
+                offer.UpdatedBy = null;
+                await offerRepository.UpdateAsync(offer.Id, offer);
+            }
         }
     }
 }

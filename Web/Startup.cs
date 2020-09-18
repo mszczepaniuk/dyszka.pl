@@ -56,6 +56,7 @@ namespace Web
                 options.AddPolicy(AuthConstants.ProfileOwnerPolicy, policy => policy.AddRequirements(new ProfileOwnerRequirement()));
                 options.AddPolicy(AuthConstants.UserRemovalPolicy, policy => policy.AddRequirements(new UserRemovalRequirement()));
                 options.AddPolicy(AuthConstants.IsOwnerPolicy, policy => policy.AddRequirements(new IsOwnerRequirement()));
+                options.AddPolicy(AuthConstants.GetMessagesPolicy, policy => policy.AddRequirements(new GetMessagesRequirement()));
             });
             services.AddAutoMapper(typeof(Startup));
 
@@ -66,6 +67,7 @@ namespace Web
             services.AddScoped<IAuthorizationHandler, ProfileOwnerAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, UserRemovalAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, GetMessageAuthorizationHandler>();
 
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient(typeof(IExtendedBaseService<,>), typeof(BaseService<,>));
@@ -74,6 +76,7 @@ namespace Web
             services.AddTransient<IAuditLogService, AuditLogService>();
             services.AddTransient<IOfferService, OfferService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IMessageService, MessageService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

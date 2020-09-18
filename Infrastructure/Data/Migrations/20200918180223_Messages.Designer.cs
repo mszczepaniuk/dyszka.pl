@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200918180223_Messages")]
+    partial class Messages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,7 +200,7 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("ApplicationCore.Models.Comment", b =>
                 {
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("CreatedById");
 
                     b.HasOne("ApplicationCore.Models.Offer", "Offer")
@@ -214,11 +216,11 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("ApplicationCore.Models.Message", b =>
                 {
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
-                        .WithMany("SendMessages")
+                        .WithMany()
                         .HasForeignKey("CreatedById");
 
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "Receiver")
-                        .WithMany("ReceivedMessages")
+                        .WithMany()
                         .HasForeignKey("ReceiverId");
                 });
 
@@ -227,7 +229,7 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
                         .WithMany("Offers")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "UpdatedBy")
                         .WithMany()
