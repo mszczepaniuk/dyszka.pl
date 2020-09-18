@@ -23,6 +23,7 @@ namespace Infrastructure.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +36,8 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Offer>()
                 .HasOne(o => o.CreatedBy)
                 .WithMany(u => u.Offers)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<Offer>()
                 .Property(o => o.Price)
                 .HasColumnType("decimal(18,4)");
@@ -50,6 +52,18 @@ namespace Infrastructure.Data
                 .HasOne(c => c.Offer)
                 .WithMany(u => u.Comments)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.SendMessages)
+                .WithOne(m => m.CreatedBy);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.ReceivedMessages)
+                .WithOne(m => m.Receiver);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Comments)
+                .WithOne(m => m.CreatedBy);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))

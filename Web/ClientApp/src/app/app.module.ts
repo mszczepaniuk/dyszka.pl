@@ -28,6 +28,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './component/dialog/dialog.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { CommentService } from './service/comment.service';
+import { MessageComponent } from './component/message/message.component';
+import { MessageService } from './service/message.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { CommentService } from './service/comment.service';
     OfferDetailsComponent,
     OfferFormComponent,
     DialogComponent,
-    CommentComponent
+    CommentComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -63,6 +66,7 @@ import { CommentService } from './service/comment.service';
     AdministrationService,
     OfferService,
     CommentService,
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

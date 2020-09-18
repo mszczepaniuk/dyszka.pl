@@ -21,7 +21,7 @@ namespace Web.Mappings.Resolvers
 
         public ApplicationUser Resolve(MessageBm source, Message destination, ApplicationUser destMember, ResolutionContext context)
         {
-            var user = userService.GetByUserName(source.ReceiverUserName);
+            var user = userService.GetAll().Where(u => u.UserName == source.ReceiverUserName).FirstOrDefault();
             if (user == null)
             {
                 throw new ElementNotFoundException("User not found");

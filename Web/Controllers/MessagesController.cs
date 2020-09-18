@@ -48,6 +48,18 @@ namespace Web.Controllers
             return Ok(messageService.GetPagedAndFiltered(page, user1, user2));
         }
 
+        [HttpGet("{page}/{user}")]
+        [Authorize(AuthConstants.NotBannedPolicy)]
+        public async Task<IActionResult> GetReceivedMessages(int page, string user)
+        {
+            if (!(await authorizationService.AuthorizeAsync(HttpContext.User, user, AuthConstants.GetMessagesPolicy))
+                    .Succeeded)
+            {
+                return StatusCode((int)HttpStatusCode.Forbidden);
+            }
+            return Ok(messageService.GetLastReceivedMessages(page, user));
+        }
+
         [HttpPost]
         [Authorize(AuthConstants.NotBannedPolicy)]
         public async Task<IActionResult> Add(MessageBm message)
