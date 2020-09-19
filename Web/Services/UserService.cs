@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Models;
 using ApplicationCore.Repositories;
-using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using ApplicationCore.BindingModels;
-using AutoMapper;
-using IdentityModel;
 using Microsoft.EntityFrameworkCore;
 using Web.Services.Interfaces;
 
@@ -29,6 +24,7 @@ namespace Web.Services
         private readonly IBaseRepository<Message> messageRepository;
         private readonly IBaseRepository<Order> orderRepository;
         private readonly IBaseRepository<BillingData> billingDataRepository;
+        private readonly IBaseRepository<Payment> paymentRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
@@ -40,7 +36,9 @@ namespace Web.Services
             IBaseRepository<Comment> commentRepository,
             IBaseRepository<Message> messageRepository,
             IBaseRepository<Order> orderRepository,
-            IBaseRepository<BillingData> billingDataRepository) : base(repository)
+            IBaseRepository<BillingData> billingDataRepository,
+            IBaseRepository<Payment> paymentRepository) : base(repository)
+            
         {
             this.client = client;
             this.auditLogService = auditLogService;
@@ -49,6 +47,7 @@ namespace Web.Services
             this.messageRepository = messageRepository;
             this.orderRepository = orderRepository;
             this.billingDataRepository = billingDataRepository;
+            this.paymentRepository = paymentRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -229,6 +228,12 @@ namespace Web.Services
             {
                 billingData.CreatedBy = null;
                 await billingDataRepository.UpdateAsync(billingData.Id, billingData);
+            }
+
+            foreach (var payment in paymentRepository.GetAll().Where(p => p.DoneBy.Id == id).ToList())
+            {
+                payment.DoneBy = null;
+                await paymentRepository.UpdateAsync(payment.Id, payment);
             }
         }
     }

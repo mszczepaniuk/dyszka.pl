@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using ApplicationCore.Models;
+using ApplicationCore.Models.Options;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
@@ -37,6 +39,7 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
@@ -61,6 +64,8 @@ namespace Web
             });
             services.AddAutoMapper(typeof(Startup));
 
+            services.Configure<PaymentOptions>(configuration.GetSection("PaymentOptions"));
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<HttpClient>();
 
@@ -79,6 +84,7 @@ namespace Web
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IPaymentService, PaymentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

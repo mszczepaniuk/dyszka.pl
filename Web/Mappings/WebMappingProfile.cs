@@ -39,6 +39,11 @@ namespace Web.Mappings
 
             CreateMap<BillingDataBm, BillingData>();
             CreateMap<BillingData, BillingDataVm>();
+
+            CreateMap<Payment, PaymentVm>()
+                .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => src.Order.Offer.Id))
+                .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Order.Id))
+                .ForMember(dest => dest.BillingDataId, opt => opt.MapFrom(src => src.BillingData.Id));
         }
     }
 }

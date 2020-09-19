@@ -18,17 +18,20 @@ namespace Web.Services
         private readonly IMapper mapper;
         private readonly IUserService userService;
         private readonly IBaseRepository<Offer> offerRepository;
+        private readonly IPaymentService paymentService;
         private int ResultsPerPage => 10;
 
         public OrderService(IBaseRepository<Order> orderRepository,
             IMapper mapper,
             IUserService userService,
-            IBaseRepository<Offer> offerRepository)
+            IBaseRepository<Offer> offerRepository,
+            IPaymentService paymentService)
         {
             this.orderRepository = orderRepository;
             this.mapper = mapper;
             this.userService = userService;
             this.offerRepository = offerRepository;
+            this.paymentService = paymentService;
         }
 
         public Order GetByIdAsNoTracking(Guid id)
@@ -83,8 +86,12 @@ namespace Web.Services
 
         public async Task MarkAsDone(Guid orderId)
         {
-            // CREATE PAYMENT HERE
-            var order = orderRepository.GetById(orderId);
+            var order = orderRepository.GetAll().Where(o => o.Id == orderId)
+                .Include(o => o.CreatedBy)
+                .Include(o => o.Offer)
+                .ThenInclude(o => o.CreatedBy)
+                .FirstOrDefault();
+            await paymentService.AddPayment(order);
             order.Done = true;
             order.DoneTime = DateTime.Now;
             await orderRepository.UpdateAsync(orderId, order);
