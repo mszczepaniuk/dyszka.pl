@@ -43,7 +43,7 @@ namespace Web.Mappings
             CreateMap<Payment, PaymentVm>()
                 .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => src.Order.Offer.Id))
                 .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Order.Id))
-                .ForMember(dest => dest.BillingDataId, opt => opt.MapFrom(src => src.BillingData.Id));
+                .ForMember(dest => dest.ReceiverUserName, opt => opt.MapFrom(src => src.Order.Offer.CreatedBy.UserName));
         }
     }
 }

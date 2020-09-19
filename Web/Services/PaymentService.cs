@@ -39,7 +39,8 @@ namespace Web.Services
                 .Where(p => !p.Done)
                 .Include(p => p.BillingData)
                 .Include(p => p.Order)
-                .ThenInclude(o => o.Offer);
+                .ThenInclude(o => o.Offer)
+                .ThenInclude(o => o.CreatedBy);
             return new PagedResult<PaymentVm>
             {
                 Items = mapper.Map<List<PaymentVm>>(query.Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList()),

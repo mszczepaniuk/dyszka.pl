@@ -64,6 +64,7 @@
     <None Remove="ClientApp\src\app\model\offer.model.ts" />
     <None Remove="ClientApp\src\app\model\order.model.ts" />
     <None Remove="ClientApp\src\app\model\paged-result.model.ts" />
+    <None Remove="ClientApp\src\app\model\payment.model.ts" />
     <None Remove="ClientApp\src\app\model\user.model.ts" />
     <None Remove="ClientApp\src\app\service\administration.service.ts" />
     <None Remove="ClientApp\src\app\service\comment.service.ts" />
@@ -72,6 +73,7 @@
     <None Remove="ClientApp\src\app\service\message.service.ts" />
     <None Remove="ClientApp\src\app\service\offer.service.ts" />
     <None Remove="ClientApp\src\app\service\order.service.ts" />
+    <None Remove="ClientApp\src\app\service\payment.service.ts" />
     <None Remove="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 
@@ -104,6 +106,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\model\billing-data.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\builder\user.builder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\comment.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\payment.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\message.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\offer.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\order.model.ts" />
@@ -115,6 +118,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\service\message.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\offer.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\order.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\payment.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\user.service.ts" />
   </ItemGroup>
 

@@ -6,9 +6,10 @@ namespace ApplicationCore.ViewModels
 {
     public class PaymentVm
     {
+        public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid OrderId { get; set; }
         public Guid OfferId { get; set; }
-        public Guid BillingDataId { get; set; }
+        public string ReceiverUserName { get; set; }
     }
 }
