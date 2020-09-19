@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
+using ApplicationCore.Models;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
@@ -77,6 +78,7 @@ namespace Web
             services.AddTransient<IOfferService, OfferService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -57,4 +57,9 @@ export class OfferService {
       return error;
     }));
   }
+
+  public orderOffer(id: string) {
+    this.httpClient.post(`${this.offerUrl}${id}/order`, {}).
+      subscribe(() => this.snackBar.open('Złożono zamówienie'));
+  }
 }

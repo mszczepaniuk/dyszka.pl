@@ -103,9 +103,9 @@ namespace Web.Controllers
 
         [HttpPost("{id}/order")]
         [Authorize(AuthConstants.NotBannedPolicy)]
-        public async Task<IActionResult> CreateOrder(Guid offerId)
+        public async Task<IActionResult> CreateOrder(Guid id)
         {
-            await orderService.CreateOrder(offerId);
+            await orderService.CreateOrder(id);
             return Ok();
         }
     }

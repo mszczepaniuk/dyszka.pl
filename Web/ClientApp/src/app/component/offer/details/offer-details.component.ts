@@ -112,8 +112,11 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit, Afte
         }
       },
       onApprove: async (data, actions) => {
-        const order = await actions.order.capture();
-        console.log(order);
+        if (this.identityService.user$.value.userName !== this.offer.authorUserName) {
+          this.offerService.orderOffer(this.offer.id);
+        } else if (this.canPromote) {
+
+        }
       }
     }).render(this.paypalElement.nativeElement);
   }

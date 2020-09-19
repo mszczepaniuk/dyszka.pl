@@ -67,6 +67,7 @@ namespace Web.Services
 
         public async Task CreateOrder(Guid offerId)
         {
+            var test = offerRepository.GetById(offerId);
             await orderRepository.AddAsync(new Order
             {
                 Done = false,
