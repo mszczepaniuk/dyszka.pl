@@ -11,6 +11,8 @@ import { OfferFormComponent } from './component/offer/form/offer-form.component'
 import { OfferDetailsComponent } from './component/offer/details/offer-details.component';
 import { MessageComponent } from './component/message/message.component';
 import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
+import { OrderComponent } from './component/order/order.component';
+import { BillingDataComponent } from './component/billing-data/billing-data.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,10 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'billing-data/:username',
+    component: BillingDataComponent
+  },
+  {
     path: 'register',
     component: RegisterComponent
   },
@@ -36,6 +42,11 @@ const routes: Routes = [
     component: AdministrationComponent,
     canActivate: [AuthGuard],
     data: { role: 'admin' }
+  },
+  {
+    path: 'orders',
+    component: OrderComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'messages',

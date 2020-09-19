@@ -6,8 +6,8 @@
 
 .btn-add {
   float: right;
-  border-radius: 5px;
   width: 80px;
+  margin-right: 20px;
 }
 
 .container {
@@ -18,23 +18,12 @@
     margin-top: 50px;
 }
 
-input {
-    width: 75%;
-    border: 1px solid #808080;
-    border-radius: 4px;
+.username-link {
+  font-size: 20px;
 }
 
-#logBlock {
-    display: inline-block;
-    width: 100%;
-}
-
-#log{
-    float: left;
-}
-
-#logDate{
-    float: right;
+form {
+  margin-bottom: 5px;
 }
 
 .btnNext{

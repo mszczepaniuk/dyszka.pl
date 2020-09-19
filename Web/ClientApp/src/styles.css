@@ -21,3 +21,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .white-icon {
   color: white;
 }
+
+.previous {
+  text-align: left;
+}
+
+.next {
+  text-align: right;
+}

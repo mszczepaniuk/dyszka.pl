@@ -8,6 +8,9 @@ import { DialogResult } from '../../enum/dialog-result.enum';
 import { BehaviorSubject } from 'rxjs';
 import { AuditLog } from '../../model/audit-log.model';
 import { PagedResult } from '../../model/paged-result.model';
+import { PaymentService } from '../../service/payment.service';
+import { faPlus, faTrashAlt, faOutdent, faCheck, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { Payment } from '../../model/payment.model';
 
 @Component({
   selector: 'app-forbidden',
@@ -15,6 +18,11 @@ import { PagedResult } from '../../model/paged-result.model';
   styleUrls: ['./administration.component.css']
 })
 export class AdministrationComponent extends BaseComponent {
+  faPlus = faPlus;
+  faTrashAlt = faTrashAlt;
+  faOutdent = faOutdent;
+  faCheck = faCheck;
+  faMoneyBill = faMoneyBill;
 
   addingAdminForm = new FormGroup({
     adminName: new FormControl('', [Validators.required])
@@ -27,18 +35,20 @@ export class AdministrationComponent extends BaseComponent {
   public logsArray$ = new BehaviorSubject<AuditLog[]>([]);
   adminsArray = [];
   modsArray = [];
-  adminsShowBool: boolean;
-  modsShowBool: boolean;
-  logsShowBool: boolean;
+  currentTab = 'admins';
   adminName: string;
   currentLogsPage: number;
   maxLogPage: number;
-
+  currentPaymentsPage: number = 1;
+  paymentsPageCount: number;
+  private payments$ = new BehaviorSubject<Payment[]>([]);
+  private payments: Payment[];
 
   constructor(
     private administrationService: AdministrationService,
     private formsModule: FormsModule,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private paymentService: PaymentService) {
     super();
     this.safeSub(
       this.administrationService.admins$.subscribe(admins => {
@@ -46,28 +56,27 @@ export class AdministrationComponent extends BaseComponent {
       }),
       this.administrationService.moderators$.subscribe(mods => {
         this.modsArray = mods;
-      })
+      }),
+      this.payments$.subscribe(payments => this.payments = payments),
+      this.getLogsPage(1),
+      this.getPaymentsPage(1)
     );
-    this.getLogsPage(1);
-    this.adminsShowBool = true;
   }
 
   showAdmins() {
-    this.modsShowBool = false;
-    this.logsShowBool = false;
-    this.adminsShowBool = true;
+    this.currentTab = 'admins';
   }
 
   showMods() {
-    this.logsShowBool = false;
-    this.adminsShowBool = false;
-    this.modsShowBool = true;
+    this.currentTab = 'mods';
   }
 
   showLogs() {
-    this.modsShowBool = false;
-    this.adminsShowBool = false;
-    this.logsShowBool = true;
+    this.currentTab = 'logs';
+  }
+
+  showPayments() {
+    this.currentTab = 'payments';
   }
 
   deleteAdmin(admin) {
@@ -131,7 +140,7 @@ export class AdministrationComponent extends BaseComponent {
   }
 
   getLogsPage(page: number) {
-    this.administrationService.getAuditLogs(page).subscribe((logs: PagedResult<AuditLog>) => {
+    return this.administrationService.getAuditLogs(page).subscribe((logs: PagedResult<AuditLog>) => {
       let logsTempArray = [];
       logs.items.forEach(log => {
         logsTempArray.push(new AuditLog(log));
@@ -142,4 +151,29 @@ export class AdministrationComponent extends BaseComponent {
     });
   }
 
+  getPaymentsPage(page: number) {
+    return this.paymentService.getPaged(page).subscribe((result: PagedResult<Payment>) => {
+      let payments = [];
+      result.items.forEach(payment => {
+        payments.push(new Payment(payment));
+      });
+      this.payments$.next(payments);
+      this.currentPaymentsPage = result.currentPage;
+      this.paymentsPageCount = result.pagesCount;
+    });
+  }
+
+  markAsDone(id: string) {
+    this.dialog.open(DialogComponent,
+      {
+        width: '450px',
+        data: {
+          message: 'Czy na pewno płatność została zrealizowana?'
+        }
+      }).afterClosed().subscribe((result: DialogResult) => {
+      if (result === DialogResult.Yes) {
+        this.paymentService.markAsDone(id).subscribe(() => this.getPaymentsPage(this.currentPaymentsPage));
+      }
+    });
+  }
 }

@@ -30,6 +30,20 @@ namespace Web.Mappings
             CreateMap<Message, MessageVm>()
                 .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName))
                 .ForMember(dest => dest.ReceiverUserName, opt => opt.MapFrom(src => src.Receiver.UserName));
+
+            CreateMap<Order, OrderVm>()
+                .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => src.Offer.Id))
+                .ForMember(dest => dest.OfferAuthorUserName, opt => opt.MapFrom(src => src.Offer.CreatedBy.UserName))
+                .ForMember(dest => dest.OfferTitle, opt => opt.MapFrom(src => src.Offer.Title))
+                .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
+
+            CreateMap<BillingDataBm, BillingData>();
+            CreateMap<BillingData, BillingDataVm>();
+
+            CreateMap<Payment, PaymentVm>()
+                .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => src.Order.Offer.Id))
+                .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Order.Id))
+                .ForMember(dest => dest.ReceiverUserName, opt => opt.MapFrom(src => src.Order.Offer.CreatedBy.UserName));
         }
     }
 }

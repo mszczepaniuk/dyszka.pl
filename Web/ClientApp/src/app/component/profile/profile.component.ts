@@ -6,7 +6,7 @@ import { UserService } from '../../service/user.service';
 import { User } from '../../model/user.model';
 import { UserBuilder } from '../../model/builder/user.builder';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faOutdent, faEnvelope, faEdit, faSave, faUndo, faUserMinus, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faOutdent, faEnvelope, faEdit, faSave, faUndo, faUserMinus, faBan, faMoneyBill} from '@fortawesome/free-solid-svg-icons';
 import { Config } from '../../config';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
@@ -27,6 +27,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   faUndo = faUndo;
   faUserMinus = faUserMinus;
   faBan = faBan;
+  faMoneyBill = faMoneyBill;
 
   public user$ = new BehaviorSubject<User>(null);
   public form: FormGroup;

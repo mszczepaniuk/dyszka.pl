@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200919111448_Orders")]
+    partial class Orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,48 +70,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("AuditLogs");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Models.BillingData", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BankAccountNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("BillingDatas");
                 });
 
             modelBuilder.Entity("ApplicationCore.Models.Comment", b =>
@@ -260,60 +220,11 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BillingDataId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Done")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("DoneById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DoneTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillingDataId");
-
-                    b.HasIndex("DoneById");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("ApplicationCore.Models.AuditLog", b =>
                 {
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Models.BillingData", b =>
-                {
-                    b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("ApplicationCore.Models.ApplicationUser", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
                 });
 
             modelBuilder.Entity("ApplicationCore.Models.Comment", b =>
@@ -364,21 +275,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("ApplicationCore.Models.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Models.Payment", b =>
-                {
-                    b.HasOne("ApplicationCore.Models.BillingData", "BillingData")
-                        .WithMany()
-                        .HasForeignKey("BillingDataId");
-
-                    b.HasOne("ApplicationCore.Models.ApplicationUser", "DoneBy")
-                        .WithMany()
-                        .HasForeignKey("DoneById");
-
-                    b.HasOne("ApplicationCore.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

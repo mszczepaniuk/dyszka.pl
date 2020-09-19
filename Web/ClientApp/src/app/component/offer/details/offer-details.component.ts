@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { BaseComponent } from '../../BaseComponent';
 import { OfferService } from '../../../service/offer.service';
 import { ActivatedRoute } from '@angular/router';
@@ -6,22 +6,32 @@ import { Offer } from '../../../model/offer.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdentityService } from '../../../service/identity.service';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../../dialog/dialog.component';
+
+declare var paypal;
 
 @Component({
   selector: 'app-offer-details',
   templateUrl: './offer-details.component.html',
   styleUrls: ['./offer-details.component.css']
 })
-export class OfferDetailsComponent extends BaseComponent implements OnInit {
+export class OfferDetailsComponent extends BaseComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('paypal', { static: false }) paypalElement: ElementRef;
+
   faBan = faBan;
   private offer: Offer;
   private loading: boolean;
   private form: FormGroup;
+  // CHANGE TO FALSE
+  private canPromote = true;
 
   constructor(private offerService: OfferService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private identityService: IdentityService) {
+    private identityService: IdentityService,
+    private dialog: MatDialog) {
     super();
   }
 
@@ -37,6 +47,10 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
           this.loading = false;
         });
       }));
+  }
+
+  ngAfterViewInit(): void {
+    this.renderPayPalButton();
   }
 
   private isOwner() {
@@ -63,5 +77,47 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
     this.offerService.hideOffer(this.offer.id).subscribe(() => {
       this.offer.isHidden = true;
     });;
+  }
+
+  private renderPayPalButton() {
+    paypal.Buttons({
+      createOrder: (data, actions) => {
+        if (!this.offer || !this.identityService.isLoggedIn() || this.identityService.isBanned()) {
+          return null;
+        }
+        if (this.identityService.user$.value.userName !== this.offer.authorUserName) {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: this.offer.title,
+                amount: {
+                  currency_code: 'PLN',
+                  value: this.offer.price
+                }
+              }
+            ]
+          });
+        } else if (this.canPromote) {
+          return actions.order.create({
+              purchase_units: [
+                {
+                  description: `Promocja oferty ${this.offer.title}`,
+                  amount: {
+                    currency_code: 'PLN',
+                    value: this.offer.price
+                  }
+                }
+              ]
+            });
+        }
+      },
+      onApprove: async (data, actions) => {
+        if (this.identityService.user$.value.userName !== this.offer.authorUserName) {
+          this.offerService.orderOffer(this.offer.id);
+        } else if (this.canPromote) {
+
+        }
+      }
+    }).render(this.paypalElement.nativeElement);
   }
 }

@@ -31,8 +31,10 @@ import { CommentService } from './service/comment.service';
 import { MessageComponent } from './component/message/message.component';
 import { MessageService } from './service/message.service';
 import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
-
-@NgModule({
+import { OrderComponent } from './component/order/order.component';
+import { OrderService } from './service/order.service';
+import { BillingDataComponent } from './component/billing-data/billing-data.component';
+import { PaymentService } from './service/payment.service';@NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
@@ -48,7 +50,9 @@ import { MessageInboxComponent } from './component/message/inbox/message-inbox.c
     DialogComponent,
     CommentComponent,
     MessageComponent,
-    MessageInboxComponent
+    MessageInboxComponent,
+    OrderComponent,
+    BillingDataComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -69,6 +73,8 @@ import { MessageInboxComponent } from './component/message/inbox/message-inbox.c
     OfferService,
     CommentService,
     MessageService,
+    OrderService,
+    PaymentService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

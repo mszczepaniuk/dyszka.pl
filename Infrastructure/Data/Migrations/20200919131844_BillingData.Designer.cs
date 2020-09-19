@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200919131844_BillingData")]
+    partial class BillingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,44 +262,6 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BillingDataId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Done")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("DoneById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DoneTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillingDataId");
-
-                    b.HasIndex("DoneById");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("ApplicationCore.Models.AuditLog", b =>
                 {
                     b.HasOne("ApplicationCore.Models.ApplicationUser", "CreatedBy")
@@ -364,21 +328,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("ApplicationCore.Models.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Models.Payment", b =>
-                {
-                    b.HasOne("ApplicationCore.Models.BillingData", "BillingData")
-                        .WithMany()
-                        .HasForeignKey("BillingDataId");
-
-                    b.HasOne("ApplicationCore.Models.ApplicationUser", "DoneBy")
-                        .WithMany()
-                        .HasForeignKey("DoneById");
-
-                    b.HasOne("ApplicationCore.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

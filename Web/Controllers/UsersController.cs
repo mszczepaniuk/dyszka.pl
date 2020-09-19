@@ -140,5 +140,21 @@ namespace Web.Controllers
                 ? StatusCode((int)HttpStatusCode.OK)
                 : StatusCode((int)HttpStatusCode.BadRequest);
         }
+
+        [HttpGet("{username}/billing-data")]
+        [Authorize(AuthConstants.NotBannedPolicy)]
+        public IActionResult GetBillingData(string username)
+        {
+            return Ok(userService.GetUserBillingData(username));
+        }
+
+        [HttpPost("billing-data")]
+        [Authorize(AuthConstants.NotBannedPolicy)]
+        public async Task<IActionResult> CreateOrUpdateBillingData(BillingDataBm billingData)
+        {
+            await userService.CreateOrUpdateUserBillingData(userService.CurrentUser.UserName,
+                mapper.Map<BillingData>(billingData));
+            return Ok();
+        }
     }
 }
