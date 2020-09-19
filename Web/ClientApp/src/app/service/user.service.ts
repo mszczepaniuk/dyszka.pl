@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { UserBuilder } from '../model/builder/user.builder';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { BillingData } from '../model/billing-data.model';
 
 @Injectable()
 export class UserService {
@@ -82,5 +83,13 @@ export class UserService {
         this.snackBar.open('Bład podczas usuwania użytkownika', '', { duration: 2000 });
         return error;
       }));
+  }
+
+  public getBillingData(username: string) {
+    return this.httpClient.get(`${this.url}${username}/billing-data`);
+  }
+
+  public postBillingData(billingData: BillingData) {
+    return this.httpClient.post(`${this.url}billing-data`, billingData);
   }
 }

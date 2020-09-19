@@ -53,6 +53,12 @@
            [routerLink]="['/messages/', username]">
           <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
         </a>
+        <a *ngIf="identityService.isLoggedIn() && (isProfileOwner() || identityService.isInRole('admin'))" class="btn btn-primary" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Dane do przelewu"
+           [routerLink]="['/billing-data/', username]">
+          <fa-icon [icon]="faMoneyBill" class="white-icon"></fa-icon>
+        </a>
         <a *ngIf="isProfileOwner() && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-buttonjes
            #tooltip="matTooltip"
            matTooltip="Edytuj profil">

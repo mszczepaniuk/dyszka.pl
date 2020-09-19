@@ -10,7 +10,7 @@
       <table class="table" *ngIf="!loading">
         <tbody>
           <tr *ngFor="let order of orders">
-            <td *ngIf="selectedTab === 'completed'">{{ order.doneTime }}</td>
+            <td *ngIf="selectedTab === 'completed'">{{ order.doneTime | date: 'dd.MM.yyyy HH:mm' }}</td>
             <td *ngIf="selectedTab !== 'completed'">{{ order.createdDate | date: 'dd.MM.yyyy HH:mm' }}</td>
             <td>{{ order.offerTitle }}</td>
             <td>

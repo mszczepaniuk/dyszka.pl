@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ApplicationCore.BindingModels;
 using AutoMapper;
 using IdentityModel;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace Web.Services
         private readonly IBaseRepository<Comment> commentRepository;
         private readonly IBaseRepository<Message> messageRepository;
         private readonly IBaseRepository<Order> orderRepository;
+        private readonly IBaseRepository<BillingData> billingDataRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
@@ -37,7 +39,8 @@ namespace Web.Services
             IBaseRepository<Offer> offerRepository,
             IBaseRepository<Comment> commentRepository,
             IBaseRepository<Message> messageRepository,
-            IBaseRepository<Order> orderRepository) : base(repository)
+            IBaseRepository<Order> orderRepository,
+            IBaseRepository<BillingData> billingDataRepository) : base(repository)
         {
             this.client = client;
             this.auditLogService = auditLogService;
@@ -45,6 +48,7 @@ namespace Web.Services
             this.commentRepository = commentRepository;
             this.messageRepository = messageRepository;
             this.orderRepository = orderRepository;
+            this.billingDataRepository = billingDataRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -139,6 +143,24 @@ namespace Web.Services
             return result;
         }
 
+        public BillingData GetUserBillingData(string username)
+        {
+            return billingDataRepository.GetAll().Where(b => b.CreatedBy.UserName == username).AsNoTracking().FirstOrDefault();
+        }
+
+        public async Task CreateOrUpdateUserBillingData(string username, BillingData billingData)
+        {
+            var billingDataFromDb = GetUserBillingData(username);
+            if (billingDataFromDb == null)
+            {
+                await billingDataRepository.AddAsync(billingData);
+            }
+            else
+            {
+                await billingDataRepository.UpdateAsync(billingDataFromDb.Id, billingData);
+            }
+        }
+
         public override async Task<bool> RemoveAsync(Guid id)
         {
             var appUser = repository.GetAll().AsNoTracking().FirstOrDefault(u => u.Id == id);
@@ -201,6 +223,12 @@ namespace Web.Services
             {
                 order.CreatedBy = null;
                 await orderRepository.UpdateAsync(order.Id, order);
+            }
+
+            foreach (var billingData in billingDataRepository.GetAll().Where(o => o.CreatedBy.Id == id).ToList())
+            {
+                billingData.CreatedBy = null;
+                await billingDataRepository.UpdateAsync(billingData.Id, billingData);
             }
         }
     }

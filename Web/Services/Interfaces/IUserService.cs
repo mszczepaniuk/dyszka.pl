@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.BindingModels;
 
 namespace Web.Services.Interfaces
 {
@@ -18,5 +19,7 @@ namespace Web.Services.Interfaces
         public Task<bool> RemoveFromRole(string username, string roleName);
         public Task<bool> BanUser(string username);
         public Task<bool> UnbanUser(string username);
+        public BillingData GetUserBillingData(string username);
+        public Task CreateOrUpdateUserBillingData(string username, BillingData billingData);
     }
 }

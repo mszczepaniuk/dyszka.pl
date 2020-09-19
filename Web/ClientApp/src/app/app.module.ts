@@ -32,7 +32,10 @@ import { MessageComponent } from './component/message/message.component';
 import { MessageService } from './service/message.service';
 import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
 import { OrderComponent } from './component/order/order.component';
-import { OrderService } from './service/order.service';@NgModule({
+import { OrderService } from './service/order.service';
+import { BillingDataComponent } from './component/billing-data/billing-data.component';
+
+@NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
@@ -49,7 +52,8 @@ import { OrderService } from './service/order.service';@NgModule({
     CommentComponent,
     MessageComponent,
     MessageInboxComponent,
-    OrderComponent
+    OrderComponent,
+    BillingDataComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

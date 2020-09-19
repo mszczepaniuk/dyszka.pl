@@ -36,6 +36,9 @@ namespace Web.Mappings
                 .ForMember(dest => dest.OfferAuthorUserName, opt => opt.MapFrom(src => src.Offer.CreatedBy.UserName))
                 .ForMember(dest => dest.OfferTitle, opt => opt.MapFrom(src => src.Offer.Title))
                 .ForMember(dest => dest.AuthorUserName, opt => opt.MapFrom(src => src.CreatedBy.UserName));
+
+            CreateMap<BillingDataBm, BillingData>();
+            CreateMap<BillingData, BillingDataVm>();
         }
     }
 }

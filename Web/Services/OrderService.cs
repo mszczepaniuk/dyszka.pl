@@ -39,6 +39,7 @@ namespace Web.Services
         public PagedResult<OrderVm> GetCreatedByCurrentUser(int page)
         {
             var query = orderRepository.GetAll().Where(o => o.CreatedBy == userService.CurrentUser && !o.Done)
+                .OrderByDescending(o => o.CreatedDate)
                 .Include(o => o.CreatedBy)
                 .Include(o => o.Offer)
                 .ThenInclude(o => o.CreatedBy);
@@ -56,6 +57,7 @@ namespace Web.Services
         public PagedResult<OrderVm> GetOrdersForCurrentUserOffers(int page, bool done)
         {
             var query = orderRepository.GetAll().Where(o => o.Offer.CreatedBy == userService.CurrentUser && o.Done == done)
+                .OrderByDescending(o => done ? o.DoneTime : o.CreatedDate)
                 .Include(o => o.CreatedBy)
                 .Include(o => o.Offer)
                 .ThenInclude(o => o.CreatedBy); ;

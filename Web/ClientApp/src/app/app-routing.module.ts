@@ -12,6 +12,7 @@ import { OfferDetailsComponent } from './component/offer/details/offer-details.c
 import { MessageComponent } from './component/message/message.component';
 import { MessageInboxComponent } from './component/message/inbox/message-inbox.component';
 import { OrderComponent } from './component/order/order.component';
+import { BillingDataComponent } from './component/billing-data/billing-data.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'billing-data/:username',
+    component: BillingDataComponent
   },
   {
     path: 'register',
