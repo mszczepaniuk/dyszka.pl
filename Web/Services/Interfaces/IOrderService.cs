@@ -7,6 +7,7 @@ namespace Web.Services.Interfaces
 {
     public interface IOrderService
     {
+        public Order GetByIdAsNoTracking(Guid id);
         public PagedResult<OrderVm> GetCreatedByCurrentUser(int page);
         public PagedResult<OrderVm> GetOrdersForCurrentUserOffers(int page, bool done);
         public Task CreateOrder(Guid offerId);

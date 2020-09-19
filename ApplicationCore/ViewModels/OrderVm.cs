@@ -7,6 +7,7 @@ namespace ApplicationCore.ViewModels
 {
     public class OrderVm
     {
+        public Guid Id { get; set; }
         public Guid OfferId { get; set; }
         public string OfferAuthorUserName { get; set; }
         public string OfferTitle { get; set; }

@@ -31,9 +31,14 @@ namespace Web.Services
             this.offerRepository = offerRepository;
         }
 
+        public Order GetByIdAsNoTracking(Guid id)
+        {
+            return orderRepository.GetAll().Where(o => o.Id == id).Include(o => o.CreatedBy).AsNoTracking().FirstOrDefault();
+        }
+
         public PagedResult<OrderVm> GetCreatedByCurrentUser(int page)
         {
-            var query = orderRepository.GetAll().Where(o => o.CreatedBy == userService.CurrentUser)
+            var query = orderRepository.GetAll().Where(o => o.CreatedBy == userService.CurrentUser && !o.Done)
                 .Include(o => o.CreatedBy)
                 .Include(o => o.Offer)
                 .ThenInclude(o => o.CreatedBy);
@@ -67,7 +72,6 @@ namespace Web.Services
 
         public async Task CreateOrder(Guid offerId)
         {
-            var test = offerRepository.GetById(offerId);
             await orderRepository.AddAsync(new Order
             {
                 Done = false,
@@ -77,6 +81,7 @@ namespace Web.Services
 
         public async Task MarkAsDone(Guid orderId)
         {
+            // CREATE PAYMENT HERE
             var order = orderRepository.GetById(orderId);
             order.Done = true;
             order.DoneTime = DateTime.Now;

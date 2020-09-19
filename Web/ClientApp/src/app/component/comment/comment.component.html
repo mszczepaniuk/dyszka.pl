@@ -37,7 +37,7 @@
             <blockquote class="blockquote mb-0">
               <div class="row">
                 <div class="col-6 text-left previous">
-                  <footer class="blockquote-footer">Dodano: {{ comment.createdDate | date: 'dd.MM.yyyy hh:mm' }}</footer>
+                  <footer class="blockquote-footer">Dodano: {{ comment.createdDate | date: 'dd.MM.yyyy HH:mm' }}</footer>
                 </div>
                 <div class="col-6 text-right next">
                   <a *ngIf="!comment.isPositive && identityService.isLoggedIn() && !identityService.isBanned() && identityService.user$.value.userName === comment.authorUserName"
