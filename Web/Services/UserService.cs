@@ -26,6 +26,7 @@ namespace Web.Services
         private readonly IBaseRepository<Offer> offerRepository;
         private readonly IBaseRepository<Comment> commentRepository;
         private readonly IBaseRepository<Message> messageRepository;
+        private readonly IBaseRepository<Order> orderRepository;
         private readonly string identityUrl;
         private readonly string baseUrl;
 
@@ -35,13 +36,15 @@ namespace Web.Services
             IAuditLogService auditLogService,
             IBaseRepository<Offer> offerRepository,
             IBaseRepository<Comment> commentRepository,
-            IBaseRepository<Message> messageRepository) : base(repository)
+            IBaseRepository<Message> messageRepository,
+            IBaseRepository<Order> orderRepository) : base(repository)
         {
             this.client = client;
             this.auditLogService = auditLogService;
             this.offerRepository = offerRepository;
             this.commentRepository = commentRepository;
             this.messageRepository = messageRepository;
+            this.orderRepository = orderRepository;
             baseUrl = config.GetSection("URI").GetValue<string>("IdentityServer");
             identityUrl = baseUrl + "/api/identity/";
         }
@@ -192,6 +195,12 @@ namespace Web.Services
                 offer.CreatedBy = null;
                 offer.UpdatedBy = null;
                 await offerRepository.UpdateAsync(offer.Id, offer);
+            }
+
+            foreach (var order in orderRepository.GetAll().Where(o => o.CreatedBy.Id == id).ToList())
+            {
+                order.CreatedBy = null;
+                await orderRepository.UpdateAsync(order.Id, order);
             }
         }
     }

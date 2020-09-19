@@ -23,14 +23,17 @@ namespace Web.Controllers
         private readonly IOfferService offerService;
         private readonly IMapper mapper;
         private readonly IAuthorizationService authorizationService;
+        private readonly IOrderService orderService;
 
         public OffersController(IOfferService offerService,
             IMapper mapper,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            IOrderService orderService)
         {
             this.offerService = offerService;
             this.mapper = mapper;
             this.authorizationService = authorizationService;
+            this.orderService = orderService;
         }
 
         [HttpGet("{id}")]
@@ -96,6 +99,14 @@ namespace Web.Controllers
             {
                 return NotFound(e.Message);
             }
+        }
+
+        [HttpPost("{id}/order")]
+        [Authorize(AuthConstants.NotBannedPolicy)]
+        public async Task<IActionResult> CreateOrder(Guid offerId)
+        {
+            await orderService.CreateOrder(offerId);
+            return Ok();
         }
     }
 }

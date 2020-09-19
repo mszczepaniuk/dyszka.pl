@@ -24,6 +24,7 @@ namespace Infrastructure.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
