@@ -60,6 +60,6 @@ export class OfferService {
 
   public orderOffer(id: string) {
     this.httpClient.post(`${this.offerUrl}${id}/order`, {}).
-      subscribe(() => this.snackBar.open('Złożono zamówienie'));
+      subscribe(() => this.snackBar.open('Złożono zamówienie', '', {duration: 2000}));
   }
 }
