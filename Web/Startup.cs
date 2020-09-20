@@ -85,6 +85,11 @@ namespace Web
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPaymentService, PaymentService>();
+
+            services.AddCors(options => options.AddPolicy("mobile-cors", builder =>
+            {
+                builder.WithOrigins("https://localhost:5002").AllowAnyHeader();
+            }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -100,6 +105,7 @@ namespace Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("mobile-cors");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseUserMiddleware();
