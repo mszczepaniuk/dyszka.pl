@@ -71,6 +71,7 @@
     <None Remove="ClientApp\src\app\service\file.service.ts" />
     <None Remove="ClientApp\src\app\service\identity.service.ts" />
     <None Remove="ClientApp\src\app\service\message.service.ts" />
+    <None Remove="ClientApp\src\app\service\offer-promotion.service.ts" />
     <None Remove="ClientApp\src\app\service\offer.service.ts" />
     <None Remove="ClientApp\src\app\service\order.service.ts" />
     <None Remove="ClientApp\src\app\service\payment.service.ts" />
@@ -116,6 +117,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\service\comment.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\identity.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\message.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\offer-promotion.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\offer.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\order.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\payment.service.ts" />

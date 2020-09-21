@@ -34,7 +34,10 @@ import { MessageInboxComponent } from './component/message/inbox/message-inbox.c
 import { OrderComponent } from './component/order/order.component';
 import { OrderService } from './service/order.service';
 import { BillingDataComponent } from './component/billing-data/billing-data.component';
-import { PaymentService } from './service/payment.service';@NgModule({
+import { PaymentService } from './service/payment.service';
+import { OfferPromotionService } from './service/offer-promotion.service';
+
+@NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
@@ -75,6 +78,7 @@ import { PaymentService } from './service/payment.service';@NgModule({
     MessageService,
     OrderService,
     PaymentService,
+    OfferPromotionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

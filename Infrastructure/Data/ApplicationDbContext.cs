@@ -27,6 +27,7 @@ namespace Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<BillingData> BillingDatas { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<OfferPromotion> OfferPromotions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
