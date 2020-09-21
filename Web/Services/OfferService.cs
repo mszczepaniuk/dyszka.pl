@@ -15,12 +15,15 @@ namespace Web.Services
     public class OfferService : ExtendedBaseService<Offer>, IOfferService
     {
         private readonly IUserService userService;
+        private readonly IOfferPromotionService offerPromotionService;
 
         public OfferService(IBaseRepository<Offer> repository,
             IMapper mapper,
-            IUserService userService) : base(repository, mapper)
+            IUserService userService,
+            IOfferPromotionService offerPromotionService) : base(repository, mapper)
         {
             this.userService = userService;
+            this.offerPromotionService = offerPromotionService;
         }
 
         public override IQueryable<Offer> GetAll()
@@ -50,9 +53,16 @@ namespace Web.Services
             {
                 query = query.ToList().Where(offer => offer.Tags.Intersect(tags).Any()).AsQueryable();
             }
+            var items = query.Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList();
+            var promotedOffer = offerPromotionService.GetPromotedOffer(tags);
+            if (promotedOffer != null)
+            {
+                items.Insert(0 , promotedOffer);
+            }
+
             return new PagedResult<OfferVm>
             {
-                Items = mapper.Map<List<OfferVm>>(query.Skip((page - 1) * ResultsPerPage).Take(ResultsPerPage).ToList()),
+                Items = mapper.Map<List<OfferVm>>(items),
                 CurrentPage = page,
                 ResultsPerPage = ResultsPerPage,
                 PagesCount = query.Any() ?

@@ -85,6 +85,7 @@ namespace Web
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IOfferPromotionService, OfferPromotionService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

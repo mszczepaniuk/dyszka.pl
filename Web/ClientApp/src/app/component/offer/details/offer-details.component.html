@@ -54,5 +54,5 @@
       <div #paypal></div>
     </div>
   </div>
-  <app-comment [offerId]="offer.id"></app-comment>
+  <app-comment *ngIf="!loading" [offerId]="offer.id"></app-comment>
 </div>
