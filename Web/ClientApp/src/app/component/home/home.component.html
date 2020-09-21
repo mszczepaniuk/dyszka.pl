@@ -7,12 +7,12 @@
       Ładowanie...
     </h2>
     <div *ngIf="!loading" class="container">
-      <a *ngFor="let offer of offers" [routerLink]="['/offer', offer.id]">
+      <a *ngFor="let offer of offers; let i = index" [routerLink]="['/offer', offer.id]">
         <div class="card bg-dark text-white">
           <img class="card-img" [src]="offer.image" alt="Card image">
           <div class="card-img-overlay">
-            <h5 class="card-title"> {{ offer.title }}</h5>
-            <p class="card-text">{{ offer.shortDescription }}</p>
+            <h5 class="card-title" [class.promoted]="isFirstPromoted && i === 0"> {{ offer.title }}</h5>
+            <p class="card-text" [class.promoted]="isFirstPromoted && i === 0">{{ offer.shortDescription }}</p>
           </div>
         </div>
       </a>
@@ -31,5 +31,3 @@
     </div>
   </div>
 </div>
-
-

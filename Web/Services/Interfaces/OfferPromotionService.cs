@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Extensions;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Services.Interfaces
 {
@@ -22,7 +23,7 @@ namespace Web.Services.Interfaces
 
         public async Task<bool> PromoteOffer(Guid id, string tag)
         {
-            var tagsAvailable = GetTagsAvailableForPromotion(new List<string> { tag });
+            var tagsAvailable = GetTagsAvailableForPromotion(id ,new List<string> { tag });
             var offer = offerRepository.GetById(id);
             if (offer == null || !tagsAvailable.Any() || !tagsAvailable.ContainsKey(tag))
             {
@@ -38,9 +39,15 @@ namespace Web.Services.Interfaces
             return true;
         }
 
-        public Dictionary<string, decimal> GetTagsAvailableForPromotion(IEnumerable<string> tags)
+        public Dictionary<string, decimal> GetTagsAvailableForPromotion(Guid id, IEnumerable<string> tags)
         {
             var result = new Dictionary<string, decimal>();
+            var offerPromotion = offerPromotionRepository.GetAll().Include(o => o.Offer).ToList()
+                .FirstOrDefault(o => o.Offer.Id == id && o.EndDate.IsLater(DateTime.Now));
+            if (offerPromotion != null)
+            {
+                return result;
+            }
             var availableTags = tags.Except(offerPromotionRepository.GetAll().ToList().Where(o => tags.Contains(o.PromotedTag) && o.EndDate.IsLater(DateTime.Now)).Select(o => o.PromotedTag).ToList()).Distinct();
             foreach (var tag in availableTags)
             {

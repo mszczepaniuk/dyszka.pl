@@ -21,14 +21,14 @@ namespace Web.Controllers
             this.offerPromotionService = offerPromotionService;
         }
 
-        [HttpGet]
-        public IActionResult GetTagsAvailableForPromotion([FromQuery]string[] tags)
+        [HttpGet("{id}")]
+        public IActionResult GetTagsAvailableForPromotion(Guid id, [FromQuery]string[] tags)
         {
             if (!tags.Any() || tags == null)
             {
                 return BadRequest();
             }
-            return Ok(offerPromotionService.GetTagsAvailableForPromotion(tags));
+            return Ok(offerPromotionService.GetTagsAvailableForPromotion(id, tags));
         }
 
         [HttpPost("{id}/{tag}")]

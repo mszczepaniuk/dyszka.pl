@@ -50,7 +50,12 @@
         <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
       </a>
     </div>
-    <div *ngIf="identityService.isLoggedIn() && !identityService.isBanned() && (identityService.user$.value.userName !== offer.authorUserName || (identityService.user$.value.userName === offer.authorUserName && canPromote))" class="col-6 text-right next">
+    <div class="col-6 text-right next">
+      <form *ngIf="canPromote" [formGroup]="offerPromotionForm">
+        <select style="margin-bottom: 20px" class="form-control" formControlName="promoTag" [(ngModel)]="defaultPromo" [compareWith]="compareObjects">
+          <option *ngFor="let tag of promoTags" [ngValue]="tag">{{ tag.tag }}</option>
+        </select>
+      </form>
       <div #paypal></div>
     </div>
   </div>

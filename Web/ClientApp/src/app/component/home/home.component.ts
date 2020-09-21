@@ -24,6 +24,9 @@ export class HomeComponent extends BaseComponent implements OnInit {
   private loading: boolean;
   private pagesCount: number;
   private offers: Offer[] = [];
+  private resultsPerPage: number;
+  private duplicateId: string;
+  private isFirstPromoted = false;
 
   constructor(private identityService: IdentityService,
     private offerService: OfferService,
@@ -34,7 +37,14 @@ export class HomeComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.offers$ = new BehaviorSubject<Offer[]>([]);
     this.safeSub(
-      this.offers$.subscribe(offers => this.offers = offers),
+      this.offers$.subscribe(offers => {
+        if (offers && offers.length > 1 && offers.filter(o => o.id === offers[0].id).length > 1) {
+          let indexToCut = offers.indexOf(offers.filter(o => o.id === offers[0].id)[1]);
+          offers.splice(indexToCut, 1);
+          this.isFirstPromoted = true;
+        }
+        this.offers = offers;
+      }),
       this.activatedroute.queryParams.subscribe(params => {
         this.currentUsername = params['username'];
         this.currentTags = params['tags'];
@@ -56,6 +66,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
         this.offers$.next(offers);
         this.currentPage = result.currentPage;
         this.pagesCount = result.pagesCount;
+        this.resultsPerPage = result.resultsPerPage;
         this.loading = false;
       }, () => {
         this.loading = false;
