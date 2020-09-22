@@ -39,7 +39,12 @@ namespace Web.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(mapper.Map<OfferVm>(offerService.GetById(id)));
+            var offer = offerService.GetById(id);
+            if (offer == null)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound);
+            }
+            return Ok(mapper.Map<OfferVm>(offer));
         }
 
         [HttpGet]

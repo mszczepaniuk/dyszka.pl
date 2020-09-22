@@ -32,7 +32,7 @@ namespace Web.Middleware
                 }
 
                 dbContext.CurrentUser = user;
-                userService.CurrentUserToken = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ")[1];
+                userService.CurrentUserToken = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ")[1];
                 userService.CurrentUser = user ?? userService.GetByUserName(contextUsername);
             }
             await _next(context);
