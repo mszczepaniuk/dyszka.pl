@@ -31,19 +31,31 @@ namespace Web
     public class Startup
     {
         private readonly IConfiguration configuration;
+        private readonly IWebHostEnvironment environment;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             this.configuration = configuration;
+            this.environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddDbContextPool<ApplicationDbContext>(options =>
+            if (IsTestEnvironment())
             {
-                options.UseSqlServer(configuration.GetConnectionString("Default"));
-            });
+                services.AddDbContextPool<ApplicationDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                });
+            }
+            else
+            {
+                services.AddDbContextPool<ApplicationDbContext>(options =>
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("Default"));
+                });
+            }
             services.AddControllers();
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
@@ -118,6 +130,11 @@ namespace Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private bool IsTestEnvironment()
+        {
+            return environment.IsEnvironment("Test");
         }
     }
 }
