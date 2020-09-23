@@ -11,5 +11,6 @@ namespace ApplicationCore.ViewModels
         public Guid OrderId { get; set; }
         public Guid OfferId { get; set; }
         public string ReceiverUserName { get; set; }
+        public decimal Value { get; set; }
     }
 }

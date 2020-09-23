@@ -96,6 +96,7 @@
           <tbody>
             <tr *ngFor="let payment of payments">
               <td>{{ payment.createdDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+              <td>{{ payment.value | currency: 'PLN'}}</td>
               <td>{{ payment.orderId}}</td>
               <td>
                 <a *ngIf="payment.offerId"
