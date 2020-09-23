@@ -3,6 +3,7 @@
 </div>
 <div class="container">
   <div *ngIf="!loading">
+    <ngx-json-ld *ngIf="!offer.isHidden && !offer.isBlocked" [json]="jsonLdSchema"></ngx-json-ld>
     <h2 *ngIf="offer.isHidden || offer.isBlocked" style="color: red">TA OFERTA JEST NIEAKTYWNA</h2>
     <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">

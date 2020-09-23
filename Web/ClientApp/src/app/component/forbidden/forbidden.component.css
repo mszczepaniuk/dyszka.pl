@@ -8,3 +8,7 @@
   margin-right: auto;
   content: url('../../../assets/img/sad-cat.jpg');
 }
+
+.nav-link:hover {
+  cursor: pointer;
+}

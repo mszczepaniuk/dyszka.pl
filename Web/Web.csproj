@@ -131,6 +131,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\robots.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

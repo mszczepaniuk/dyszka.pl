@@ -4,6 +4,7 @@ export class Payment {
   public orderId: string;
   public receiverUsername: string;
   public createdDate: Date;
+  public value: number;
 
   constructor(data: {
     id?: string,
@@ -11,6 +12,7 @@ export class Payment {
     orderId?: string,
     receiverUsername?: string,
     createdDate?: Date,
+    value: number,
   }) {
     Object.assign(this, data);
   }

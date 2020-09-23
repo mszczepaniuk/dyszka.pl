@@ -7,6 +7,7 @@ import { Offer } from '../../model/offer.model';
 import { BehaviorSubject } from 'rxjs';
 import { faBackward, faForward} from '@fortawesome/free-solid-svg-icons';
 import { PagedResult } from '../../model/paged-result.model';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -30,12 +31,19 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   constructor(private identityService: IdentityService,
     private offerService: OfferService,
-    private activatedroute: ActivatedRoute) {
+    private activatedroute: ActivatedRoute,
+    private titleService: Title,
+    private metaService: Meta) {
     super();
   }
 
   ngOnInit(): void {
     this.offers$ = new BehaviorSubject<Offer[]>([]);
+    this.titleService.setTitle('dyszka.pl - oferty pracy zdalnej');
+    this.metaService.updateTag({
+      tag: 'description',
+      content: 'dyszka.pl to miejsce w którym możesz tanio i szybko znaleźć rozwiązanie problemu którego jeszcze nie wiedziałeś, że masz. Przebieraj w tysiącach ofert, jedynym ograniczeniem jest twoja wyobraźnia.'
+    });
     this.safeSub(
       this.offers$.subscribe(offers => {
         if (offers && offers.length > 1 && offers.filter(o => o.id === offers[0].id).length > 1) {

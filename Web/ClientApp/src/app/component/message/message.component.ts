@@ -8,6 +8,7 @@ import { PagedResult } from '../../model/paged-result.model';
 import { IdentityService } from '../../service/identity.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-message',
@@ -28,11 +29,13 @@ export class MessageComponent extends BaseComponent implements OnInit {
     private route: ActivatedRoute,
     private identityService: IdentityService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private titleService: Title) {
     super();
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Wiadomości');
     this.form = this.formBuilder.group({
       text: ['', [Validators.required]]
     });

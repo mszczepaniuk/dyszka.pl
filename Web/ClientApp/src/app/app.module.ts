@@ -36,6 +36,7 @@ import { OrderService } from './service/order.service';
 import { BillingDataComponent } from './component/billing-data/billing-data.component';
 import { PaymentService } from './service/payment.service';
 import { OfferPromotionService } from './service/offer-promotion.service';
+import { NgxJsonLdModule } from 'ngx-json-ld';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { OfferPromotionService } from './service/offer-promotion.service';
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxJsonLdModule
   ],
   providers: [
     IdentityService,
