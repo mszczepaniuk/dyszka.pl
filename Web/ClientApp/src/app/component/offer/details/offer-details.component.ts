@@ -30,6 +30,7 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
   private offerPromotionForm: FormGroup;
   private promoTags = [];
   private defaultPromo;
+  private jsonLdSchema = { };
 
   constructor(private offerService: OfferService,
     private route: ActivatedRoute,
@@ -53,7 +54,8 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
           this.offer = new Offer(result);
           this.form.patchValue(this.offer);
           this.titleService.setTitle(this.offer.title);
-          this.metaService.updateTag({tag: 'description', content: this.offer.shortDescription})
+          this.metaService.updateTag({ tag: 'description', content: this.offer.shortDescription });
+          this.createJsonLdSchema();
           if (this.identityService.isLoggedIn() && this.offer.authorUserName === this.identityService.user$.value.userName) {
             this.offerPromotionService.getTagsAvailableForPromotion(this.offer.id, this.offer.tags).subscribe(
               result => {
@@ -159,5 +161,20 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
 
   private compareObjects(o1: any, o2: any): boolean {
     return o1.tag === o2.tag && o1.value === o2.value;
+  }
+
+  private createJsonLdSchema() {
+    this.jsonLdSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      'name': this.offer.title,
+      'description': this.offer.shortDescription,
+      'offers': {
+        '@type': 'Offer',
+        'url': this.router.url,
+        'priceCurrency': 'PLN',
+        'price': this.offer.price
+      }
+    };
   }
 }
