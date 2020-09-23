@@ -6,6 +6,7 @@ import { OfferService } from '../../../service/offer.service';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { DialogResult } from '../../../enum/dialog-result.enum';
 import { Helpers } from '../../../common/helpers';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-offer-form',
@@ -22,11 +23,13 @@ export class OfferFormComponent extends BaseComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private offerService: OfferService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private titleService: Title) {
     super();
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Dodawanie oferty');
     this.form = this.createForm();
   }
 

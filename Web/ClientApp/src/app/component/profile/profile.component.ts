@@ -12,6 +12,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DialogResult } from '../../enum/dialog-result.enum';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -45,7 +46,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private titleService: Title) {
     super();
   }
 
@@ -76,6 +78,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 this.loading = false;
               }));
             }
+            this.titleService.setTitle(`Profil użytkownika ${this.username}`);
           })
         );
       })

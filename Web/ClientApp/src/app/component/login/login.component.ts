@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IdentityService } from '../../service/identity.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,10 @@ export class LoginComponent {
   private submitted = false;
   private errors: string[];
 
-  constructor(public identityService: IdentityService) { }
+  constructor(public identityService: IdentityService,
+    private titleService: Title) {
+    this.titleService.setTitle('Logowanie');
+  }
 
   onSubmit() {
     this.submitted = true;

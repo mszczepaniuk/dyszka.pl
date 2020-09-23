@@ -11,6 +11,7 @@ import { PagedResult } from '../../model/paged-result.model';
 import { PaymentService } from '../../service/payment.service';
 import { faPlus, faTrashAlt, faOutdent, faCheck, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { Payment } from '../../model/payment.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-forbidden',
@@ -48,8 +49,10 @@ export class AdministrationComponent extends BaseComponent {
     private administrationService: AdministrationService,
     private formsModule: FormsModule,
     private dialog: MatDialog,
-    private paymentService: PaymentService) {
+    private paymentService: PaymentService,
+    private titleService: Title) {
     super();
+    this.titleService.setTitle('Panel administratorski');
     this.safeSub(
       this.administrationService.admins$.subscribe(admins => {
         this.adminsArray = admins;

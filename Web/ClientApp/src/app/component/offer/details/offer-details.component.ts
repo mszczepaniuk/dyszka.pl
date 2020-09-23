@@ -9,6 +9,7 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { OfferPromotionService } from '../../../service/offer-promotion.service';
+import { Title } from '@angular/platform-browser';
 
 declare var paypal;
 
@@ -36,7 +37,8 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
     private identityService: IdentityService,
     private dialog: MatDialog,
     private offerPromotionService: OfferPromotionService,
-    private router: Router) {
+    private router: Router,
+    private titleService: Title) {
     super();
   }
 
@@ -49,6 +51,7 @@ export class OfferDetailsComponent extends BaseComponent implements OnInit {
         this.offerService.getById(params.get('id')).subscribe((result) => {
           this.offer = new Offer(result);
           this.form.patchValue(this.offer);
+          this.titleService.setTitle(this.offer.title);
           if (this.offer.authorUserName === this.identityService.user$.value.userName) {
             this.offerPromotionService.getTagsAvailableForPromotion(this.offer.id, this.offer.tags).subscribe(
               result => {

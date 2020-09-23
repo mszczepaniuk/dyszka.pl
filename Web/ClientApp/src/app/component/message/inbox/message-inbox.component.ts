@@ -5,6 +5,7 @@ import { MessageService } from '../../../service/message.service';
 import { Message } from '../../../model/message.model';
 import { PagedResult } from '../../../model/paged-result.model';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-message-inbox',
@@ -20,11 +21,13 @@ export class MessageInboxComponent extends BaseComponent implements OnInit {
   private pagesCount: number;
   private messages: Message[] = [];
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService,
+    private titleService: Title) {
     super();
   }
 
   ngOnInit() {
+    this.titleService.setTitle('Skrzynka odbiorcza');
     this.messages$ = new BehaviorSubject<Message[]>([]);
     this.safeSub(
       this.getPage(this.currentPage),

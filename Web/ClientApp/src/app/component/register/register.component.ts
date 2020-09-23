@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { IdentityService } from '../../service/identity.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,10 @@ export class RegisterComponent {
   private errors: string[];
 
   constructor(private identityService: IdentityService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private titleService: Title) {
+    this.titleService.setTitle('Rejestracja');
+  }
 
   onSubmit() {
     this.submitted = true;

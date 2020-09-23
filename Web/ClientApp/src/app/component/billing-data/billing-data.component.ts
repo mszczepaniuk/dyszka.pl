@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faEdit, faSave, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DialogResult } from '../../enum/dialog-result.enum';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-billing-data',
@@ -35,7 +36,8 @@ export class BillingDataComponent extends BaseComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private titleService: Title) {
     super();
   }
 
@@ -48,6 +50,7 @@ export class BillingDataComponent extends BaseComponent implements OnInit {
         this.username = params.get('username');
         if (this.identityService.user$.value.userName === this.username ||
           this.identityService.isInRole('admin')) {
+          this.titleService.setTitle(`Dane do przelewu użytkownika ${this.username}`);
           this.getBillingData();
         } else {
           this.router.navigateByUrl('/forbidden');
