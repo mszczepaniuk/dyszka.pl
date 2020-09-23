@@ -1,0 +1,64 @@
+<div *ngIf="loading">
+  <h3>Ładowanie...</h3>
+</div>
+<div class="container">
+  <div *ngIf="!loading">
+    <ngx-json-ld *ngIf="!offer.isHidden && !offer.isBlocked" [json]="jsonLdSchema"></ngx-json-ld>
+    <h2 *ngIf="offer.isHidden || offer.isBlocked" style="color: red">TA OFERTA JEST NIEAKTYWNA</h2>
+    <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-8" style="text-align: center">
+          <img id="image" class="offer-img" [src]="offer.image" />
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="authorUserName">Twórca</label>
+            <a [routerLink]="['/profile', offer.authorUserName]">
+              <input id="authorUserName" class="form-control username-link" type="text" formControlName="authorUserName">
+            </a>
+          </div>
+          <div class="form-group">
+            <label for="title">Tytuł</label>
+            <input id="title" class="form-control" type="text" formControlName="title">
+          </div>
+          <div class="form-group">
+            <label for="tags">Tagi</label>
+            <input id="tags" class="form-control" type="text" formControlName="tags">
+          </div>
+          <div class="form-group">
+            <label for="price">Cena</label>
+            <input id="price" type="number" min="1" step="any" class="form-control" formControlName="price">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Opis</label>
+        <textarea id="description" rows="6" class="form-control" type="text" formControlName="description"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-6 text-left previous">
+      <a *ngIf="!loading && isOwner() && !identityService.isBanned() && !offer.isHidden" class="btn btn-danger first-icon" (click)="hideOffer()" mat-raised-button
+         #tooltip="matTooltip"
+         matTooltip="Schowaj oferte">
+        <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+      </a>
+      <a *ngIf="!loading && isOwner() && !identityService.isBanned() && offer.isHidden" class="btn btn-primary first-icon" (click)="showOffer()" mat-raised-button
+         #tooltip="matTooltip"
+         matTooltip="Pokaz oferte">
+        <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+      </a>
+    </div>
+    <div class="col-6 text-right next">
+      <form *ngIf="canPromote" [formGroup]="offerPromotionForm">
+        <select style="margin-bottom: 20px" class="form-control" formControlName="promoTag" [(ngModel)]="defaultPromo" [compareWith]="compareObjects">
+          <option *ngFor="let tag of promoTags" [ngValue]="tag">{{ tag.tag }}</option>
+        </select>
+      </form>
+      <div #paypal></div>
+    </div>
+  </div>
+  <app-comment *ngIf="!loading" [offerId]="offer.id"></app-comment>
+</div>

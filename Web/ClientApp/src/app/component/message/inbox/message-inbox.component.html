@@ -1,0 +1,41 @@
+<div class="container">
+  <h2 *ngIf="loading">Ładowanie...</h2>
+  <div *ngIf="!loading">
+    <h2>Otrzymane wiadomości</h2>
+    <div class="row">
+      <div class="col-6 text-left previous">
+        <a *ngIf="currentPage > 1" class="btn btn-primary">
+          <fa-icon [icon]="faBackward" class="white-icon" (click)="getPage(currentPage - 1)"></fa-icon>
+        </a>
+      </div>
+      <div class="col-6 text-right next">
+        <a *ngIf="currentPage < pagesCount" class="btn btn-primary">
+          <fa-icon [icon]="faForward" class="white-icon" (click)="getPage(currentPage + 1)"></fa-icon>
+        </a>
+      </div>
+    </div>
+    <div class="card" *ngFor="let message of messages">
+      <div class="card-header title-text">
+        {{ message.authorUserName }}
+      </div>
+      <div class="card-body">
+        <p>{{ message.text }}</p>
+        <blockquote class="blockquote mb-0">
+          <div class="row">
+            <div class="col-6 text-left previous">
+              <footer class="blockquote-footer">{{ message.createdDate | date: 'dd.MM.yyyy hh:mm' }}</footer>
+            </div>
+            <div class="col-6 text-right next">
+              <a class="btn btn-primary comment-icon" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Napisz wiadomość"
+                 [routerLink]="['/messages', message.authorUserName]">
+                <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
+              </a>
+            </div>
+          </div>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>

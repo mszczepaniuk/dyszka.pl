@@ -1,0 +1,44 @@
+<div *ngIf="loading">
+  <h2>Ładowanie...</h2>
+</div>
+<div class="container" *ngIf="!loading">
+  <h2>Dane do przelewu użytkownika {{ username }}</h2>
+  <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="name">Imię i nazwisko lub nazwa organizacji</label>
+      <input id="name" class="form-control" type="text" formControlName="name"/>
+    </div>
+    <div class="form-group">
+      <label for="bankAccountNumber">Numer konta</label>
+      <input id="bankAccountNumber" class="form-control" type="text" formControlName="bankAccountNumber"/>
+    </div>
+    <div class="form-group">
+      <label for="street">Ulica</label>
+      <input id="street" class="form-control" type="text" formControlName="street"/>
+    </div>
+    <div class="form-group">
+      <label for="city">Miasto</label>
+      <input id="city" class="form-control" type="text" formControlName="city"/>
+    </div>
+    <div class="form-group">
+      <label for="postalCode">Kod pocztowy</label>
+      <input id="postalCode" class="form-control" type="text" formControlName="postalCode"/>
+    </div>
+    <a *ngIf="identityService.user$.value.userName === username && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-buttonjes
+       #tooltip="matTooltip"
+       matTooltip="Edytuj dane do przelewu">
+      <fa-icon [icon]="faEdit" class="white-icon"></fa-icon>
+    </a>
+    <a *ngIf="identityService.user$.value.userName === username && form.enabled" class="btn btn-primary" (click)="undoClick()" mat-raised-button
+       #tooltip="matTooltip"
+       matTooltip="Cofnij">
+      <fa-icon [icon]="faUndo" class="white-icon"></fa-icon>
+    </a>
+    <a *ngIf="identityService.user$.value.userName === username && form.enabled" class="btn btn-primary" (click)="editBillingData()" mat-raised-button
+       #tooltip="matTooltip"
+       matTooltip="Zapisz zmiany">
+      <fa-icon [icon]="faSave" class="white-icon"></fa-icon>
+    </a>
+  </form>
+</div>

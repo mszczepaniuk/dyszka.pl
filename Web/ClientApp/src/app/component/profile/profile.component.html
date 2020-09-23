@@ -1,0 +1,96 @@
+<div class="container">
+  <div *ngIf="loading">
+    <h3>Ładowanie...</h3>
+  </div>
+  <div *ngIf="!loading">
+    <h2 *ngIf="isBanned()" style="color:red">TEN UŻYTKOWNIK JEST ZBANOWANY</h2>
+    <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-md-4" style="text-align: center">
+          <div *ngIf="this.form.enabled" class="form-group">
+            <label class="image-upload-container btn btn-bwm">
+              <span>Wybierz zdjęcie</span>
+              <input #imageInput
+                     type="file"
+                     accept="image/*"
+                     (change)="processFile(imageInput)">
+            </label>
+          </div>
+          <img *ngIf="useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="defaultImage"/>
+          <img *ngIf="!useDefaultImage() && this.form.disabled" id="profileImage" class="profile-img" [src]="user$.value.profileImage"/>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="userName">Nazwa użytkownika</label>
+            <input id="userName" class="form-control" type="text" formControlName="userName">
+          </div>
+          <div class="form-group">
+            <label for="telephoneNumber">Numer telefonu</label>
+            <input id="telephoneNumber" class="form-control" type="number" step="1" formControlName="telephoneNumber">
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" class="form-control" type="text" formControlName="email">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Opis</label>
+        <textarea id="description" rows="6" class="form-control" type="text" formControlName="description"></textarea>
+      </div>
+      <div *ngIf="!identityService.isBanned()" class="col-12">
+        <a class="btn btn-primary" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Pokaż oferty"
+           [routerLink]="['/']"
+           [queryParams]="{ username: username}">
+          <fa-icon [icon]="faOutdent" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="identityService.isLoggedIn() && !isProfileOwner()" class="btn btn-primary" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Napisz wiadomość"
+           [routerLink]="['/messages/', username]">
+          <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="identityService.isLoggedIn() && (isProfileOwner() || identityService.isInRole('admin'))" class="btn btn-primary" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Dane do przelewu"
+           [routerLink]="['/billing-data/', username]">
+          <fa-icon [icon]="faMoneyBill" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="isProfileOwner() && form.disabled" class="btn btn-primary" (click)="editClick()" mat-raised-buttonjes
+           #tooltip="matTooltip"
+           matTooltip="Edytuj profil">
+          <fa-icon [icon]="faEdit" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="isProfileOwner() && form.enabled" class="btn btn-primary" (click)="undoClick()" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Cofnij">
+          <fa-icon [icon]="faUndo" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="isProfileOwner() && form.enabled" class="btn btn-primary" (click)="formSubmit()" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Zapisz zmiany">
+          <fa-icon [icon]="faSave" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="!isProfileOwner() && isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-primary" (click)="unbanUser()" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Odbanuj użytkownika">
+          <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="!isProfileOwner() && !isBanned() && (identityService.isInRole('admin') || (identityService.isInRole('moderator') && !isInRole('admin')))" class="btn btn-danger" (click)="banUser()" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Zbanuj użytkownika">
+          <fa-icon [icon]="faBan" class="white-icon"></fa-icon>
+        </a>
+        <a *ngIf="isProfileOwner() || (identityService.isInRole('admin') && isBanned())" class="btn btn-danger" (click)="deleteUser()" mat-raised-button
+           #tooltip="matTooltip"
+           matTooltip="Usuń konto">
+          <fa-icon [icon]="faUserMinus" class="white-icon"></fa-icon>
+        </a>
+      </div>
+    </form>
+    <app-comment [username]="username"></app-comment>
+  </div>
+</div>

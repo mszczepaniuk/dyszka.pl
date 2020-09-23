@@ -1,0 +1,42 @@
+<div class="container">
+  <app-form-error [submitted]="submitted" [errors]="errors"></app-form-error>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-8" style="text-align: center">
+        <div *ngIf="this.form.enabled" class="form-group">
+          <label class="image-upload-container btn btn-bwm">
+            <span>Wybierz zdjęcie</span>
+            <input formControlName="image"
+                   #imageInput
+                   type="file"
+                   accept="image/*"
+                   (change)="processFile(imageInput)">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="title">Tytuł</label>
+          <input id="title" class="form-control" type="text" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="tags">Tagi</label>
+          <input id="tags" class="form-control" type="text" formControlName="tags">
+        </div>
+        <div class="form-group">
+          <label for="price">Cena</label>
+          <input id="price" type="number" min="1" step="any" class="form-control" formControlName="price">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="shortDescription">Krótki opis</label>
+      <textarea id="shortDescription" rows="3" class="form-control" type="text" formControlName="shortDescription"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="description">Długi opis</label>
+      <textarea id="description" rows="6" class="form-control" type="text" formControlName="description"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Dodaj ofertę</button>
+  </form>
+</div>

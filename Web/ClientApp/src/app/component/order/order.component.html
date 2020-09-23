@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <button type="button" (click)="setToOrderedByUser()" class="btn" [class.btn-info]="this.selectedTab === 'orderedByUser'" [class.btn-primary]="this.selectedTab !== 'orderedByUser'">Zlecone</button>
+      <button type="button" (click)="setToInProgress()" class="btn" [class.btn-info]="this.selectedTab === 'inProgress'" [class.btn-primary]="this.selectedTab !== 'inProgress'">Realizowane</button>
+      <button type="button" (click)="setToCompleted()" class="btn" [class.btn-info]="this.selectedTab === 'completed'" [class.btn-primary]="this.selectedTab !== 'completed'">Zrealizowane</button>
+    </div>
+    <div class="col-md-9">
+      <h2 *ngIf="loading">Ładowanie...</h2>
+      <table class="table" *ngIf="!loading">
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td *ngIf="selectedTab === 'completed'">{{ order.doneTime | date: 'dd.MM.yyyy HH:mm' }}</td>
+            <td *ngIf="selectedTab !== 'completed'">{{ order.createdDate | date: 'dd.MM.yyyy HH:mm' }}</td>
+            <td>{{ order.offerTitle }}</td>
+            <td>
+              <a class="btn btn-primary" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Szczegóły oferty"
+                 [routerLink]="['/offer/', order.offerId]">
+                <fa-icon [icon]="faOutdent" class="white-icon"></fa-icon>
+              </a>
+              <a *ngIf="this.selectedTab === 'orderedByUser'" class="btn btn-primary" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Napisz wiadomość"
+                 [routerLink]="['/messages/', order.offerAuthorUserName]">
+                <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
+              </a>
+              <a *ngIf="this.selectedTab !== 'orderedByUser'" class="btn btn-primary" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Napisz wiadomość"
+                 [routerLink]="['/messages/', order.authorUserName]">
+                <fa-icon [icon]="faEnvelope" class="white-icon"></fa-icon>
+              </a>
+              <a *ngIf="this.selectedTab === 'orderedByUser'" class="btn btn-primary" mat-raised-button
+                 #tooltip="matTooltip"
+                 matTooltip="Oznacz jako wykonane"
+                 (click)="markAsDone(order.id)">
+                <fa-icon [icon]="faCheck" class="white-icon"></fa-icon>
+              </a>
+            </td>
+        </tr>
+        </tbody>
+        <div class="row">
+          <div class="col-6 text-left previous">
+            <a *ngIf="currentPage > 1" class="btn btn-primary">
+              <fa-icon [icon]="faBackward" class="white-icon" (click)="getPage(currentPage - 1)"></fa-icon>
+            </a>
+          </div>
+          <div class="col-6 text-right next">
+            <a *ngIf="currentPage < pagesCount" class="btn btn-primary">
+              <fa-icon [icon]="faForward" class="white-icon" (click)="getPage(currentPage + 1)"></fa-icon>
+            </a>
+          </div>
+        </div>
+      </table>
+      </div>
+    </div>
+  </div>

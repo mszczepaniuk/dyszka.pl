@@ -1,0 +1,12 @@
+.offer-img {
+  max-width: 100%;
+  top: 50%;
+}
+
+.username-link:hover {
+  cursor: pointer;
+}
+
+.first-icon {
+  margin-left: 15px;
+}

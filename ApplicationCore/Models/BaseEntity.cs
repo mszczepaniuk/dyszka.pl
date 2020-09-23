@@ -1,9 +1,11 @@
-﻿using Pl.Dyszka.ApplicationCore.Models.Interfaces;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ApplicationCore.Models;
 
-namespace Pl.Dyszka.ApplicationCore.Models
+namespace ApplicationCore.Models
 {
-    public class BaseEntity : IBaseEntity
+    public class BaseEntity
     {
         public Guid Id { get; set; }
     }

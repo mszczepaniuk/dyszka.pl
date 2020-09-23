@@ -1,0 +1,31 @@
+.btn-delete {
+  float: right;
+  border-radius: 5px;
+  width: 80px;
+}
+
+.btn-add {
+  float: right;
+  width: 80px;
+  margin-right: 20px;
+}
+
+.container {
+    border: 1px solid;
+    border-color: grey;
+    padding: 12px;
+    border-radius: 25px;
+    margin-top: 50px;
+}
+
+.username-link {
+  font-size: 20px;
+}
+
+form {
+  margin-bottom: 5px;
+}
+
+.btnNext{
+    text-align: right;
+}

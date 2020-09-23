@@ -1,0 +1,14 @@
+.row {
+  text-align: center
+}
+
+.cat-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  content: url('../../../assets/img/sad-cat.jpg');
+}
+
+.nav-link:hover {
+  cursor: pointer;
+}

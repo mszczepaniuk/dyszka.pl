@@ -1,0 +1,140 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="allign-items-center">
+        <button type="button" #admins (click)="showAdmins()" class="btn btn-lg btn-block" [class.btn-info]="currentTab === 'admins'" [class.btn-primary]="currentTab !== 'admins'">Admini</button>
+        <button type="button" (click)="showMods()" class="btn btn-lg btn-block" [class.btn-info]="currentTab === 'mods'" [class.btn-primary]="currentTab !== 'mods'">Modzi</button>
+        <button type="button" (click)="showLogs()" class="btn btn-lg btn-block" [class.btn-info]="currentTab === 'logs'" [class.btn-primary]="currentTab !== 'logs'">Logi</button>
+        <button type="button" (click)="showPayments()" class="btn btn-lg btn-block" [class.btn-info]="currentTab === 'payments'" [class.btn-primary]="currentTab !== 'payments'">Płatności</button>
+      </div>
+    </div>
+    <div class="col-md-9 align-self-center">
+      <ul class="list-group" *ngIf="currentTab === 'admins'">
+        <form [formGroup]="addingAdminForm">
+          <div class="input-group">
+            <input id="adminName" formControlName="adminName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
+            <div class="input-group-apend">
+              <a class="btn btn-primary btn-add btn-md" mat-raised-buttonjes
+                 #tooltip="matTooltip"
+                 matTooltip="Dodaj do adminów"
+                 (click)="addAdminRole()">
+                <fa-icon [icon]="faPlus" class="white-icon"></fa-icon>
+              </a>
+            </div>
+          </div>
+        </form>
+        <li class="list-group-item" *ngFor="let admin of adminsArray">
+          <div>
+            <a class="username-link" [routerLink]="['/profile', admin.userName]">{{admin.userName}}</a>
+            <a class="btn btn-danger btn-delete comment-icon" mat-raised-button
+               #tooltip="matTooltip"
+               matTooltip="Usuń z roli"
+               (click)="deleteAdmin(admin)">
+              <fa-icon [icon]="faTrashAlt" class="white-icon"></fa-icon>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <ul class="list-group" *ngIf="currentTab === 'mods'">
+        <form [formGroup]="addingModForm" (ngSubmit)="addModRole()">
+          <div class="input-group">
+            <input id="modName" formControlName="modName" type="text" class="form-control" placeholder="Wpisz nazwę użytkownika, któremu chcesz nadać rolę" />
+            <div class="input-group-apend">
+              <a class="btn btn-primary btn-add btn-md" mat-raised-buttonjes
+                 #tooltip="matTooltip"
+                 matTooltip="Dodaj do moderatorów"
+                 (click)="addModRole()">
+                <fa-icon [icon]="faPlus" class="white-icon"></fa-icon>
+              </a>
+            </div>
+          </div>
+        </form>
+        <li class="list-group-item" *ngFor="let mod of modsArray">
+          <a class="username-link" [routerLink]="['/profile', mod.userName]">{{mod.userName}}</a>
+          <a class="btn btn-danger btn-delete comment-icon" mat-raised-button
+             #tooltip="matTooltip"
+             matTooltip="Usuń z roli"
+             (click)="deleteMod(mod)">
+            <fa-icon [icon]="faTrashAlt" class="white-icon"></fa-icon>
+          </a>
+        </li>
+      </ul>
+      <div *ngIf="currentTab === 'logs'">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Wykonujący</th>
+              <th scope="col">Akcja</th>
+              <th scope="col">Id elementu</th>
+              <th scope="col">Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logsArray$.value">
+              <td>{{ log.authorUsername }}</td>
+              <td>{{ log.message }}</td>
+              <td>{{ log.affectedEntityId }}</td>
+              <td>{{ log.createdDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-md-6 btnNext">
+            <div *ngIf="currentLogsPage > 1">
+              <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage - 1)"> Poprzednia strona</button>
+            </div>
+          </div>
+          <div class="col-md-6 btnPrevious">
+            <div *ngIf="currentLogsPage < maxLogPage">
+              <button class="btn btn-primary" (click)="getLogsPage(currentLogsPage + 1)"> Następna strona</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="currentTab === 'payments'">
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let payment of payments">
+              <td>{{ payment.createdDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+              <td>{{ payment.value | currency: 'PLN'}}</td>
+              <td>{{ payment.orderId}}</td>
+              <td>
+                <a *ngIf="payment.offerId"
+                   class="btn btn-primary" mat-raised-button
+                   #tooltip="matTooltip"
+                   matTooltip="Pokaż oferty"
+                   [routerLink]="['/offer-details/', payment.offerId]">
+                  <fa-icon [icon]="faOutdent" class="white-icon"></fa-icon>
+                </a>
+                <a *ngIf="payment.receiverUsername" class="btn btn-primary" mat-raised-button
+                   #tooltip="matTooltip"
+                   matTooltip="Dane do przelewu"
+                   [routerLink]="['/billing-data/', payment.receiverUsername]">
+                  <fa-icon [icon]="faMoneyBill" class="white-icon"></fa-icon>
+                </a>
+                <a class="btn btn-primary comment-icon" mat-raised-button
+                   #tooltip="matTooltip"
+                   matTooltip="Zmien na pozytywny"
+                   (click)="markAsDone(payment.id)">
+                  <fa-icon [icon]="faCheck" class="white-icon"></fa-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-md-6 btnNext">
+            <div *ngIf="currentPaymentsPage > 1">
+              <button class="btn btn-primary" (click)="getPaymentsPage(currentPaymentsPage - 1)"> Poprzednia strona</button>
+            </div>
+          </div>
+          <div class="col-md-6 btnPrevious">
+            <div *ngIf="currentPaymentsPage < paymentsPageCount">
+              <button class="btn btn-primary" (click)="getPaymentsPage(currentPaymentsPage + 1)"> Następna strona</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
