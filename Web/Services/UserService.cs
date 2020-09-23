@@ -144,12 +144,12 @@ namespace Web.Services
 
         public BillingData GetUserBillingData(string username)
         {
-            return billingDataRepository.GetAll().Where(b => b.CreatedBy.UserName == username).AsNoTracking().FirstOrDefault();
+            return billingDataRepository.GetAll().Where(b => b.CreatedBy.UserName == username).FirstOrDefault();
         }
 
         public async Task CreateOrUpdateUserBillingData(string username, BillingData billingData)
         {
-            var billingDataFromDb = GetUserBillingData(username);
+            var billingDataFromDb = GetUserBillingDataAsNoTracking(username);
             if (billingDataFromDb == null)
             {
                 await billingDataRepository.AddAsync(billingData);
@@ -235,6 +235,11 @@ namespace Web.Services
                 payment.DoneBy = null;
                 await paymentRepository.UpdateAsync(payment.Id, payment);
             }
+        }
+
+        private BillingData GetUserBillingDataAsNoTracking(string username)
+        {
+            return billingDataRepository.GetAll().Where(b => b.CreatedBy.UserName == username).AsNoTracking().FirstOrDefault();
         }
     }
 }
