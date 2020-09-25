@@ -21,7 +21,7 @@ namespace Web.Mappings.Resolvers
 
         public Offer Resolve(CommentBm source, Comment destination, Offer destMember, ResolutionContext context)
         {
-            var offer = offerService.GetById(source.OfferId);
+            var offer = offerService.GetByIdLazy(source.OfferId);
             if (offer == null)
             {
                 throw new ElementNotFoundException("Comment not found");

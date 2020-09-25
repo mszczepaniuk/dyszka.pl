@@ -26,6 +26,11 @@ namespace Web.Services
             this.offerPromotionService = offerPromotionService;
         }
 
+        public Offer GetByIdLazy(Guid id)
+        {
+            return repository.GetAll().Where(offer => offer.Id == id).FirstOrDefault();
+        }
+
         public override IQueryable<Offer> GetAll()
         {
             return base.GetAll().Include(offer => offer.CreatedBy);

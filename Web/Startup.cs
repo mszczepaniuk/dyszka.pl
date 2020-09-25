@@ -98,6 +98,11 @@ namespace Web
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPaymentService, PaymentService>();
             services.AddTransient<IOfferPromotionService, OfferPromotionService>();
+
+            services.AddCors(options => options.AddPolicy("WebPolicy", builder =>
+            {
+                builder.WithOrigins("https://localhost:5002").AllowAnyMethod().AllowAnyHeader();
+            }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -113,6 +118,7 @@ namespace Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("WebPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseUserMiddleware();
