@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 using Web.Authorization;
-using Web.Services.Interfaces;
 
 namespace Web.Middleware
 {

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using ApplicationCore.Extensions;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories;
+using ApplicationCore.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Web.Services.Interfaces
+namespace Web.Services
 {
     public class OfferPromotionService : IOfferPromotionService
     {

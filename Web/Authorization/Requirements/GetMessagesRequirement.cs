@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Web.Services.Interfaces;
 
 namespace Web.Authorization.Requirements
 {

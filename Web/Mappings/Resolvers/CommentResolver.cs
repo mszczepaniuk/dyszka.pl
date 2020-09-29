@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using ApplicationCore.BindingModels;
 using ApplicationCore.Exceptions;
 using ApplicationCore.Models;
+using ApplicationCore.Services;
 using AutoMapper;
-using Web.Services.Interfaces;
 
 namespace Web.Mappings.Resolvers
 {

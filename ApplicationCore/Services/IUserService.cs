@@ -1,12 +1,8 @@
-﻿using ApplicationCore.Models;
-using ApplicationCore.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApplicationCore.BindingModels;
+using ApplicationCore.Models;
 
-namespace Web.Services.Interfaces
+namespace ApplicationCore.Services
 {
     public interface IUserService : IBaseService<ApplicationUser>
     {

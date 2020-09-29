@@ -16,15 +16,16 @@ using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Web.Extensions;
-using Web.Services.Interfaces;
 using Web.Services;
 using ApplicationCore.Repositories;
+using ApplicationCore.Services;
 using AutoMapper;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Web.Authorization;
 using Web.Authorization.Requirements;
+using OfferPromotionService = Web.Services.OfferPromotionService;
 
 namespace Web
 {

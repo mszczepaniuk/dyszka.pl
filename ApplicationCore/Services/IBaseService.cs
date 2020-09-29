@@ -1,11 +1,11 @@
-﻿using ApplicationCore.Models;
-using ApplicationCore.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Models;
+using ApplicationCore.Repositories;
 
-namespace Web.Services.Interfaces
+namespace ApplicationCore.Services
 {
     public interface IBaseService<T, TRepo>
     {

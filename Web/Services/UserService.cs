@@ -8,8 +8,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using ApplicationCore.Services;
 using Microsoft.EntityFrameworkCore;
-using Web.Services.Interfaces;
 
 namespace Web.Services
 {

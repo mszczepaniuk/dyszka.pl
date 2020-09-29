@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using ApplicationCore.Models;
 using ApplicationCore.Models.Options;
 using ApplicationCore.Repositories;
+using ApplicationCore.Services;
 using ApplicationCore.ViewModels;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Web.Services.Interfaces;
 
 namespace Web.Services
 {

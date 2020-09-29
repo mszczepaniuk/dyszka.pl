@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories;
+using ApplicationCore.Services;
 using AutoMapper;
-using Web.Services.Interfaces;
 
 namespace Web.Services
 {

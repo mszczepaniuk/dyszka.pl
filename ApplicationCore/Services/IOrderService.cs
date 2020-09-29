@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Models;
 using ApplicationCore.ViewModels;
 
-namespace Web.Services.Interfaces
+namespace ApplicationCore.Services
 {
     public interface IOrderService
     {

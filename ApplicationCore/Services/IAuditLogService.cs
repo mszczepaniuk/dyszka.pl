@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Models;
 
-namespace Web.Services.Interfaces
+namespace ApplicationCore.Services
 {
     public interface IAuditLogService
     {

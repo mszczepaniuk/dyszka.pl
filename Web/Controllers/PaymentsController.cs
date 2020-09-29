@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ApplicationCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Authorization;
-using Web.Services.Interfaces;
 
 namespace Web.Controllers
 {
